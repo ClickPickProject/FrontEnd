@@ -30,12 +30,12 @@ export default function Home() {
           <section className='m-auto mb-[80px] mt-[50px] flex h-[312px] w-[684px] flex-row items-center gap-20 md:mx-auto md:h-full md:w-full md:flex-col'>
             <HomePostView />
           </section>
-          <picture className='relative h-[500px] md:h-[300px]'>
+          <figure className='relative h-[500px] md:h-[300px]'>
             <Image alt='#' src='/Images/barn.jpg' fill className='object-cover' />
             <div className={`${styled.bgGradientCustom} absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2`}>
               여러분이 경험한 최근 장소를 기록해보세요
             </div>
-          </picture>
+          </figure>
         </main>
         <footer>
           <div></div>
