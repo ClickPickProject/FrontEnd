@@ -1,0 +1,30 @@
+$breakpoint-md: 767px;
+@mixin md {
+  @media screen and (max-width: $breakpoint-md) {
+    @content;
+  }
+}
+.bgGradientCustom {
+  width: 500px;
+  background-image: linear-gradient(
+    to right,
+    #f4c2c2 0%,
+    #f0d7ba 18%,
+    #f1ee9f 36%,
+    #c5ecbe 55%,
+    #b4d1ed 76%,
+    #e795e4 99%
+  );
+  font-size: 42px;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-align: center;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  @include md {
+    font-size: 24px;
+    width: 280px;
+  }
+}
