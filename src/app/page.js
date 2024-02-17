@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { MdPlace } from 'react-icons/md';
-import HomePostView from '@/components/HomePostView';
-import HomeNavbar from '@/components/HomeNavbar';
+import HomePostView from '@/components/Home/HomePostView';
+import HomeNavbar from '@/components/Home/HomeNavbar';
 import styled from './Home.module.scss';
 export default function Home() {
   return (
