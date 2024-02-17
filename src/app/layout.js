@@ -1,6 +1,5 @@
 import { Open_Sans } from 'next/font/google';
 import './globals.css';
-import MSWComponent from '@/components/Home/MSWComponent';
 
 const open = Open_Sans({ subsets: ['latin'] });
 
@@ -15,10 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className={open.className}>
-        <MSWComponent />
-        {children}
-      </body>
+      <body className={open.className}>{children}</body>
     </html>
   );
 }
