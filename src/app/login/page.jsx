@@ -34,7 +34,7 @@ export default function LoginPage() {
               </button>
             </div>
             <div className='flex text-gray-600 '>
-              회원이 아니신가요????
+              회원이 아니신가요?
               <div className='pl-2 font-semibold text-black'>
                 <Link href='/signup' className=''>
                   회원가입
