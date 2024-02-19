@@ -7,6 +7,7 @@ export default function LoginPage() {
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
   return (
     <>
+      코딩으로 밥벌어먹고 살기 힘들다
       <div className='h-[100dvh] bg-[#fdf4f5]'>
         <section className='absolute left-1/2 top-1/2 flex h-[550px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col  rounded-2xl  bg-pink-200  shadow-[1px_1px_200px_1px] shadow-pink-200'>
           <figure className='mx-auto p-6'>
