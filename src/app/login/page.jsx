@@ -9,7 +9,7 @@ export default function LoginPage() {
   let [pw, setPw] = useState(''); // setState로 password초기값 공백
   const [button, setButton] = useState(true);
   const goToMain = () => {
-    NavigationPreloadManager('/page');
+    navigate('...page');
   };
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
   const realId = 'kiki@naver.com';
