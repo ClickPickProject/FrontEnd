@@ -4,12 +4,16 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 export default function LoginPage() {
   let [id, setId] = useState(''); // setState로 id 초기값 공백
   let [pw, setPw] = useState(''); // setState로 password초기값 공백
   const [button, setButton] = useState(true);
+  const router = useRouter();
   const goToMain = () => {
-    navigate('...page');
+    router.push('/');
+    // router.push('/');최상단 root로 가는길
   };
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
   const realId = 'kiki@naver.com';
@@ -17,6 +21,7 @@ export default function LoginPage() {
   function changeButton() {
     id.includes('@') && pw.length >= 5 ? setButton(false) : setButton(true);
   } // changeButton()함수는 id에 @가 포함되어있고 pw의 글자가 5글자 이상일때 조건식이 맞을때 false, 맞지 않을때 true로 견경해줌.
+  //API요청하는코드
 
   return (
     <>
