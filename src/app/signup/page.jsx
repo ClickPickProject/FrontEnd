@@ -22,7 +22,7 @@ export default function SignUpPage() {
 
   const { user_id, pw, confirmPw, nickname } = userData;
   const router = useRouter();
-  const idRegex = /^.{4,12}$/;
+  const idRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const pwRegex = /^.{6,}$/;
   const nickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
 
@@ -92,8 +92,8 @@ export default function SignUpPage() {
                 className='absolute ml-1 flex h-full items-center justify-center  opacity-50'
               />
               <input
-                placeholder='아이디'
-                type='text'
+                placeholder='이메일'
+                type='email'
                 id='user-id'
                 onChange={onChangeId}
                 required
@@ -110,9 +110,9 @@ export default function SignUpPage() {
             </div>
 
             {idValid ? (
-              <div className={`flex w-[350px] font-semibold text-blue-600`}>사용할 수 있는 아이디입니다.</div>
+              <div className={`flex w-[350px] font-semibold text-blue-600`}>사용할 수 있는 이메일입니다.</div>
             ) : (
-              <div className={`${onVisible.user_id} ${errorMsgStyle}`}>아이디는 4~12자 이내로 입력해주세요</div>
+              <div className={`${onVisible.user_id} ${errorMsgStyle}`}>이메일 주소가 올바르지 않습니다.</div>
             )}
             <div className='relative flex w-[350px] flex-col'>
               <RiLockPasswordLine
