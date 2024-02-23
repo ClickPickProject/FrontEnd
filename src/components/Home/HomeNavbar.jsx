@@ -22,7 +22,7 @@ export default function HomeNavbar() {
                 <li className={hoverStyle}>커뮤니티</li>
               </Link>
             </div>
-            <Link href='/login' className='mr-[50px]'>
+            <Link href='/login' className={`mr-[50px] ${hoverStyle} `}>
               로그인
             </Link>
           </ul>
