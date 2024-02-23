@@ -1,4 +1,4 @@
-import { BiMap } from 'react-icons/bi';
+import { LiaMapMarkerSolid } from 'react-icons/lia';
 export default function MapIcon({ size }) {
-  return <BiMap size={size} />;
+  return <LiaMapMarkerSolid size={size} />;
 }
