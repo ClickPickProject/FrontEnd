@@ -59,7 +59,7 @@ export default function SideNavbar() {
               <Link
                 key={href}
                 href={href}
-                className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName && 'bg-pink-100'} active:bg-pink-200`}
+                className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName && 'bg-pink-100'} transition-all active:bg-pink-200`}
               >
                 <li className='flex items-center gap-2'>
                   {href === pathName ? clickedIcon : icon} {name}
