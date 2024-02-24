@@ -46,14 +46,14 @@ export default function SideNavbar() {
   return (
     <>
       <div className='mr-8'>
-        <header className='w-full'>
+        <header className='mb-8 w-full'>
           <figure className='ml-4'>
             <Link alt='logo' href='/'>
               <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
             </Link>
           </figure>
         </header>
-        <nav className='flex h-[289px] w-[220px] items-center'>
+        <nav className='sticky top-0 mb-6 flex w-[220px] flex-col items-center'>
           <ul className='flex w-full flex-col gap-[13px] text-sm [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold'>
             {MENU.map(({ name, href, icon, clickedIcon }) => (
               <Link
@@ -68,7 +68,7 @@ export default function SideNavbar() {
             ))}
           </ul>
         </nav>
-        <div className='flex w-full justify-center gap-5  [&>div]:rounded-xl [&>div]:text-xs'>
+        <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 [&>div]:rounded-xl [&>div]:text-xs'>
           <div className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold'>
             <ProfileIcon size={24} />내 정보
           </div>
