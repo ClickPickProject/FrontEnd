@@ -1,8 +1,7 @@
 'use client';
-import { MdOutlineMailOutline } from 'react-icons/md';
-import { RiLockPasswordLine } from 'react-icons/ri';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MailIcon, PasswordIcon } from '@/components/UI/Icons';
 export default function LoginPage() {
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
   return (
@@ -16,17 +15,11 @@ export default function LoginPage() {
           <h2 className='mx-auto mb-8 text-2xl font-bold'>클릭픽 로그인</h2>
           <form className='flex w-full flex-col items-center justify-center gap-8'>
             <div className='relative flex w-[350px] flex-col'>
-              <MdOutlineMailOutline
-                size={20}
-                className='absolute ml-1 flex h-full items-center justify-center opacity-50'
-              />
+              <MailIcon size={20} />
               <input placeholder='아이디' type='text' id='id' required className={`${defaultInputStyle}`} />
             </div>
             <div className='relative flex w-[350px] flex-col'>
-              <RiLockPasswordLine
-                size={20}
-                className='absolute ml-1 flex h-full items-center justify-center opacity-50'
-              />
+              <PasswordIcon size={20} />
               <input placeholder='비밀번호' type='password' id='password' required className={`${defaultInputStyle}`} />
             </div>
             <div className='flex justify-center'>

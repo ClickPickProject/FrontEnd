@@ -1,9 +1,9 @@
 'use client';
 import SideNavbar from '@/components/Community/SideNavbar';
-import { motion } from 'framer-motion';
 import BestLikePost from '@/components/Community/BestPost';
-import { BiSolidPencil } from 'react-icons/bi';
 import PostList from '@/components/Community/PostList';
+import { motion } from 'framer-motion';
+import { PencilIcon } from '@/components/UI/Icons';
 export default function CommunityPage() {
   return (
     <>
@@ -35,7 +35,7 @@ export default function CommunityPage() {
               <option>3</option>
             </select>
             <div className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white'>
-              <BiSolidPencil color='white' size={18} />글 작성
+              <PencilIcon color='white' size={18} />글 작성
             </div>
           </div>
           <PostList />

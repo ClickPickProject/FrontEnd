@@ -1,12 +1,10 @@
 'use client';
-import { MdOutlineMailOutline } from 'react-icons/md';
-import { SiNamecheap } from 'react-icons/si';
-import { RiLockPasswordLine } from 'react-icons/ri';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { MailIcon, NickIcon, PasswordIcon } from '@/components/UI/Icons';
 export default function SignUpPage() {
   const [idValid, setIdValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
@@ -87,10 +85,7 @@ export default function SignUpPage() {
           <h2 className='mx-auto mb-8 text-2xl font-bold'>클릭픽 회원가입</h2>
           <form onSubmit={handleRegister} className='j flex w-full flex-col items-center justify-center gap-4'>
             <div className='relative flex w-[350px] flex-col'>
-              <MdOutlineMailOutline
-                size={20}
-                className='absolute ml-1 flex h-full items-center justify-center  opacity-50'
-              />
+              <MailIcon size={20} />
               <input
                 placeholder='이메일'
                 type='email'
@@ -115,10 +110,7 @@ export default function SignUpPage() {
               <div className={`${onVisible.user_id} ${errorMsgStyle}`}>이메일 주소가 올바르지 않습니다.</div>
             )}
             <div className='relative flex w-[350px] flex-col'>
-              <RiLockPasswordLine
-                size={20}
-                className='absolute ml-1 flex h-full items-center justify-center opacity-50'
-              />
+              <PasswordIcon size={20} />
               <input
                 placeholder='비밀번호'
                 type='password'
@@ -136,10 +128,7 @@ export default function SignUpPage() {
             )}
 
             <div className='relative flex w-[350px] flex-col'>
-              <RiLockPasswordLine
-                size={20}
-                className='absolute ml-1 flex h-full items-center justify-center opacity-50'
-              />
+              <PasswordIcon size={20} />
               <input
                 placeholder='비밀번호 확인'
                 type='password'
@@ -158,7 +147,7 @@ export default function SignUpPage() {
             )}
 
             <div className='relative flex w-[350px] flex-col'>
-              <SiNamecheap size={20} className='absolute ml-1 flex h-full items-center justify-center opacity-50' />
+              <NickIcon size={20} />
               <input
                 placeholder='닉네임'
                 type='text'
