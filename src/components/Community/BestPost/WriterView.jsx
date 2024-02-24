@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function WriterView() {
   return (
-    <span className='flex items-center text-sm font-bold'>
+    <span className='flex items-center gap-1 text-sm font-bold'>
       <Image
         alt='#'
         src='/Images/barn.jpg'

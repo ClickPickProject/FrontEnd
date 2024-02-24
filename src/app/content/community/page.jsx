@@ -19,6 +19,8 @@ export default function CommunityPage() {
           </div>
           <div className='flex w-full justify-center gap-10'>
             <BestLikePost />
+            <BestLikePost />
+            <BestLikePost />
           </div>
         </motion.nav>
       </section>
