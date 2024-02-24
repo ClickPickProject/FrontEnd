@@ -5,6 +5,7 @@ import {
   FillMapIcon,
   FillMessageIcon,
   FillNoticeIcon,
+  FillProfileIcon,
   FillQuestionIcon,
   LogoutIcon,
   MapIcon,
@@ -68,14 +69,27 @@ export default function SideNavbar() {
             ))}
           </ul>
         </nav>
-        <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 [&>div]:rounded-xl [&>div]:text-xs'>
-          <div className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold'>
-            <ProfileIcon size={24} />내 정보
-          </div>
-          <div className='flex h-[40px] w-[100px] items-center gap-1 bg-pink-100 px-3 py-2 font-bold'>
+        <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 [&>*]:rounded-xl [&>*]:text-xs'>
+          <Link
+            href='/content/profile'
+            className={`${
+              pathName === '/content/profile' ? 'bg-pink-300' : null
+            } flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300`}
+          >
+            {pathName === '/content/profile' ? (
+              <FillProfileIcon size={28} color='#ec4899' />
+            ) : (
+              <ProfileIcon size={28} />
+            )}
+            내 정보
+          </Link>
+          <Link
+            href='#'
+            className='flex h-[40px] w-[100px] items-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+          >
             <LogoutIcon size={24} />
             로그아웃
-          </div>
+          </Link>
         </div>
       </div>
     </>

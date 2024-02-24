@@ -8,3 +8,4 @@ export { default as FillMapIcon } from './FillMapIcon';
 export { default as FillNoticeIcon } from './FillNoticeIcon';
 export { default as FillQuestionIcon } from './FillQuestionIcon';
 export { default as FillMessageIcon } from './FillMessageIcon';
+export { default as FillProfileIcon } from './FillProfileIcon';
