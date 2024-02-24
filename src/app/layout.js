@@ -7,7 +7,7 @@ export const metadata = {
   title: 'ClickPick',
   description: '새로운 일상을 공유해보세요',
   icons: {
-    icon: './favicon.ico',
+    icon: 'Images/clickpick_icon.png',
   },
 };
 

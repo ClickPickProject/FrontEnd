@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import HomePostWriter from './HomePostWriter';
 
-export default function HomePostView() {
+export default function HomeSecondSection() {
   return (
-    <>
+    <section className='m-auto mb-[80px] mt-[50px] flex h-[312px] w-[684px] flex-row items-center gap-20 md:mx-auto md:h-full md:w-full md:flex-col'>
       <div className='flex flex-1 flex-col gap-4'>
         <h2 className='text-2xl font-bold'>💕 BEST 좋아요</h2>
         <figure className=''>
@@ -31,6 +31,6 @@ export default function HomePostView() {
           <div className=''>청계천 지금 공사중입니다. 참고하세요</div>
         </div>
       </div>
-    </>
+    </section>
   );
 }
