@@ -4,29 +4,41 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MailIcon, NickIcon, PasswordIcon } from '@/components/UI/Icons';
+import { MailIcon, NickIcon, PasswordIcon, PhoneIcon, UserNameIcon } from '@/components/UI/Icons';
 export default function SignUpPage() {
   const [idValid, setIdValid] = useState(false);
   const [pwValid, setPwValid] = useState(false);
+  const [nameValid, setNameValid] = useState(false);
   const [nickValid, setNickValid] = useState(false);
+  const [phoneValid, setPhoneValid] = useState(false);
+  const [idDisabled, setIdDisabled] = useState(true);
+  const [nameDisabled, setNameDisabled] = useState(true);
+  const [nickDisabled, setNickDisabled] = useState(true);
+  const [phoneDisabled, setPhoneDisabled] = useState(true);
+  const [idValidCheck, setIdValidCheck] = useState(false);
+  const [nickValidCheck, setNickValidCheck] = useState(false);
+  const [phoneValidCheck, setPhoneValidCheck] = useState(false);
   const [userData, setUserData] = useState({
-    user_id: '',
+    id: '',
     pw: '',
     confirmPw: '',
+    name: '',
     nickname: '',
+    phone: '',
   });
-  const [idValidCheck, setIdValidCheck] = useState(false);
-  const [pwValidCheck, setPwValidCheck] = useState(false);
-
-  const { user_id, pw, confirmPw, nickname } = userData;
-  const router = useRouter();
+  const { id, pw, confirmPw, nickname, name, phone } = userData;
   const idRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const pwRegex = /^.{6,}$/;
+  const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+  const nameRegex = /^[가-힣]{2,5}$/;
   const nickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
+  const phoneRegex = /^010(\d{3,4})(\d{4})$/;
+  const router = useRouter();
 
   const onChangeId = (e) => {
-    setUserData({ ...userData, user_id: e.target.value });
+    setUserData({ ...userData, id: e.target.value });
+    console.log(e.target.value);
     idRegex.test(e.target.value) ? setIdValid(true) : setIdValid(false);
+    idValid ? setIdDisabled(false) : setIdDisabled(true);
   };
   const onChangePw = (e) => {
     setUserData({ ...userData, pw: e.target.value });
@@ -36,28 +48,92 @@ export default function SignUpPage() {
     setUserData({ ...userData, confirmPw: e.target.value });
   };
 
+  const onChangeName = (e) => {
+    setUserData({ ...userData, name: e.target.value });
+    nameRegex.test(e.target.value) ? setNameValid(true) : setNameValid(false);
+    nameValid ? setNameDisabled(false) : setNameDisabled(true);
+  };
   const onChangeNick = (e) => {
     setUserData({ ...userData, nickname: e.target.value });
     nickRegex.test(e.target.value) ? setNickValid(true) : setNickValid(false);
+    nickValid ? setNickDisabled(false) : setNickDisabled(true);
+  };
+
+  const onChangePhone = (e) => {
+    setUserData({ ...userData, phone: e.target.value });
+    phoneRegex.test(e.target.value) ? setPhoneValid(true) : setPhoneValid(false);
+    phoneValid ? setPhoneDisabled(false) : setPhoneDisabled(true);
+  };
+
+  const onClickIdValidCheck = async (e) => {
+    e.preventDefault();
+    if (idValid && !idDisabled) {
+      try {
+        const res = await axios.get(`/api/check/userid/${userData.id}`);
+        if (res.status === 200) {
+          console.log(res);
+          setIdValidCheck(true);
+          router.push('/');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  const onClickNickValidCheck = async (e) => {
+    e.preventDefault();
+    if (nickValid && !nickDisabled) {
+      try {
+        const res = await axios.get(`/api/check/nickname/${userData.nickname}`);
+        if (res.status === 200) {
+          console.log(res);
+          setNickValidCheck(true);
+          router.push('/');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  const onClickPhoneValidCheck = async (e) => {
+    e.preventDefault();
+    if (phoneValid && !phoneDisabled) {
+      try {
+        const res = await axios.get(`/api/check/phone/${userData.phone}`);
+        if (res.status === 200) {
+          console.log(res);
+          setPhoneValidCheck(true);
+          router.push('/');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   const isSame = pw === confirmPw;
-  const isAllValid = idValid && pwValid && confirmPw && nickValid && isSame;
+  const isAllValid = idValid && pwValid && confirmPw && nickValid && nameValid && phoneValid && isSame;
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    console.log('handleRegister');
     try {
       const res = await axios.post(
-        'http://localhost:3000/api/signup',
-        { user_id: user_id, pw: pw, nickname: nickname },
+        `/api/signup/user`,
+        // `http://localhost:1234/memo`,
         {
-          headers: {
-            'Content-type': 'application/json',
-          },
+          id: id,
+          password: pw,
+          name: name,
+          nickname: nickname,
+          phone: phone,
+        },
+        {
+          withCredentials: true,
         },
       );
       if (res.status === 200) {
-        console.log(res);
+        alert('회원가입이 완료되었습니다.');
         router.push('/');
       }
     } catch (err) {
@@ -66,10 +142,12 @@ export default function SignUpPage() {
     }
   };
   const onVisible = {
-    user_id: user_id.length === 0 ? 'invisible' : 'visible',
+    id: id.length === 0 ? 'invisible' : 'visible',
     pw: pw.length === 0 ? 'invisible' : 'visible',
     confirmPw: confirmPw.length === 0 ? 'invisible' : 'visible',
+    name: name.length === 0 ? 'invisible' : 'visible',
     nickname: nickname.length === 0 ? 'invisible' : 'visible',
+    phone: phone.length === 0 ? 'invisible' : 'visible',
   };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
@@ -78,9 +156,11 @@ export default function SignUpPage() {
   return (
     <>
       <div className='h-[100dvh] bg-[#fdf4f5]'>
-        <section className='absolute left-1/2 top-1/2 flex h-[700px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-pink-200  shadow-[1px_1px_200px_1px]  shadow-pink-200'>
+        <section className='absolute left-1/2 top-1/2 flex h-[900px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-pink-200  shadow-[1px_1px_200px_1px]  shadow-pink-200'>
           <figure className='mx-auto p-6'>
-            <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
+            <Link href='/'>
+              <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
+            </Link>
           </figure>
           <h2 className='mx-auto mb-8 text-2xl font-bold'>클릭픽 회원가입</h2>
           <form onSubmit={handleRegister} className='j flex w-full flex-col items-center justify-center gap-4'>
@@ -89,15 +169,18 @@ export default function SignUpPage() {
               <input
                 placeholder='이메일'
                 type='email'
-                id='user-id'
+                id='id'
+                // value={userData.id}
                 onChange={onChangeId}
                 required
                 className={`${defaultInputStyle}`}
               />
               <div className='absolute right-3 flex h-full items-center'>
                 <button
-                  disabled
-                  className='rounded-md bg-pink-300 px-3 py-1 text-sm transition-all hover:bg-pink-500 hover:text-white'
+                  disabled={idDisabled}
+                  onClick={onClickIdValidCheck}
+                  className={`${idValid === true ? 'bg-pink-300 hover:bg-pink-500 hover:text-white' : 'bg-gray-200'}
+                  rounded-md px-3 py-1 text-sm transition-all `}
                 >
                   중복 확인
                 </button>
@@ -105,9 +188,11 @@ export default function SignUpPage() {
             </div>
 
             {idValid ? (
-              <div className={`flex w-[350px] font-semibold text-blue-600`}>사용할 수 있는 이메일입니다.</div>
+              <div className={`flex w-[350px] font-semibold text-blue-600`}>
+                {idValidCheck ? '사용 가능한 이메일입니다' : '올바른 이메일 주소입니다.'}
+              </div>
             ) : (
-              <div className={`${onVisible.user_id} ${errorMsgStyle}`}>이메일 주소가 올바르지 않습니다.</div>
+              <div className={`${onVisible.id} ${errorMsgStyle}`}>이메일 주소가 올바르지 않습니다.</div>
             )}
             <div className='relative flex w-[350px] flex-col'>
               <PasswordIcon size={20} />
@@ -147,6 +232,22 @@ export default function SignUpPage() {
             )}
 
             <div className='relative flex w-[350px] flex-col'>
+              <UserNameIcon size={20} />
+              <input
+                placeholder='이름'
+                type='text'
+                id='name'
+                onChange={onChangeName}
+                required
+                className={`${defaultInputStyle}`}
+              />
+            </div>
+            {nameValid ? (
+              <div className='flex w-[350px] font-semibold text-blue-500'>올바른 이름입니다.</div>
+            ) : (
+              <div className={`${onVisible.name} ${errorMsgStyle}`}>이름이 올바르지 않습니다.</div>
+            )}
+            <div className='relative flex w-[350px] flex-col'>
               <NickIcon size={20} />
               <input
                 placeholder='닉네임'
@@ -158,19 +259,49 @@ export default function SignUpPage() {
               />
               <div className='absolute right-3 flex h-full items-center'>
                 <button
-                  disabled
-                  className='rounded-md bg-pink-300 px-3 py-1 text-sm transition-all hover:bg-pink-500 hover:text-white'
+                  onClick={onClickNickValidCheck}
+                  disabled={nameDisabled}
+                  className={`${nickValid ? 'bg-pink-300' : 'bg-gray-200'} rounded-md px-3 py-1 text-sm transition-all hover:bg-pink-500 hover:text-white`}
                 >
                   중복 확인
                 </button>
               </div>
             </div>
             {nickValid ? (
-              <div className='flex w-[350px] font-semibold text-blue-500'>올바른 닉네임입니다.</div>
+              <div className='flex w-[350px] font-semibold text-blue-500'>
+                {nickValidCheck ? '사용 가능한 닉네임입니다.' : '올바른 닉네임입니다.'}
+              </div>
             ) : (
               <div className={`${onVisible.nickname} ${errorMsgStyle}`}>
                 2~16자 사이의 영어, 숫자, 한글로 입력해주세요
               </div>
+            )}
+            <div className='relative flex w-[350px] flex-col'>
+              <PhoneIcon size={24} />
+              <input
+                placeholder='휴대폰 번호'
+                type='text'
+                id='phone'
+                onChange={onChangePhone}
+                required
+                className={`${defaultInputStyle}`}
+              />
+              <div className='absolute right-3 flex h-full items-center'>
+                <button
+                  onClick={onClickPhoneValidCheck}
+                  disabled={phoneDisabled}
+                  className={`${phoneValid ? 'bg-pink-300' : 'bg-gray-200'} rounded-md px-3 py-1 text-sm transition-all hover:bg-pink-500 hover:text-white`}
+                >
+                  중복 확인
+                </button>
+              </div>
+            </div>
+            {phoneValid ? (
+              <div className='flex w-[350px] font-semibold text-blue-500'>
+                {phoneValidCheck ? '사용 가능한 번호입니다.' : '올바른 번호입니다.'}
+              </div>
+            ) : (
+              <div className={`${onVisible.phone} ${errorMsgStyle}`}>하이픈을 제외한 숫자를 입력해주세요.</div>
             )}
             <div className='flex justify-center'>
               <button
@@ -187,7 +318,6 @@ export default function SignUpPage() {
                 <Link href='/login'>로그인</Link>
               </button>
             </div>
-            {/* <div>소셜 회원가입</div> */}
           </form>
         </section>
       </div>
