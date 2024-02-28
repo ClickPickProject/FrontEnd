@@ -9,25 +9,26 @@ import InputWithValidation from '@/components/InputWithValidation';
 export default function SignUpPage() {
   const [userData, setUserData] = useState({
     id: '',
-    pw: '',
+    password: '',
     confirmPw: '',
     name: '',
     nickname: '',
     phone: '',
   });
   const [inputStatus, setInputStatus] = useState({
-    id: { valid: false, disabled: true },
-    pw: { valid: false },
+    id: { valid: false, disabled: true, duplicateCheck: false },
+    password: { valid: false },
     confirmPw: { valid: false },
     name: { valid: false },
-    nickname: { valid: false, disabled: true },
-    phone: { valid: false, disabled: true },
+    nickname: { valid: false, disabled: true, duplicateCheck: false },
+    phone: { valid: false, disabled: true, duplicateCheck: false },
   });
 
   // 각 입력 필드의 유효성 검사 정규식
   const validationRegex = {
     id: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    pw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+    password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+    confirmPw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
     name: /^[가-힣]{2,5}$/,
     nickname: /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/,
     phone: /^010(\d{3,4})(\d{4})$/,
@@ -37,14 +38,11 @@ export default function SignUpPage() {
   const handleInputChange = (e, field) => {
     const { value } = e.target;
     setUserData({ ...userData, [field]: value });
-    if (field !== 'confirmPw') {
-      // confirmPw는 정규식 검사를 수행하지 않음
-      const isValid = validationRegex[field].test(value);
-      setInputStatus({
-        ...inputStatus,
-        [field]: { valid: isValid, disabled: !isValid },
-      });
-    }
+    const isValid = validationRegex[field].test(value);
+    setInputStatus({
+      ...inputStatus,
+      [field]: { valid: isValid, disabled: !isValid },
+    });
   };
 
   // 중복 확인 함수
@@ -53,11 +51,12 @@ export default function SignUpPage() {
     const disabled = inputStatus[field].disabled;
     if (disabled) return;
     try {
-      const res = await axios.get(`/api/check/${field}/${fieldValue}`);
+      // const res = await axios.get(`http://localhost:3001/memo`);
+      const res = await axios.get(`/api/check/${field === 'id' ? 'userid' : field}/${fieldValue}`);
       if (res.status === 200) {
         setInputStatus({
           ...inputStatus,
-          [field]: { ...inputStatus[field], valid: true },
+          [field]: { ...inputStatus[field], duplicateCheck: true },
         });
       }
     } catch (err) {
@@ -67,7 +66,13 @@ export default function SignUpPage() {
 
   // 모든 입력 필드가 유효한지 확인하는 함수
   const isFormValid = () => {
-    return Object.values(inputStatus).every((field) => field.valid);
+    const allowedProperties = ['id', 'nickname', 'phone'];
+    return (
+      Object.values(inputStatus).every((field) => field.valid) &&
+      Object.keys(inputStatus)
+        .filter((key) => allowedProperties.includes(key))
+        .every((key) => inputStatus[key].duplicateCheck)
+    );
   };
 
   // 회원가입 처리 함수
@@ -78,7 +83,8 @@ export default function SignUpPage() {
     try {
       const res = await axios.post(
         `/api/signup/user`,
-        { id, password: pw, name, nickname, phone },
+        // `http://localhost:3001/memo`,
+        { id, password, name, nickname, phone },
         { withCredentials: true },
       );
       if (res.status === 200) {
@@ -91,11 +97,11 @@ export default function SignUpPage() {
     }
   };
 
-  const { id, pw, confirmPw, nickname, name, phone } = userData;
+  const { id, password, confirmPw, nickname, name, phone } = userData;
   const router = useRouter();
   const userDataFields = {
     id,
-    pw,
+    password,
     confirmPw,
     name,
     nickname,
@@ -130,6 +136,8 @@ export default function SignUpPage() {
               disabled={inputStatus.id.disabled}
               errorMsg='이메일 주소가 올바르지 않습니다.'
               correctMsg='올바른 이메일 주소입니다.'
+              ValidationCheckMsg='사용할 수 있는 이메일입니다.'
+              duplicateCheck={inputStatus.id.duplicateCheck}
               onVisible={onVisible.id}
             />
 
@@ -138,13 +146,13 @@ export default function SignUpPage() {
               label='비밀번호'
               icon={<PasswordIcon size={20} />}
               type='password'
-              id='pw'
-              value={pw}
-              onChange={(e) => handleInputChange(e, 'pw')}
-              valid={inputStatus.pw.valid}
+              id='password'
+              value={password}
+              onChange={(e) => handleInputChange(e, 'password')}
+              valid={inputStatus.password.valid}
               errorMsg='영문과 숫자를 포함하여 6자 이상 입력해주세요'
-              correctMsg='사용할 수 있는 비밀번호입니다.'
-              onVisible={onVisible.pw}
+              correctMsg='올바른 비밀번호입니다.'
+              onVisible={onVisible.password}
             />
 
             {/* 비밀번호 확인 입력 필드 */}
@@ -155,7 +163,7 @@ export default function SignUpPage() {
               id='confirmPw'
               value={confirmPw}
               onChange={(e) => handleInputChange(e, 'confirmPw')}
-              valid={pw === confirmPw}
+              valid={password === confirmPw}
               errorMsg='비밀번호가 서로 일치하지 않습니다.'
               correctMsg='비밀번호가 서로 일치합니다.'
               onVisible={onVisible.confirmPw}
@@ -169,7 +177,6 @@ export default function SignUpPage() {
               id='name'
               value={name}
               onChange={(e) => handleInputChange(e, 'name')}
-              onClickValidCheck={() => handleDuplicateCheck('name')}
               valid={inputStatus.name.valid}
               disabled={inputStatus.name.disabled}
               errorMsg='이름이 올바르지 않습니다.'
@@ -189,7 +196,9 @@ export default function SignUpPage() {
               valid={inputStatus.nickname.valid}
               disabled={inputStatus.nickname.disabled}
               errorMsg='2~16자 사이의 영어, 숫자, 한글로 입력해주세요'
-              correctMsg='사용 가능한 닉네임입니다.'
+              correctMsg='올바른 닉네임 형식입니다.'
+              ValidationCheckMsg='사용할 수 있는 닉네임입니다.'
+              duplicateCheck={inputStatus.nickname.duplicateCheck}
               onVisible={onVisible.nickname}
             />
 
@@ -204,8 +213,10 @@ export default function SignUpPage() {
               onClickValidCheck={() => handleDuplicateCheck('phone')}
               valid={inputStatus.phone.valid}
               disabled={inputStatus.phone.disabled}
-              errorMsg='하이픈을 제외한 숫자를 입력해주세요.'
-              correctMsg='사용 가능한 번호입니다.'
+              errorMsg="'-' 없이 입력해주세요"
+              correctMsg='올바른 번호입니다.'
+              ValidationCheckMsg='사용할 수 있는 번호입니다.'
+              duplicateCheck={inputStatus.phone.duplicateCheck}
               onVisible={onVisible.phone}
             />
 

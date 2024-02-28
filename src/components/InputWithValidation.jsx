@@ -11,7 +11,9 @@ export default function InputWithValidation({
   disabled,
   errorMsg,
   correctMsg,
+  ValidationCheckMsg,
   onVisible,
+  duplicateCheck,
 }) {
   const defaultInputStyle = 'h-[45px] rounded-lg pl-7 outline-none';
   const correctMsgStyle = 'flex w-[350px] text-sm text-blue-600';
@@ -45,7 +47,7 @@ export default function InputWithValidation({
         </div>
       </div>
       {valid ? (
-        <div className={`${onVisible} ${correctMsgStyle}`}>{correctMsg}</div>
+        <div className={`${onVisible} ${correctMsgStyle}`}>{duplicateCheck ? ValidationCheckMsg : correctMsg}</div>
       ) : (
         <div className={`${onVisible} ${errorMsgStyle}`}>{errorMsg}</div>
       )}
