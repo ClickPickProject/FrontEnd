@@ -4,6 +4,7 @@ import BestLikePost from '@/components/Community/BestPost';
 import PostList from '@/components/Community/PostList';
 import { motion } from 'framer-motion';
 import { PencilIcon } from '@/components/UI/Icons';
+import Link from 'next/link';
 export default function CommunityPage() {
   return (
     <>
@@ -28,15 +29,18 @@ export default function CommunityPage() {
           <div className='mb-10 border border-pink-200' />
           <div className='mb-10 flex gap-4'>
             <div className='ml-4 text-2xl font-bold'>전체</div>
-            <select className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none'>
+            <select className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300'>
               <option value=''>카테고리 선택</option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
             </select>
-            <div className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white'>
+            <Link
+              href='/content/community/write'
+              className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+            >
               <PencilIcon color='white' size={18} />글 작성
-            </div>
+            </Link>
           </div>
           <PostList />
           <PostList />

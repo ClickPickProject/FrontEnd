@@ -10,7 +10,11 @@
     "mock": "json-server --watch ./src/json/member.json --port 3001"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.1.0",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
     "axios": "^1.6.7",
+    "ckeditor5": "^41.1.0",
+    "ckeditor5-custom-build": "./src/ckeditor5",
     "framer-motion": "^11.0.6",
     "json-server": "^1.0.0-alpha.23",
     "next": "14.1.0",

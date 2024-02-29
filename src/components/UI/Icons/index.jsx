@@ -15,3 +15,5 @@ export { default as MailIcon } from './MailIcon';
 export { default as PasswordIcon } from './PasswordIcon';
 export { default as NickIcon } from './NickIcon';
 export { default as PencilIcon } from './PencilIcon';
+export { default as PhoneIcon } from './PhoneIcon';
+export { default as UserNameIcon } from './UserNameIcon';
