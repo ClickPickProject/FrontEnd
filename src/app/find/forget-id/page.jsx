@@ -7,31 +7,40 @@ import { useState } from 'react';
 
 export default function ForgetIdPage() {
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
-  const validationRegex = {
-    name: /^[가-힣]{2,5}$/,
-    phone: /^010(\d{3,4})(\d{4})$/,
-  };
+  const [viewName, setViewName] = useState('');
+  const [foundId, setFoundId] = useState('');
+  const [isValid, setIsValid] = useState(false);
   const [findIdInfo, setFindIdInfo] = useState({
     name: '',
     phone: '',
   });
-  const [viewName, setViewName] = useState('');
-  const [foundId, setFoundId] = useState('');
+
+  const validationRegex = {
+    name: /^[가-힣]{2,5}$/,
+    phone: /^010(\d{3,4})(\d{4})$/,
+  };
+
+  const validationRegexCheck =
+    !validationRegex.name.test(findIdInfo.name) || !validationRegex.phone.test(findIdInfo.phone);
+
   const onChangefindIdInfo = (e, field) => {
     const { value } = e.target;
-    console.log(findIdInfo);
     setFindIdInfo({ ...findIdInfo, [field]: value });
   };
 
   const handleIdFindSubmit = async (e) => {
     e.preventDefault();
     const { name, phone } = findIdInfo;
+    if (validationRegexCheck) {
+      setIsValid(false);
+      return;
+    }
     try {
       const res = await axios.post('http://localhost:3001/member', { name, phone });
       setFindIdInfo({ name: '', phone: '' });
       setViewName(name);
       setFoundId(res.data.id);
-      console.log(res);
+      setIsValid(true);
       if (res.status === 200) {
         setViewName(findIdInfo.name);
         setFoundId(res.data.id);
@@ -82,16 +91,32 @@ export default function ForgetIdPage() {
             <div className='flex justify-center'>
               <button
                 type='submit'
-                className='flex h-[45px] w-[350px]  items-center justify-center rounded-lg bg-pink-400 text-xl font-semibold text-white transition-all hover:bg-pink-500 hover:text-white'
+                disabled={validationRegexCheck}
+                className={`${validationRegexCheck ? 'opacity-50' : 'opacity-100 hover:bg-pink-500 hover:text-white'} h-[45px] w-[350px] items-center justify-center rounded-lg bg-pink-400 text-xl font-semibold text-white transition-all`}
               >
                 확인
               </button>
             </div>
             <div className='flex text-gray-600 '>
-              <div className={`pl-2 font-semibold text-black`}>
-                <Link href='/signup' className=''>
-                  {foundId && <p>{`${viewName}님의 아이디는 ${foundId} 입니다`}</p>}
+              비밀번호를 잊으셨나요?
+              <div className='pl-2 font-semibold text-black'>
+                <Link href='/find/forget-pw' className=''>
+                  비밀번호 찾기
                 </Link>
+              </div>
+            </div>
+            <div className='flex text-gray-600 '>
+              <div className={`pl-2 font-semibold text-black`}>
+                {isValid ? (
+                  <p>
+                    <span className='text-pink-500'>{viewName}</span>님의 아이디는
+                    <span className='text-pink-500'> {foundId} </span>입니다.
+                  </p>
+                ) : (
+                  <p className={`text-sm text-red-500 ${isValid ? 'visible' : 'invisible'}`}>
+                    이름 또는 번호를 찾을 수 없습니다.
+                  </p>
+                )}
               </div>
             </div>
           </form>
