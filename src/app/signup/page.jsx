@@ -12,9 +12,7 @@ export default function SignUpPage() {
     password: '',
     confirmPw: '',
     name: '',
-    name: '',
     nickname: '',
-    phone: '',
     phone: '',
   });
   const [inputStatus, setInputStatus] = useState({
