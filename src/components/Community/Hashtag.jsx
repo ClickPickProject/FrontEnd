@@ -27,8 +27,8 @@ export default function Hashtag() {
   return (
     <div className=''>
       <h2>태그</h2>
-      <div className='flex w-full flex-col rounded-lg border p-2'>
-        <div className='flex gap-2'>
+      <div className='flex flex-col rounded-lg border p-2'>
+        <div className='flex flex-wrap gap-2 '>
           {tag.map((tag, idx) => (
             <span key={idx} className='relative flex gap-1 rounded-md bg-pink-200 px-2'>
               {tag}
@@ -39,7 +39,7 @@ export default function Hashtag() {
           ))}
         </div>
         <input
-          className='w-full py-2 outline-none transition-all'
+          className='py-2 outline-none transition-all'
           placeholder='태그를 입력하세요 (선택)'
           value={inputTag}
           onChange={onChangeTag}
