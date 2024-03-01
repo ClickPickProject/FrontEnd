@@ -12,7 +12,9 @@ export default function SignUpPage() {
     password: '',
     confirmPw: '',
     name: '',
+    name: '',
     nickname: '',
+    phone: '',
     phone: '',
   });
   const [inputStatus, setInputStatus] = useState({
@@ -89,6 +91,7 @@ export default function SignUpPage() {
       );
       if (res.status === 200) {
         alert('회원가입이 완료되었습니다.');
+        alert('회원가입이 완료되었습니다.');
         router.push('/');
       }
     } catch (err) {
@@ -117,6 +120,9 @@ export default function SignUpPage() {
       <div className='h-[100dvh] bg-[#fdf4f5]'>
         <section className='absolute left-1/2 top-1/2 flex h-[780px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-pink-200  shadow-[1px_1px_200px_1px]  shadow-pink-200'>
           <figure className='mx-auto p-6'>
+            <Link href='/'>
+              <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
+            </Link>
             <Link href='/'>
               <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
             </Link>
