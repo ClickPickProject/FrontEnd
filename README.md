@@ -9,8 +9,8 @@
 # 💡 개요
 
 > 맛집, 명소 등 본인이 경험한 장소를 공유하는 플랫폼
->
-> ![](https://github.com/Elbyss/Algorithm/assets/144521987/586ce7df-ea16-43ab-90dd-1c7833a8117b)
+
+![](https://github.com/Elbyss/Algorithm/assets/144521987/586ce7df-ea16-43ab-90dd-1c7833a8117b)
 
 # 🛠️ 기술 스택
 
