@@ -26,12 +26,17 @@ export default function CustomEditor() {
     upload: async () => {
       try {
         const file = await loader.file;
-        const body = new FormData();
-        body.append('files', file);
+        const formData = new FormData();
+        formData.append('images', file);
 
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/${process.env.NEXT_PUBLIC_UPLOAD_ENDPOINT}`,
-          body,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
         );
         const data = await res.data;
         console.log(data);
