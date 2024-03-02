@@ -10,12 +10,11 @@ export default function Hashtag() {
   };
 
   const onKeyupTag = (e) => {
+    const whiteList = inputTag.replace(/[^a-zA-Z가-힣0-9]/g, '');
     const { value } = e.target;
-    if (value.length === 0) return;
+    if (!whiteList || value.trim().length === 0) return;
     if (e.code === 'Enter') {
-      if (value.trim().length === 0) return;
-      const whiteList = inputTag.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣0-9]/g, '');
-      setTag((prevTags) => [...new Set([...prevTags, whiteList])]);
+      setTag((prevTags) => [...new Set([...prevTags, `#${whiteList}`])]);
       setInputTag('');
     }
   };
