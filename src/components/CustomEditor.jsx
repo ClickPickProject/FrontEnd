@@ -3,22 +3,7 @@ import axios from 'axios';
 import Editor from 'ckeditor5-custom-build';
 
 const editorConfiguration = {
-  toolbar: [
-    // 'heading',
-    '|',
-    'bold',
-    'italic',
-    'link',
-    'bulletedList',
-    'numberedList',
-    '|',
-    'FontColor',
-    'imageUpload',
-    'blockQuote',
-    'mediaEmbed',
-    'undo',
-    'redo',
-  ],
+  toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload', 'blockQuote', 'mediaEmbed'],
 };
 
 export default function CustomEditor() {
@@ -61,6 +46,7 @@ export default function CustomEditor() {
       editor={Editor}
       config={{
         ...editorConfiguration,
+        removePlugins: ['heading', 'bulletedList', 'numberedList', 'List'],
         extraPlugins: [uploadPlugin],
       }}
       // data={props.initialData}
