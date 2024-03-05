@@ -1,33 +1,76 @@
+'use client';
 import StatusView from './BestPost/StatusView';
 import WriterView from './BestPost/WriterView';
 import { IoMdHeartEmpty } from 'react-icons/io';
 import { FaRegCommentDots } from 'react-icons/fa6';
+import { useEffect, useId, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'next/navigation';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
+import HashtagView from './HashtagView';
 
 export default function PostDetail() {
+  const params = useParams();
+  dayjs.locale('ko');
+  const now = dayjs();
+  const formattedDate = now.format('YY-MM-DD dddd HH:mm:ss');
+
+  const [userPost, setUserPost] = useState({
+    nickname: '',
+    title: '',
+    content: '',
+    date: '',
+    likeCount: 0,
+    viewCount: 0,
+    position: '',
+    photoDate: '',
+    hashTags: [''],
+  });
+  useEffect(() => {
+    const postListFetch = async () => {
+      try {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts/${params.id}`);
+        if (res.status === 200) {
+          setUserPost({
+            nickname: res.data.userId,
+            title: res.data.title,
+            content: res.data.content,
+            date: now.format('YY-MM-DD dddd HH:mm:ss'),
+            likeCount: 0,
+            viewCount: 0,
+            hashTags: res.data.hashtag,
+          });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    postListFetch();
+  }, [params, now]);
+
   return (
     <>
       <div className='w-full'>
         <div className='my-8 flex flex-col gap-4'>
-          <h2 className='text-2xl font-semibold'>오늘 별마당 도서관에서 이벤트 하나봐요</h2>
+          <h2 className='text-2xl font-semibold'>{userPost.title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>
-            <WriterView />
-            <StatusView />
+            <WriterView writer={userPost.nickname} date={userPost.date} />
+            <StatusView viewCount={userPost.viewCount} likeCount={userPost.likeCount} />
           </div>
         </div>
         {/* 내용 */}
         <div className='p-4'>
-          모든 국민은 자기의 행위가 아닌 친족의 행위로 인하여 불이익한 처우를 받지 아니한다. <br />
-          정부는 예산에 변경을 가할 필요가 있을 때에는 추가경정예산안을 편성하여 국회에 제출할 수 있다. <br />
-          법률이 헌법에 위반되는 여부가 재판의 전제가 된 경우에는 법원은 헌법재판소에 제청하여 그 심판에 의하여
-          재판한다.
-          <br /> 지방자치단체는 주민의 복리에 관한 사무를 처리하고 재산을 관리하며, 법령의 범위안에서 자치에 관한 규정을
-          제정할 수 있다.
-          <br /> 이 헌법공포 당시의 국회의원의 임기는 제1항에 의한 국회의 최초의 집회일 전일까지로 한다.
+          <div dangerouslySetInnerHTML={{ __html: userPost.content }} />
+        </div>
+        {/* 해쉬태그 */}
+        <div className='mb-4'>
+          <HashtagView tags={userPost.hashTags} />
         </div>
         <div className='flex items-center gap-1'>
           <IoMdHeartEmpty size={18} color='red' />
-          좋아요 2
+          좋아요 {userPost.likeCount}
           <FaRegCommentDots size={18} />
           댓글 2
         </div>
@@ -36,7 +79,7 @@ export default function PostDetail() {
         <div className=''>
           <ul>
             <li className='flex flex-col gap-1'>
-              <WriterView />
+              <WriterView writer={userPost.nickname} />
               <div>그렇군요...</div>
               <div className='text-sm font-semibold opacity-50'>답글</div>
               <div className='border' />
