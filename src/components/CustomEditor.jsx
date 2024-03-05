@@ -1,12 +1,15 @@
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import axios from 'axios';
 import Editor from 'ckeditor5-custom-build';
+import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
+import { editorContentState } from '@/atoms/editorContentState';
 
 const editorConfiguration = {
-  toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload', 'blockQuote', 'mediaEmbed'],
+  toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload'],
 };
 
 export default function CustomEditor() {
+  const setContent = useSetRecoilState(editorContentState);
   const uploadAdapter = (loader) => ({
     upload: async () => {
       try {
@@ -24,7 +27,6 @@ export default function CustomEditor() {
           },
         );
         const data = await res.data;
-        console.log(data);
         return {
           default: `${process.env.NEXT_PUBLIC_API_URL}/${data.filename}`,
         };
@@ -41,19 +43,20 @@ export default function CustomEditor() {
     };
   }
 
+  const onChangeContent = (_, editor) => {
+    const data = editor.getData();
+    setContent(data);
+  };
+
   return (
     <CKEditor
       editor={Editor}
       config={{
         ...editorConfiguration,
-        removePlugins: ['heading', 'bulletedList', 'numberedList', 'List'],
+        removePlugins: ['heading', 'bulletedList', 'numberedList', 'List', 'mediaEmbed', 'blockQuote'],
         extraPlugins: [uploadPlugin],
       }}
-      // data={props.initialData}
-      onChange={(e, editor) => {
-        const data = editor.getData();
-        console.log({ e, editor, data });
-      }}
+      onChange={onChangeContent}
     />
   );
 }
