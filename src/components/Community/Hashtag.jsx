@@ -1,21 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CrossIcon } from '../UI/Icons';
+import { useRecoilState } from 'recoil';
+import { editorTagState } from '@/atoms/editorContentState';
 
 export default function Hashtag() {
   const [inputTag, setInputTag] = useState('');
-  const [tag, setTag] = useState([]);
+  const [tag, setTag] = useRecoilState(editorTagState);
+
+  useEffect(() => {
+    setTag([]);
+  }, [setTag]);
 
   const onChangeTag = (e) => {
     setInputTag(e.target.value);
   };
 
   const onKeyupTag = (e) => {
+    const whiteList = inputTag.replace(/[^a-zA-Z가-힣0-9]/g, '');
     const { value } = e.target;
-    if (value.length === 0) return;
     if (e.code === 'Enter') {
-      if (value.trim().length === 0) return;
-      const whiteList = inputTag.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣0-9]/g, '');
-      setTag((prevTags) => [...new Set([...prevTags, whiteList])]);
+      if (!whiteList || value.trim().length === 0) {
+        setInputTag('');
+        return;
+      }
+      setTag((prevTags) => [...new Set([...prevTags, `#${whiteList}`])]);
       setInputTag('');
     }
   };
