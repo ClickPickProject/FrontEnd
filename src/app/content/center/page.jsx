@@ -1,5 +1,3 @@
-import SideNavbar from '@/components/Community/SideNavbar';
-
 export default function CenterPage() {
-  return <SideNavbar />;
+  return <>소통센터</>;
 }

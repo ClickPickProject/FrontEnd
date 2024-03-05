@@ -1,5 +1,4 @@
 'use client';
-import SideNavbar from '@/components/Community/SideNavbar';
 import BestLikePost from '@/components/Community/BestPost';
 import PostList from '@/components/Community/PostList';
 import { motion } from 'framer-motion';
@@ -8,7 +7,6 @@ import Link from 'next/link';
 export default function CommunityPage() {
   return (
     <>
-      <SideNavbar />
       <section className='flex flex-col'>
         <motion.nav
           className='menu'
@@ -42,16 +40,6 @@ export default function CommunityPage() {
               <PencilIcon color='white' size={18} />글 작성
             </Link>
           </div>
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
           <PostList />
         </motion.nav>
       </section>

@@ -1,5 +1,3 @@
-import SideNavbar from '@/components/Community/SideNavbar';
-
 export default function PlacePage() {
-  return <SideNavbar />;
+  return <>지도</>;
 }
