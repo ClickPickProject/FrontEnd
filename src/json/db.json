@@ -5,7 +5,7 @@
       "title": "title",
       "content": "content",
       "position": "",
-      "hashtag": "",
+      "hashtag": [],
       "id": "0"
     }
   ],
@@ -15,7 +15,7 @@
       "title": "forth",
       "content": "내용변경하세요오옹",
       "position": "",
-      "hashtag": "",
+      "hashtag": [],
       "id": "1"
     },
     {
@@ -24,7 +24,7 @@
       "title": "forth",
       "content": "fourth duck station standard strange or broke replied suppose save tightly cause one done egg track summer easily iron usually slowly human leather factory",
       "position": "",
-      "hashtag": ""
+      "hashtag": []
     },
     {
       "id": "3",
@@ -32,7 +32,7 @@
       "title": "ill",
       "content": "brush appearance buried path means nose led combination hide care however fairly excellent kill crop rising bottle settle mind running likely entirely region quickly",
       "position": "",
-      "hashtag": ""
+      "hashtag": []
     },
     {
       "id": "4",
@@ -40,7 +40,7 @@
       "title": "fifth",
       "content": "together correct tonight stay congress for dark struggle member nothing dry noun pull might beautiful say perfect avoid her settlers individual recent harder forward",
       "position": "",
-      "hashtag": ""
+      "hashtag": []
     },
     {
       "id": "5",
@@ -48,15 +48,7 @@
       "title": "plenty",
       "content": "spent pot rubbed invented fish chart cake lead east voyage plural population poem since plane serious separate acres pilot opportunity willing occur environment obtain",
       "position": "",
-      "hashtag": ""
-    },
-    {
-      "id": "6",
-      "userId": "ekekudhu@kaga.sstest",
-      "title": "bus",
-      "content": "saved mountain build dozen sent bread fellow dance chest solution rush particular exercise what easy toy is orbit label liquid source oxygen eager slight",
-      "position": "",
-      "hashtag": ""
+      "hashtag": []
     }
   ]
 }
