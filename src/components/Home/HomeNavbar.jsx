@@ -10,13 +10,7 @@ export default function HomeNavbar() {
         <nav className='flex h-full items-center'>
           <figure className='ml-4'>
             <Link alt='logo' href='/'>
-              <Image
-                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/clickpick_logo.png`}
-                alt='#'
-                width={168}
-                height={76}
-                priority
-              />
+              <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
             </Link>
           </figure>
           <ul className='flex w-full justify-between gap-4 text-[20px] font-bold'>
