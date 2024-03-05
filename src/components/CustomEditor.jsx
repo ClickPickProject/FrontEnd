@@ -1,14 +1,26 @@
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import Editor from 'ckeditor5-custom-build';
+'use client';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import Editor from 'ckeditor5-custom-build';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import { editorContentState } from '@/atoms/editorContentState';
+import { useEffect, useRef, useState } from 'react';
 
 const editorConfiguration = {
   toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload'],
 };
 
 export default function CustomEditor() {
+  const editorRef = useRef();
+  const [editorLoaded, setEditorLoaded] = useState(false);
+  const { CKEditor, Editor } = editorRef.current || {};
+  useEffect(() => {
+    editorRef.current = {
+      CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
+      Editor: require('ckeditor5-custom-build'),
+    };
+    setEditorLoaded(true);
+  }, []);
   const setContent = useSetRecoilState(editorContentState);
   const uploadAdapter = (loader) => ({
     upload: async () => {
@@ -44,11 +56,14 @@ export default function CustomEditor() {
   }
 
   const onChangeContent = (_, editor) => {
-    const data = editor.getData();
-    setContent(data);
+    if (editor) {
+      // editor가 null인지 확인
+      const data = editor.getData();
+      setContent(data);
+    }
   };
 
-  return (
+  return editorLoaded ? (
     <CKEditor
       editor={Editor}
       config={{
@@ -57,6 +72,9 @@ export default function CustomEditor() {
         extraPlugins: [uploadPlugin],
       }}
       onChange={onChangeContent}
+      useRef={editorRef}
     />
+  ) : (
+    <div>로딩중입니다...</div>
   );
 }
