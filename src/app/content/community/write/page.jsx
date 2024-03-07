@@ -13,7 +13,6 @@ export default function WritePage() {
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
-
   useEffect(() => {
     setTitle('');
   }, [setTitle]);
