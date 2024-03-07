@@ -13,6 +13,7 @@ export default function WritePage() {
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
+
   useEffect(() => {
     setTitle('');
   }, [setTitle]);
@@ -22,15 +23,22 @@ export default function WritePage() {
       alert('제목 또는 내용이 존재하지 않습니다.');
       return;
     }
-    const body = {
-      userId: 'testAccount',
-      title,
-      content,
-      position: '',
-      hashtag: tag,
-    };
     try {
+      const body = {
+        userId: 'please@naver.com',
+        title,
+        content,
+        position: '',
+        hashtag: tag,
+        date: new Date(),
+        viewCount: 0,
+        likeCount: 0,
+      };
       const res = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts`, body);
+      // const res = await axios.post(`/api/post`, body, {
+      //   withCredentials: true,
+      // });
+      console.log(res);
       if (res.status === 200 || 201) {
         alert('게시글이 등록되었습니다.');
         router.back();
