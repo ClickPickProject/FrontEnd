@@ -28,7 +28,7 @@ export default function PostDetail() {
         </div>
         {/* 해쉬태그 */}
         <div className='mb-4'>
-          <HashtagView tags={userPost.hashtag} />
+          <HashtagView tags={userPost.hashtags} />
         </div>
         <div className='flex items-center gap-1'>
           <IoMdHeartEmpty size={18} color='red' />

@@ -1,6 +1,7 @@
 import { Open_Sans } from 'next/font/google';
 import './globals.css';
 import RecoilRootWrapper from '@/components/RecoilRootWrapper';
+import { MSWComponent } from '@/mocks/MSWComponent';
 
 const open = Open_Sans({ subsets: ['latin'] });
 
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body className={open.className}>
-        <RecoilRootWrapper>{children}</RecoilRootWrapper>
+        <MSWComponent>
+          <RecoilRootWrapper>{children}</RecoilRootWrapper>
+        </MSWComponent>
       </body>
     </html>
   );

@@ -24,16 +24,17 @@ export default function WritePage() {
     }
     try {
       const body = {
-        userId: 'please@naver.com',
+        // userId: 'please@naver.com',
         title,
         content,
         position: '',
         hashtag: tag,
-        date: new Date(),
-        viewCount: 0,
-        likeCount: 0,
+        // date: new Date(),
+        // viewCount: 0,
+        // likeCount: 0,
       };
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts`, body);
+      // const res = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts`, body);
+      const res = await axios.post(`/api/member/post`);
       // const res = await axios.post(`/api/post`, body, {
       //   withCredentials: true,
       // });
