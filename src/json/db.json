@@ -10,6 +10,12 @@
       "date": "2024-03-01T18:42:43.406Z"
     }
   ],
+  "login": [
+    {
+      "userId": "test@naver.com",
+      "userPw": "123456789"
+    }
+  ],
   "posts": [
     {
       "userId": "dewep@izibo.pmtest",
