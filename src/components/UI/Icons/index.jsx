@@ -18,3 +18,4 @@ export { default as PencilIcon } from './PencilIcon';
 export { default as PhoneIcon } from './PhoneIcon';
 export { default as UserNameIcon } from './UserNameIcon';
 export { default as CrossIcon } from './CrossIcon';
+export { default as CheckIcon } from './CheckIcon';
