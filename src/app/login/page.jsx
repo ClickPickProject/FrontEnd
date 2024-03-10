@@ -12,39 +12,35 @@ export default function LoginPage() {
   let [pw, setPw] = useState(''); // setState로 password초기값 공백
   const [button, setButton] = useState(true);
   const router = useRouter();
-  const goToMain = () => {
-    router.push('/');
-    // router.push('/');최상단 root로 가는길
+  const inputChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
   };
+
+  const checkValue = (id, pw) => {
+    setIsValid(!(id.includes('@') && pw.length > 7));
+  };
+
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
-  function changeButton() {
-    id.includes('@') && pw.length >= 5 ? setButton(false) : setButton(true);
-  } // changeButton()함수는 id에 @가 포함되어있고 pw의 글자가 5글자 이상일때 조건식이 맞을때 false, 맞지 않을때 true로 견경해줌.
   //API요청하는코드
 
-  const isFormValid = () => {
-    const allowedProperties = ['id', 'nickname', 'phone'];
-    return (
-      Object.values(inputStatus).every((field) => field.valid) &&
-      Object.keys(inputStatus)
-        .filter((key) => allowedProperties.includes(key))
-        .every((key) => inputStatus[key].duplicateCheck)
-    );
-  };
-
   // post방식으로 axios 사용하기.
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (0) return;
+  const handleRegister = async (id, pw) => {
+    if (!checkValue) return;
     try {
-      const res = await axios.post(`http://localhost:3001/login`, { userId, userPw }, { withCredentials: true });
+      const res = await axios.post(`http://localhost:3001/login`, { id: userId, pw: userPw });
       if (res.status === 200) {
         alert('로그인이 완료되었습니다.');
         router.push('/');
+        console.log('handleRegister 제발~');
       }
     } catch (err) {
       console.log(err);
-      alert('로그인 불가');
+      alert('아이디 또는 비밀번호를 확인해주세요');
+      console.log('handleRegister 되길~~');
     }
   };
 
@@ -71,7 +67,6 @@ export default function LoginPage() {
                 onChange={(e) => {
                   setId(e.target.value);
                 }}
-                onKeyUp={changeButton}
               />
               {/* //input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 id로 담김 */}
             </div>
@@ -89,7 +84,6 @@ export default function LoginPage() {
                 onChange={(e) => {
                   setPw(e.target.value);
                 }}
-                onKeyUp={changeButton}
               />
               {/* input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 pw로 담김 */}
             </div>
