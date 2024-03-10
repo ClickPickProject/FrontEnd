@@ -1,32 +1,36 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MailIcon, NickIcon, PasswordIcon, PhoneIcon, UserNameIcon } from '@/components/UI/Icons';
+import { CheckIcon, MailIcon, NickIcon, PasswordIcon, PhoneIcon, UserNameIcon } from '@/components/UI/Icons';
 import InputWithValidation from '@/components/InputWithValidation';
 export default function SignUpPage() {
+  const [inputDisabled, setInputDisabled] = useState(false);
   const [userData, setUserData] = useState({
     id: '',
     password: '',
+    validCode: '',
     confirmPw: '',
     name: '',
     nickname: '',
     phone: '',
   });
   const [inputStatus, setInputStatus] = useState({
-    id: { valid: false, disabled: true, duplicateCheck: false },
+    id: { valid: false, buttonDisabled: true, duplicateCheck: false },
+    validCode: { valid: false, buttonDisabled: true, duplicateCheck: false },
     password: { valid: false },
     confirmPw: { valid: false },
     name: { valid: false },
-    nickname: { valid: false, disabled: true, duplicateCheck: false },
-    phone: { valid: false, disabled: true, duplicateCheck: false },
+    nickname: { valid: false, buttonDisabled: true, duplicateCheck: false },
+    phone: { valid: false, buttonDisabled: true, duplicateCheck: false },
   });
 
   // 각 입력 필드의 유효성 검사 정규식
   const validationRegex = {
     id: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    validCode: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
     password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
     confirmPw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
     name: /^[가-힣]{2,5}$/,
@@ -41,18 +45,45 @@ export default function SignUpPage() {
     const isValid = validationRegex[field].test(value);
     setInputStatus({
       ...inputStatus,
-      [field]: { valid: isValid, disabled: !isValid },
+      [field]: { valid: isValid, buttonDisabled: !isValid },
     });
   };
 
   // 중복 확인 함수
   const handleDuplicateCheck = async (field) => {
     const fieldValue = userData[field];
-    const disabled = inputStatus[field].disabled;
-    if (disabled) return;
+    const buttonDisabled = inputStatus[field].buttonDisabled;
+    if (field === 'validCode') {
+      try {
+        const res = await axios.post(
+          '/api/verification',
+          { id: userData.id, code: validCode },
+          { withCredentials: true },
+        );
+        if (res.status === 200) {
+          setInputStatus({
+            ...inputStatus,
+            id: { ...inputStatus.id, buttonDisabled: true },
+            validCode: { valid: true, buttonDisabled: true, duplicateCheck: true },
+          });
+          setInputDisabled(true);
+          return;
+        }
+      } catch (err) {
+        // setInputDisabled(false);
+        setInputStatus({ ...inputStatus, validCode: { valid: false, duplicateCheck: false } });
+      }
+    }
+    if (buttonDisabled) return;
     try {
-      // const res = await axios.get(`http://localhost:3001/memo`);
       const res = await axios.get(`/api/check/${field === 'id' ? 'userid' : field}/${fieldValue}`);
+      if (field === 'id') {
+        setInputDisabled(false);
+        setUserData({
+          ...userData,
+          validCode: '',
+        });
+      }
       if (res.status === 200) {
         setInputStatus({
           ...inputStatus,
@@ -66,7 +97,7 @@ export default function SignUpPage() {
 
   // 모든 입력 필드가 유효한지 확인하는 함수
   const isFormValid = () => {
-    const allowedProperties = ['id', 'nickname', 'phone'];
+    const allowedProperties = ['id', 'validCode', 'nickname', 'phone'];
     return (
       Object.values(inputStatus).every((field) => field.valid) &&
       Object.keys(inputStatus)
@@ -83,7 +114,6 @@ export default function SignUpPage() {
     try {
       const res = await axios.post(
         `/api/signup/user`,
-        // `http://localhost:3001/memo`,
         { id, password, name, nickname, phone },
         { withCredentials: true },
       );
@@ -97,11 +127,12 @@ export default function SignUpPage() {
     }
   };
 
-  const { id, password, confirmPw, nickname, name, phone } = userData;
+  const { id, password, validCode, confirmPw, nickname, name, phone } = userData;
   const router = useRouter();
   const userDataFields = {
     id,
     password,
+    validCode,
     confirmPw,
     name,
     nickname,
@@ -115,7 +146,7 @@ export default function SignUpPage() {
   return (
     <>
       <div className='h-[100dvh] bg-[#fdf4f5]'>
-        <section className='absolute left-1/2 top-1/2 flex h-[780px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-pink-200  shadow-[1px_1px_200px_1px]  shadow-pink-200'>
+        <section className='absolute left-1/2 top-1/2 flex h-[850px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-pink-200  shadow-[1px_1px_200px_1px]  shadow-pink-200'>
           <figure className='mx-auto p-6'>
             <Link href='/'>
               <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
@@ -133,13 +164,33 @@ export default function SignUpPage() {
               onChange={(e) => handleInputChange(e, 'id')}
               onClickValidCheck={() => handleDuplicateCheck('id')}
               valid={inputStatus.id.valid}
-              disabled={inputStatus.id.disabled}
+              buttonDisabled={inputStatus.id.buttonDisabled}
+              inputDisabled={inputDisabled}
+              correctMsg='올바른 이메일 형식입니다.'
               errorMsg='이메일 주소가 올바르지 않습니다.'
-              correctMsg='올바른 이메일 주소입니다.'
-              ValidationCheckMsg='사용할 수 있는 이메일입니다.'
+              ValidationCheckMsg='해당 주소로 인증번호를 발송했습니다.'
               duplicateCheck={inputStatus.id.duplicateCheck}
               onVisible={onVisible.id}
             />
+
+            {inputStatus.id.duplicateCheck && (
+              <InputWithValidation
+                label='인증번호'
+                icon={<CheckIcon size={20} />}
+                type='text'
+                value={validCode}
+                onChange={(e) => handleInputChange(e, 'validCode')}
+                onClickValidCheck={() => handleDuplicateCheck('validCode')}
+                valid={inputStatus.validCode.valid}
+                buttonDisabled={inputStatus.validCode.buttonDisabled}
+                inputDisabled={inputDisabled}
+                errorMsg={'인증번호가 올바르지 않습니다.'}
+                correctMsg={'올바른 인증번호 형식입니다.'}
+                ValidationCheckMsg='인증번호가 확인되었습니다.'
+                duplicateCheck={inputStatus.validCode.duplicateCheck}
+                onVisible={onVisible.validCode}
+              />
+            )}
 
             {/* 비밀번호 입력 필드 */}
             <InputWithValidation
@@ -178,7 +229,7 @@ export default function SignUpPage() {
               value={name}
               onChange={(e) => handleInputChange(e, 'name')}
               valid={inputStatus.name.valid}
-              disabled={inputStatus.name.disabled}
+              buttonDisabled={inputStatus.name.buttonDisabled}
               errorMsg='이름이 올바르지 않습니다.'
               correctMsg='올바른 이름입니다.'
               onVisible={onVisible.name}
@@ -194,7 +245,7 @@ export default function SignUpPage() {
               onChange={(e) => handleInputChange(e, 'nickname')}
               onClickValidCheck={() => handleDuplicateCheck('nickname')}
               valid={inputStatus.nickname.valid}
-              disabled={inputStatus.nickname.disabled}
+              buttonDisabled={inputStatus.nickname.buttonDisabled}
               errorMsg='2~16자 사이의 영어, 숫자, 한글로 입력해주세요'
               correctMsg='올바른 닉네임 형식입니다.'
               ValidationCheckMsg='사용할 수 있는 닉네임입니다.'
@@ -212,7 +263,7 @@ export default function SignUpPage() {
               onChange={(e) => handleInputChange(e, 'phone')}
               onClickValidCheck={() => handleDuplicateCheck('phone')}
               valid={inputStatus.phone.valid}
-              disabled={inputStatus.phone.disabled}
+              buttonDisabled={inputStatus.phone.buttonDisabled}
               errorMsg="'-' 없이 입력해주세요"
               correctMsg='올바른 번호입니다.'
               ValidationCheckMsg='사용할 수 있는 번호입니다.'
