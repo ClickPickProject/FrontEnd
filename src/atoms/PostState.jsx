@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { atom, selector, selectorFamily } from 'recoil';
+import { atom, selectorFamily } from 'recoil';
 
 export const postState = atom({
   key: 'postState',
@@ -22,7 +22,6 @@ export const postSelectorFamily = selectorFamily({
     try {
       // const res = await axios.get(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts/${params}`);
       const res = await axios.get(`/api/post/${params}`);
-      console.log(res);
       if (res.status === 200) {
         return res.data;
       }

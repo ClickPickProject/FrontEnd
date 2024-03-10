@@ -17,7 +17,7 @@ export default function DropDownMenu() {
   };
   return (
     <>
-      <div className='relative z-10 inline-block text-left'>
+      <div className='relative z-10 inline-block w-1/2 text-left'>
         <div>
           {/* 드롭다운 토글 버튼 */}
           <button
@@ -47,21 +47,21 @@ export default function DropDownMenu() {
               {/* 메뉴 아이템 */}
               <button
                 className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:outline-none'
-                onClick={() => handleMenuItemClick('옵션1')}
+                onClick={() => handleMenuItemClick('자유')}
               >
-                옵션1
+                자유
               </button>
               <button
                 className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:outline-none'
-                onClick={() => handleMenuItemClick('옵션2')}
+                onClick={() => handleMenuItemClick('음식')}
               >
-                옵션2
+                음식
               </button>
               <button
                 className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:outline-none'
-                onClick={() => handleMenuItemClick('옵션3')}
+                onClick={() => handleMenuItemClick('여행지')}
               >
-                옵션3
+                여행지
               </button>
             </div>
           </div>
