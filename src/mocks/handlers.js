@@ -1,15 +1,54 @@
 import { HttpResponse, http } from 'msw';
 
 export const handlers = [
+  // 이메일 중복 확인
+  http.get('/api/check/userid/:userId', ({ params }) => {
+    const { userId } = params;
+    return HttpResponse.json({
+      user_id: userId,
+    });
+  }),
+
+  // 이메일 인증 확인
+  http.post('/api/verification', () => {
+    return HttpResponse.json('인증에 성공하였습니다.');
+    // return HttpResponse.json(null, {
+    //   status: 400,
+    // });
+  }),
+
+  // 닉네임 중복 체크
+  http.get('/api/check/nickname/:nickname', ({ params }) => {
+    const { nickname } = params;
+    return HttpResponse.json({
+      nickname,
+    });
+  }),
+
+  // 전화번호 중복 체크
+  http.get('/api/check/phone/:phone', ({ params }) => {
+    const { phone } = params;
+    return HttpResponse.json({
+      phone,
+    });
+  }),
+
+  // 회원가입
+  http.post('/api/signup/user', () => {
+    return HttpResponse.json('회원으로 가입되었습니다.');
+  }),
+
   // 게시글 작성
   http.post('/api/member/post', () => {
     return HttpResponse.json({
       title: '제목',
       content: '내용',
-      position: '',
+      position: '서울 송파구 가락로 2 (석촌동)',
       hashtag: ['#아아', '#이이'],
+      postCategory: '자유',
     });
   }),
+
   // 게시글 리스트 조회
   http.get('/api/post/list', () => {
     return HttpResponse.json({
