@@ -38,6 +38,11 @@ export const handlers = [
     return HttpResponse.json('회원으로 가입되었습니다.');
   }),
 
+  // 로그인
+  http.post('/api/login', () => {
+    return HttpResponse.json('로그인 되었습니다.');
+  }),
+
   // 게시글 작성
   http.post('/api/member/post', () => {
     return HttpResponse.json({
