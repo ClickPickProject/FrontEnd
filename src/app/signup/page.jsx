@@ -30,7 +30,7 @@ export default function SignUpPage() {
   // 각 입력 필드의 유효성 검사 정규식
   const validationRegex = {
     id: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    validCode: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/,
+    validCode: /^.{4,10}$$/,
     password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
     confirmPw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
     name: /^[가-힣]{2,5}$/,
@@ -49,8 +49,15 @@ export default function SignUpPage() {
     });
   };
 
+  const [isDebouncing, setIsDebouncing] = useState(false);
+
   // 중복 확인 함수
   const handleDuplicateCheck = async (field) => {
+    if (isDebouncing) return;
+    setIsDebouncing(true);
+    setTimeout(() => {
+      setIsDebouncing(false);
+    }, 3000);
     const fieldValue = userData[field];
     const buttonDisabled = inputStatus[field].buttonDisabled;
     if (field === 'validCode') {
