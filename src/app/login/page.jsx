@@ -8,10 +8,16 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 export default function LoginPage() {
-  let [id, setId] = useState(''); // setState로 id 초기값 공백
-  let [pw, setPw] = useState(''); // setState로 password초기값 공백
   const [button, setButton] = useState(true);
   const router = useRouter();
+
+  //로그인 email과 비밀번호
+  const [inputValue, setInputValue] = useState({
+    email: '',
+    password: '',
+  });
+
+  //button에서 change된 값 저장.
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -20,29 +26,19 @@ export default function LoginPage() {
     });
   };
 
-  const checkValue = (id, pw) => {
-    setIsValid(!(id.includes('@') && pw.length > 7));
+  //로그인 토큰 받아 실행하기.
+  const doLogin = async () => {
+    try {
+      const { data } = await axios.post('http://localhost:3001/login', inputValue);
+      setCookie('accessToken', data['accessToken'], { path: '/' });
+      console.log('로그인 되었습니다.');
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
-  //API요청하는코드
-
-  // post방식으로 axios 사용하기.
-  const handleRegister = async (id, pw) => {
-    if (!checkValue) return;
-    try {
-      const res = await axios.post(`http://localhost:3001/login`, { id: userId, pw: userPw });
-      if (res.status === 200) {
-        alert('로그인이 완료되었습니다.');
-        router.push('/');
-        console.log('handleRegister 제발~');
-      }
-    } catch (err) {
-      console.log(err);
-      alert('아이디 또는 비밀번호를 확인해주세요');
-      console.log('handleRegister 되길~~');
-    }
-  };
 
   return (
     <>
@@ -52,7 +48,7 @@ export default function LoginPage() {
             <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
           </figure>
           <h2 className='mx-auto mb-8 text-2xl font-bold'>클릭픽 로그인</h2>
-          <form onSubmit={handleRegister} className='flex w-full flex-col items-center justify-center gap-8'>
+          <form onSubmit={doLogin} className='flex w-full flex-col items-center justify-center gap-8'>
             <div className='relative flex w-[350px] flex-col'>
               <MdOutlineMailOutline
                 size={20}
@@ -65,7 +61,7 @@ export default function LoginPage() {
                 required
                 className={`${defaultInputStyle}`}
                 onChange={(e) => {
-                  setId(e.target.value);
+                  inputChangeHandler;
                 }}
               />
               {/* //input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 id로 담김 */}
@@ -82,7 +78,7 @@ export default function LoginPage() {
                 required
                 className={`${defaultInputStyle}`}
                 onChange={(e) => {
-                  setPw(e.target.value);
+                  inputChangeHandler;
                 }}
               />
               {/* input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 pw로 담김 */}
@@ -94,6 +90,7 @@ export default function LoginPage() {
                 disabled={button}
                 onClick={(e) => {
                   e.stopPropagation();
+                  doLogin;
                 }}
                 // button의 값이 true일경우 disabled가 작동 false일 경우 disabled가 작동하지 않도록 disabled={button}을 작성
                 // 아직 백앤드와 통신하지 않기 때문에 realId와 realPw라는 변수에 임의로 값을 지정해주고 만약 일치할 경우에만 main페이지로 이동하도록 goToMain함수를 실행
