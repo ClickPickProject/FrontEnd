@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
-export default function Postcode({ scriptUrl }) {
+export default function Postcode({ scriptUrl, onChange }) {
   const [address, setAddress] = useState('');
   const open = useDaumPostcodePopup(scriptUrl);
   const handleComplete = (data) => {
@@ -18,10 +18,11 @@ export default function Postcode({ scriptUrl }) {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    console.log(fullAddress);
     setAddress(fullAddress);
+    onChange(fullAddress);
   };
   const handleClick = (e) => {
+    e.preventDefault();
     open({
       onComplete: handleComplete,
       autoClose: true,
@@ -40,8 +41,6 @@ export default function Postcode({ scriptUrl }) {
         //outlineColor: "", //테두리
       },
     });
-
-    e.preventDefault();
   };
 
   return (

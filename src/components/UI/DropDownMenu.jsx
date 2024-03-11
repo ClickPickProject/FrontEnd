@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-export default function DropDownMenu() {
+export default function DropDownMenu({ onChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState('');
 
@@ -11,9 +11,9 @@ export default function DropDownMenu() {
   };
 
   const handleMenuItemClick = (item) => {
-    console.log(`${item} 선택됨`);
     setOptions(item);
     setIsOpen(false);
+    onChange(item);
   };
   return (
     <>
