@@ -4,7 +4,12 @@ import PostList from '@/components/Community/PostList';
 import { motion } from 'framer-motion';
 import { PencilIcon } from '@/components/UI/Icons';
 import Link from 'next/link';
+import { useState } from 'react';
 export default function CommunityPage() {
+  const [category, setCategory] = useState('');
+  const onChangeOptions = (e) => {
+    setCategory(e.target.value);
+  };
   return (
     <>
       <section className='flex flex-col'>
@@ -20,18 +25,20 @@ export default function CommunityPage() {
           </div>
           <div className='mb-10 flex w-full justify-center gap-10'>
             <BestLikePost />
-            <BestLikePost />
-            <BestLikePost />
           </div>
           {/* 경계선 */}
           <div className='mb-10 border border-pink-200' />
           <div className='mb-10 flex gap-4'>
-            <div className='ml-4 text-2xl font-bold'>전체</div>
-            <select className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300'>
-              <option value=''>카테고리 선택</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
+            <div className='text-2xl font-bold'>게시글</div>
+            <select
+              value={category}
+              onChange={onChangeOptions}
+              className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300'
+            >
+              <option value='모두'>모두</option>
+              <option value='자유'>자유</option>
+              <option value='음식'>음식</option>
+              <option value='여행지'>여행지</option>
             </select>
             <Link
               href='/content/community/write'
@@ -40,7 +47,7 @@ export default function CommunityPage() {
               <PencilIcon color='white' size={18} />글 작성
             </Link>
           </div>
-          <PostList />
+          <PostList category={category} />
         </motion.nav>
       </section>
     </>
