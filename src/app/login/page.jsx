@@ -12,7 +12,7 @@ export default function LoginPage() {
 
   //로그인 값
   const [inputValue, setInputValue] = useState({
-    id: '',
+    email: '',
     password: '',
   });
 
@@ -24,27 +24,38 @@ export default function LoginPage() {
       [name]: value,
     });
   };
-
   //로그인 토큰 받아 실행하기.
   const doLogin = async (e) => {
-    e.preventDefault();
-    const accessToken = sessionStorage.getItem('accessToken');
-    if (!accessToken)
-      try {
-        const res = await axios.post('http://localhost:3001/login', inputValue);
-
-        console.log('로그인 되었습니다.');
-
-        if (res.status === 200) {
-          alert('로그인이 완료되었습니다.');
-          router.push('/');
-          console.log(res.status);
-        }
-      } catch (error) {
-        console.log(error);
-        console.log('잘못된 아이디 또는 비밀번호');
+    try {
+      const res = await axios
+        .post('http://localhost:3001/login')
+        .then(res => { 
+          const data = {email: "hello"};
+        })
+        
+          .catch(error => {
+          console.log(error);
+        })
+        .finally()=>{console.log(res.state)}
       }
-  };
+      }
+
+
+      // .then((respon) => {
+      //   return console.log(respon);
+      // });
+      // // console.log(res.status);
+      // {
+      //   console.log('로그인');
+      //   if (res.status === 200) {
+      //     console.log('로그인 성공');
+      //   } else console.log('로그인 실패 : 서버 응답오류');
+      // }
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.log('잘못된 아이디 또는 비밀번호');
+  //   }
+  // };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
 
