@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 export default function LoginPage() {
   const [button, setButton] = useState(true);
+  const [cookies, setCookie, removeCookie] = useCookies(['id']); // 쿠키 훅
   const router = useRouter();
 
   //로그인 email과 비밀번호
@@ -30,8 +32,8 @@ export default function LoginPage() {
   const doLogin = async () => {
     try {
       const { data } = await axios.post('http://localhost:3001/login', inputValue);
-      setCookie('accessToken', data['accessToken'], { path: '/' });
       console.log('로그인 되었습니다.');
+      console.log(data);
       router.push('/');
     } catch (error) {
       console.log(error);
@@ -57,7 +59,8 @@ export default function LoginPage() {
               <input
                 placeholder='아이디'
                 type='text'
-                id='id'
+                id='email'
+                name='email'
                 required
                 className={`${defaultInputStyle}`}
                 onChange={(e) => {
@@ -87,11 +90,7 @@ export default function LoginPage() {
             <div className='flex justify-center'>
               <button
                 type='button'
-                disabled={button}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  doLogin;
-                }}
+                onClick={doLogin}
                 // button의 값이 true일경우 disabled가 작동 false일 경우 disabled가 작동하지 않도록 disabled={button}을 작성
                 // 아직 백앤드와 통신하지 않기 때문에 realId와 realPw라는 변수에 임의로 값을 지정해주고 만약 일치할 경우에만 main페이지로 이동하도록 goToMain함수를 실행
                 className='flex h-[50px] w-[350px] items-center

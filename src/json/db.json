@@ -12,8 +12,34 @@
   ],
   "login": [
     {
-      "userId": "test@naver.com",
-      "userPw": "123456789"
+      "email": "test@naver.com",
+      "password": "123456789",
+      "id": "5a38"
+    },
+    {
+      "id": "570d",
+      "email": "",
+      "password": ""
+    },
+    {
+      "id": "4029",
+      "email": "",
+      "password": ""
+    },
+    {
+      "id": "7066",
+      "email": "",
+      "password": ""
+    },
+    {
+      "id": "d211",
+      "email": "",
+      "password": ""
+    },
+    {
+      "id": "7fb9",
+      "email": "",
+      "password": ""
     }
   ],
   "posts": [
@@ -59,7 +85,9 @@
       "title": "테스트",
       "content": "<p>테스트</p>",
       "position": "",
-      "hashtag": ["#테스트"],
+      "hashtag": [
+        "#테스트"
+      ],
       "date": "2024-03-05T18:48:14.174Z"
     },
     {
@@ -77,7 +105,9 @@
       "title": "ㅁㅁ",
       "content": "<p>ㅁㅁㅁ</p>",
       "position": "",
-      "hashtag": ["#아"],
+      "hashtag": [
+        "#아"
+      ],
       "date": "2024-03-05T19:09:10.865Z"
     },
     {
@@ -95,7 +125,10 @@
       "title": "제목 테스트",
       "content": "<p><strong>제목 테스트입니다</strong></p><p><strong>ㅇ</strong></p><p><strong>ㅇ</strong></p><p><strong>ㅇ</strong></p><p><strong>ㅇ</strong></p><p>&nbsp;</p>",
       "position": "",
-      "hashtag": ["#태그테스트", "#아아아아"],
+      "hashtag": [
+        "#태그테스트",
+        "#아아아아"
+      ],
       "date": "2024-03-05T19:38:24.911Z"
     },
     {
