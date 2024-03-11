@@ -48,15 +48,12 @@ export default function InputWithation({
 
   // 인증번호 확인 버튼 클릭 시 타이머 시작
   const handleVerificationClick = () => {
-    onClickValidCheck(); // 중복 확인 함수 호출
-
-    // 타이머 시작
+    onClickValidCheck(); // 중복 확인 함수
     const interval = setInterval(() => {
       setRemainingTime((prevTime) => prevTime - 1);
     }, 1000);
     setRemainingTime(300);
     setTimer(interval);
-    console.log(inputDisabled);
   };
 
   // 타이머가 종료되면 초기화
@@ -65,6 +62,14 @@ export default function InputWithation({
       initializeTimer();
     }
   }, [remainingTime]);
+
+  useEffect(() => {
+    if (inputDisabled && remainingTime > 0) {
+      clearInterval(timer); // 타이머 종료
+      setRemainingTime(0); // 남은 시간 초기화
+    }
+  }, [inputDisabled]);
+
   return (
     <>
       <div className='relative flex w-[350px] flex-col'>
