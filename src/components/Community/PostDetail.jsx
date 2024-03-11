@@ -9,6 +9,7 @@ import { useRecoilValue } from 'recoil';
 import { postSelectorFamily } from '@/atoms/PostState';
 import { useState } from 'react';
 import axios from 'axios';
+import Comment from './Comment';
 export default function PostDetail() {
   const params = useParams();
   const userPost = useRecoilValue(postSelectorFamily(params.id));
@@ -27,7 +28,6 @@ export default function PostDetail() {
         setLikeCount(likeCount + 1);
       }
       setIsLiked(!isLiked);
-      console.log(isLiked);
     } catch (err) {
       console.error('좋아요 오류', err);
     }
@@ -63,17 +63,8 @@ export default function PostDetail() {
           댓글 {userPost.CommentCount}
         </div>
         {/* 경계선 */}
+        <Comment />
         <div className='mb-8 mt-4 border-b-2' />
-        <div className=''>
-          <ul>
-            <li className='flex flex-col gap-1'>
-              <WriterView writer={userPost.nickname} />
-              <div>그렇군요...</div>
-              <div className='text-sm font-semibold opacity-50'>답글</div>
-              <div className='border' />
-            </li>
-          </ul>
-        </div>
       </div>
     </>
   );

@@ -24,7 +24,6 @@ export default function PostList({ category }) {
         setLoading(true);
         const res = await axios.get(`/api/post/list?page=${currentPage}`);
         if (res.status === 200) {
-          console.log(res.data);
           setPosts(res.data.content);
           setTotalPages(res.data.totalPages);
           setTotalItems(res.data.totalElements);
@@ -55,8 +54,6 @@ export default function PostList({ category }) {
         return true;
     }
   });
-
-  console.log(filteredPosts);
   return (
     <div className=''>
       {loading ? (

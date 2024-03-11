@@ -12,7 +12,6 @@ export default function BestPost() {
     const bestPostUpdate = async () => {
       const res = await axios.get('/api/post/list/best');
       if (res.status === 200) {
-        console.log(res.data);
         setBestPosts(res.data);
       }
     };
