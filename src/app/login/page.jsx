@@ -6,22 +6,19 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
 
 export default function LoginPage() {
-  const [button, setButton] = useState(true);
-  const [cookies, setCookie, removeCookie] = useCookies(['id']); // 쿠키 훅
   const router = useRouter();
 
-  //로그인 email과 비밀번호
+  //로그인 값
   const [inputValue, setInputValue] = useState({
-    email: '',
+    id: '',
     password: '',
   });
 
   //button에서 change된 값 저장.
-  const inputChangeHandler = (e) => {
-    const { name, value } = e.target;
+  const inputChangeHandler = (e, name) => {
+    const { value } = e.target;
     setInputValue({
       ...inputValue,
       [name]: value,
@@ -29,15 +26,24 @@ export default function LoginPage() {
   };
 
   //로그인 토큰 받아 실행하기.
-  const doLogin = async () => {
-    try {
-      const { data } = await axios.post('http://localhost:3001/login', inputValue);
-      console.log('로그인 되었습니다.');
-      console.log(data);
-      router.push('/');
-    } catch (error) {
-      console.log(error);
-    }
+  const doLogin = async (e) => {
+    e.preventDefault();
+    const accessToken = sessionStorage.getItem('accessToken');
+    if (!accessToken)
+      try {
+        const res = await axios.post('http://localhost:3001/login', inputValue);
+
+        console.log('로그인 되었습니다.');
+
+        if (res.status === 200) {
+          alert('로그인이 완료되었습니다.');
+          router.push('/');
+          console.log(res.status);
+        }
+      } catch (error) {
+        console.log(error);
+        console.log('잘못된 아이디 또는 비밀번호');
+      }
   };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
@@ -63,9 +69,10 @@ export default function LoginPage() {
                 name='email'
                 required
                 className={`${defaultInputStyle}`}
-                onChange={(e) => {
-                  inputChangeHandler;
-                }}
+                // onChange={(e) => {
+                //   inputChangeHandler;
+                // }}
+                onChange={(e) => inputChangeHandler(e, 'email')}
               />
               {/* //input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 id로 담김 */}
             </div>
@@ -80,9 +87,7 @@ export default function LoginPage() {
                 id='password'
                 required
                 className={`${defaultInputStyle}`}
-                onChange={(e) => {
-                  inputChangeHandler;
-                }}
+                onChange={(e) => inputChangeHandler(e, 'password')}
               />
               {/* input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 pw로 담김 */}
             </div>
