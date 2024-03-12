@@ -15,17 +15,3 @@ export const postState = atom({
     hashTags: [''],
   },
 });
-
-export const postSelectorFamily = selectorFamily({
-  key: 'postSelectorFamily',
-  get: (params) => async () => {
-    try {
-      const res = await axios.get(`/api/post/${params}`);
-      if (res.status === 200) {
-        return res.data;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  },
-});
