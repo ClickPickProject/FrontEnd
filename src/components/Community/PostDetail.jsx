@@ -1,15 +1,37 @@
 'use client';
 import StatusView from './BestPost/StatusView';
 import WriterView from './BestPost/WriterView';
-import { IoMdHeartEmpty } from 'react-icons/io';
+import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import { useParams } from 'next/navigation';
 import HashtagView from './HashtagView';
 import { useRecoilValue } from 'recoil';
 import { postSelectorFamily } from '@/atoms/PostState';
+import { useState } from 'react';
+import axios from 'axios';
+import Comment from './Comment';
 export default function PostDetail() {
   const params = useParams();
   const userPost = useRecoilValue(postSelectorFamily(params.id));
+  const [likeCount, setLikeCount] = useState(userPost.likeCount);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const onClickLike = async () => {
+    try {
+      if (isLiked) {
+        // unlike
+        await axios.get(`/api/member/likedpost/${params.id}`);
+        setLikeCount(likeCount - 1);
+      } else {
+        // like
+        await axios.get(`/api/member/likedpost/${params.id}`);
+        setLikeCount(likeCount + 1);
+      }
+      setIsLiked(!isLiked);
+    } catch (err) {
+      console.error('좋아요 오류', err);
+    }
+  };
 
   return (
     <>
@@ -31,23 +53,18 @@ export default function PostDetail() {
           <HashtagView tags={userPost.hashtags} />
         </div>
         <div className='flex items-center gap-1'>
-          <IoMdHeartEmpty size={18} color='red' />
-          좋아요 {userPost.likeCount}
+          {isLiked ? (
+            <IoMdHeart size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
+          ) : (
+            <IoMdHeartEmpty size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
+          )}
+          좋아요 {likeCount}
           <FaRegCommentDots size={18} />
-          댓글 2
+          댓글 {userPost.CommentCount}
         </div>
         {/* 경계선 */}
+        <Comment />
         <div className='mb-8 mt-4 border-b-2' />
-        <div className=''>
-          <ul>
-            <li className='flex flex-col gap-1'>
-              <WriterView writer={userPost.nickname} />
-              <div>그렇군요...</div>
-              <div className='text-sm font-semibold opacity-50'>답글</div>
-              <div className='border' />
-            </li>
-          </ul>
-        </div>
       </div>
     </>
   );

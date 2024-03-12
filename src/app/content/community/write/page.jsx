@@ -6,11 +6,13 @@ import Postcode from '@/components/Postcode';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 export default function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
+  const [category, setCategory] = useState('');
+  const [position, setPostion] = useState('');
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
@@ -27,16 +29,14 @@ export default function WritePage() {
       const body = {
         title,
         content,
-        position: '',
-        hashtag: tag,
-        postCategory: 'postCategory',
+        position,
+        hashtags: tag,
+        postCategory: category,
       };
-      // const res = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts`, body);
       const res = await axios.post(`/api/member/post`);
       // const res = await axios.post(`/api/post`, body, {
       //   withCredentials: true,
       // });
-      console.log(res);
       if (res.status === 200 || 201) {
         alert('게시글이 등록되었습니다.');
         router.back();
@@ -45,14 +45,22 @@ export default function WritePage() {
       console.log(err);
     }
   };
+
+  const handleMenuClick = (item) => {
+    setCategory(item);
+  };
+
+  const handlePostCodeClick = (address) => {
+    setPostion(address);
+  };
   return (
     <>
       <div>
         <div className='p-4 text-2xl font-bold'>글 작성</div>
         <div className='flex flex-col gap-4'>
           <div className='flex justify-around gap-3'>
-            <DropDownMenu />
-            <Postcode />
+            <DropDownMenu onChange={handleMenuClick} />
+            <Postcode onChange={handlePostCodeClick} />
           </div>
 
           <input

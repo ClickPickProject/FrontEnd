@@ -24,38 +24,32 @@ export default function LoginPage() {
       [name]: value,
     });
   };
+
   //로그인 토큰 받아 실행하기.
   const doLogin = async (e) => {
     try {
-      const res = await axios
-        .post('http://localhost:3001/login')
-        .then(res => { 
-          const data = {email: "hello"};
-        })
-        
-          .catch(error => {
-          console.log(error);
-        })
-        .finally()=>{console.log(res.state)}
-      }
-      }
+      const res = await axios.post('/api/login', inputValue, { withCrendentials: true });
 
+      console.log(res.status);
+      console.log(res.data.message);
+      // dispatchEvent(setUser(user));
 
-      // .then((respon) => {
-      //   return console.log(respon);
-      // });
-      // // console.log(res.status);
-      // {
-      //   console.log('로그인');
-      //   if (res.status === 200) {
-      //     console.log('로그인 성공');
-      //   } else console.log('로그인 실패 : 서버 응답오류');
-      // }
-  //   } catch (error) {
-  //     console.log(error);
-  //     console.log('잘못된 아이디 또는 비밀번호');
-  //   }
-  // };
+      //유저
+      const user = res.find((u) => u._email === email && u.password === password);
+
+      if (!user) {
+        console.log('Who?');
+        return;
+      }
+      if (res.status === 200) {
+        console.log('1로그인 성공');
+        router.push('/');
+      } else console.log('2로그인 실패 : 서버 응답오류');
+    } catch (error) {
+      console.log(error);
+      console.log('3잘못된 아이디 또는 비밀번호');
+    }
+  };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
 

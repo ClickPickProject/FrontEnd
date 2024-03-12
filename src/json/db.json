@@ -12,46 +12,24 @@
   ],
   "login": [
     {
-      "id": "9810"
+      "id": "6b1f",
+      "email": "test@naver.com",
+      "password": "123456789"
     },
     {
-      "id": "aa67"
+      "id": "0968",
+      "email": "test@naver.com",
+      "password": "123456789"
     },
     {
-      "id": "5fd9"
+      "id": "dcdc",
+      "email": "test@naver.com",
+      "password": "123456789"
     },
     {
-      "id": "2d45"
-    },
-    {
-      "id": "8795"
-    },
-    {
-      "id": "18e5"
-    },
-    {
-      "id": "0303"
-    },
-    {
-      "id": "2bcf"
-    },
-    {
-      "id": "15ba"
-    },
-    {
-      "id": "abc4"
-    },
-    {
-      "id": "227c"
-    },
-    {
-      "id": "6120"
-    },
-    {
-      "id": "64c7"
-    },
-    {
-      "id": "95df"
+      "id": "19df",
+      "email": "test@naver.com",
+      "password": "123456789"
     }
   ],
   "posts": [
