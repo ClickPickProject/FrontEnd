@@ -1,9 +1,22 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function HomeNavbar() {
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('token');
+      setToken(storedToken);
+    }
+  }, []);
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent t pb-1 transition-all';
+  const onClickLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  };
   return (
     <>
       <header className='h-[78px] bg-white'>
@@ -22,9 +35,15 @@ export default function HomeNavbar() {
                 <li className={hoverStyle}>커뮤니티</li>
               </Link>
             </div>
-            <Link href='/login' className={`mr-[50px] ${hoverStyle} `}>
-              로그인
-            </Link>
+            {token ? (
+              <button onClick={onClickLogout} className={`mr-[50px] ${hoverStyle} `}>
+                로그아웃
+              </button>
+            ) : (
+              <Link href='/login' className={`mr-[50px] ${hoverStyle} `}>
+                로그인
+              </Link>
+            )}
           </ul>
         </nav>
       </header>

@@ -4,12 +4,13 @@ import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
 import Postcode from '@/components/Postcode';
 import DropDownMenu from '@/components/UI/DropDownMenu';
+import AuthContext from '@/components/context/AuthContext';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-export default function WritePage() {
+function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const [category, setCategory] = useState('');
   const [position, setPostion] = useState('');
@@ -21,8 +22,8 @@ export default function WritePage() {
   }, [setTitle]);
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
-    if (title.length === 0 || content.length === 0) {
-      alert('제목 또는 내용이 존재하지 않습니다.');
+    if (title.length === 0 || content.length === 0 || category === '') {
+      alert('제목 또는 내용, 카테고리가 존재하지 않습니다.');
       return;
     }
     try {
@@ -33,10 +34,13 @@ export default function WritePage() {
         hashtags: tag,
         postCategory: category,
       };
-      const res = await axios.post(`/api/member/post`);
-      // const res = await axios.post(`/api/post`, body, {
-      //   withCredentials: true,
-      // });
+      const token = localStorage.getItem('token');
+      const res = await axios.post(`/api/member/post`, body, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200 || 201) {
         alert('게시글이 등록되었습니다.');
         router.back();
@@ -85,3 +89,5 @@ export default function WritePage() {
     </>
   );
 }
+
+export default AuthContext(WritePage, { adminRequired: false });
