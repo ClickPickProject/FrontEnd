@@ -14,15 +14,22 @@ export default function PostList({ category }) {
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(category);
+
   useEffect(() => {
-    setSelectedCategory(category); // category prop이 변경될 때마다 selectedCategory 업데이트
+    setSelectedCategory(category);
+    setCurrentPage(1);
+    setTotalItems(filteredPosts);
   }, [category]);
 
   useEffect(() => {
     const postListFetch = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/api/post/list?page=${currentPage}`);
+        const res = await axios.get(`/api/post/list`, {
+          params: {
+            page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
+          },
+        });
         if (res.status === 200) {
           setPosts(res.data.content);
           setTotalPages(res.data.totalPages);
@@ -36,7 +43,7 @@ export default function PostList({ category }) {
       }
     };
     postListFetch();
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, postsPerPage, selectedCategory]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -54,6 +61,7 @@ export default function PostList({ category }) {
         return true;
     }
   });
+
   return (
     <div className=''>
       {loading ? (
@@ -65,7 +73,7 @@ export default function PostList({ category }) {
               <WriterView writer={data.nickname} date={data.createAt} />
               <div className='flex items-center gap-2 font-semibold'>
                 <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
-                <span className='text-center font-semibold'>[10]</span>
+                <span className='text-center font-semibold'>[{data.commentCount}]</span>
               </div>
               <div className='relative flex'>
                 <div className='w-20 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold'>
@@ -86,7 +94,7 @@ export default function PostList({ category }) {
           activePage={currentPage}
           itemsCountPerPage={postsPerPage}
           totalItemsCount={totalItems}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={10}
           onChange={handlePageChange}
           itemClass='px-3 py-1 rounded-md mr-2 cursor-pointer'
           activeClass='bg-pink-400 text-white'
