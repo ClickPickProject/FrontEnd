@@ -40,7 +40,11 @@ export const handlers = [
 
   // 로그인
   http.post('/api/login', () => {
-    return HttpResponse.json('로그인 되었습니다.');
+    return HttpResponse.json('로그인 되었습니다.', {
+      headers: {
+        Authorization: 'Bearer token123',
+      },
+    });
   }),
 
   // 게시글 작성
