@@ -12,8 +12,14 @@ export default function LoginPage() {
 
   //로그인 값
   const [inputValue, setInputValue] = useState({
-    email: '',
+    id: '',
     password: '',
+  });
+
+  //로그인 체크
+  const [check, setCheck] = useState({
+    user: true,
+    login: true,
   });
 
   //button에서 change된 값 저장.
@@ -25,31 +31,69 @@ export default function LoginPage() {
     });
   };
 
-  //로그인 토큰 받아 실행하기.
   const doLogin = async (e) => {
+    e.preventDefault();
     try {
       const res = await axios.post('/api/login', inputValue, { withCrendentials: true });
-
-      console.log(res.status);
-      console.log(res.data.message);
-      // dispatchEvent(setUser(user));
-
-      //유저
-      const user = res.find((u) => u._email === email && u.password === password);
-
-      if (!user) {
-        console.log('Who?');
-        return;
+      if (res.data.isEmailEqual) {
+        if (res.data.isPasswordEqual) {
+          try {
+            //서버로 토큰을 받은 후 받은 토큰으로 LoginSuccess실행
+          } catch (e) {
+            console.log(e);
+          }
+        } else
+          setCheck({
+            ...check,
+            login: false,
+            user: true,
+          }); // 로그인 실패, 이메일이나 비밀번호 확인
+      } else {
+        console.log('이메일이 존재하지 않습니다!');
+        setCheck({
+          ...check,
+          login: false,
+          user: false,
+        }); // 존재하지 않는 이메일
       }
-      if (res.status === 200) {
-        console.log('1로그인 성공');
-        router.push('/');
-      } else console.log('2로그인 실패 : 서버 응답오류');
-    } catch (error) {
-      console.log(error);
-      console.log('3잘못된 아이디 또는 비밀번호');
+    } catch (err) {
+      console.log(err);
     }
   };
+
+  // //로그인 토큰 받아 실행하기.
+  // const doLogin = async (e) => {
+  //   try {
+  //     const res = await axios.post('/api/login', inputValue, { withCrendentials: true })
+  //     then(res) => {
+  //       alert("성공");
+
+  //     }
+  //     console.log(res);
+
+  //     console.log(res.status);
+  //     console.log(res.data.message);
+
+  //     // console.log(res.data.message);
+  //     // console.log(res.data);
+  //     // dispatchEvent(setUser(user));
+
+  //     //유저
+  //     // const user = inputValue.find((u) => u.id === id && u.password === password);
+
+  //     // if (!user) {
+  //     //   console.log('Who?');
+  //     //   return;
+  //     // }
+  //     if (res.status === 200) {
+  //       console.log('1로그인 성공');
+  //       router.push('/');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     console.log('3잘못된 아이디 또는 비밀번호');
+  //   }
+  // };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
 
@@ -70,14 +114,13 @@ export default function LoginPage() {
               <input
                 placeholder='아이디'
                 type='text'
-                id='email'
-                name='email'
+                id='id'
                 required
                 className={`${defaultInputStyle}`}
                 // onChange={(e) => {
                 //   inputChangeHandler;
                 // }}
-                onChange={(e) => inputChangeHandler(e, 'email')}
+                onChange={(e) => inputChangeHandler(e, 'id')}
               />
               {/* //input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 id로 담김 */}
             </div>
