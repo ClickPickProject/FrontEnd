@@ -30,7 +30,7 @@ export async function POST(request) {
   if (!user) {
     return new Response(
       JSON.stringify({
-        message: '유저 등록이 안돼있음.',
+        message: '유저 등록이 안돼 있음.',
         result: null,
       }),
       {

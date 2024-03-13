@@ -12,24 +12,52 @@
   ],
   "login": [
     {
-      "id": "6b1f",
-      "email": "test@naver.com",
-      "password": "123456789"
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
     },
     {
-      "id": "0968",
-      "email": "test@naver.com",
-      "password": "123456789"
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
     },
     {
-      "id": "dcdc",
-      "email": "test@naver.com",
-      "password": "123456789"
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
     },
     {
-      "id": "19df",
-      "email": "test@naver.com",
-      "password": "123456789"
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
+    },
+    {
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
+    },
+    {
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
+    },
+    {
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
+    },
+    {
+      "id": "chlwjd022@gmail.com",
+      "password": "asd123"
+    },
+    {
+      "id": "test@naver.com",
+      "password": "123456"
+    },
+    {
+      "id": "",
+      "password": ""
+    },
+    {
+      "id": "kiki@naver.com",
+      "password": "123456"
+    },
+    {
+      "id": "kiki@naver.com",
+      "password": "123456"
     }
   ],
   "posts": [
