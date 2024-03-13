@@ -34,83 +34,42 @@ export default function LoginPage() {
   const doLogin = async () => {
     try {
       const { data } = await axios.post('http://localhost:3001/login', inputValue);
+
+      //문제점 : input에 값을 넣으면 post로 db에 값을 넣음 그 db값과 inputValue에 값이 같기 때문에 애매하당
       console.log('로그인 되었습니다.');
       const user = data;
+      console.log(data.id);
+      console.log(inputValue.id);
+      console.log(data.status);
+      if (data.id === inputValue.id) {
+        if (data.password === inputValue.password) {
+          //변경해야함.
+          try {
+            console.log('로그인되었습니다!');
+            router.push('/');
+            //서버로 토큰을 받은 후 받은 토큰으로 LoginSuccess실행
+            //           const tokenResponse = await apiInstance.post('/auth', { email: values.email });
+          } catch (error) {
+            console.log(error);
+          }
+        } else console.log('이메일이나 비밀번호 확인!');
+        setCheck({
+          ...check,
+          login: false,
+          user: true,
+        }); // 로그인 실패, 이메일이나 비밀번호 확인
+      } else {
+        console.log('이메일이 존재하지 않습니다!');
+        setCheck({
+          ...check,
+          login: false,
+          user: false,
+        }); // 존재하지 않는 이메일
+      }
     } catch (error) {
       console.log(error);
     }
   };
-
-  // const doLogin = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await axios.post('http://localhost:3001/login', inputValue, { withCrendentials: true });
-  //     console.log(res);
-  //     var keys = Object.keys(json); //키를 가져옵니다. 이때, keys 는 반복가능한 객체가 됩니다.
-  //     for (var i = 0; i < keys.length; i++) {
-  //       var key = keys[i];
-  //       console.log('key : ' + key + ', value : ' + json[key]);
-  //     }
-  //     if (res.data.isEmailEqual) {
-  //       if (res.data.isPasswordEqual) {
-  //         try {
-  //           //서버로 토큰을 받은 후 받은 토큰으로 LoginSuccess실행
-  //           const tokenResponse = await apiInstance.post('/auth', { email: values.email });
-  //         } catch (e) {
-  //           console.log(e);
-  //         }
-  //       } else
-  //         setCheck({
-  //           ...check,
-  //           login: false,
-  //           user: true,
-  //         }); // 로그인 실패, 이메일이나 비밀번호 확인
-  //     } else {
-  //       console.log('이메일이 존재하지 않습니다!');
-  //       setCheck({
-  //         ...check,
-  //         login: false,
-  //         user: false,
-  //       }); // 존재하지 않는 이메일
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // //로그인 토큰 받아 실행하기.
-  // const doLogin = async (e) => {
-  //   try {
-  //     const res = await axios.post('/api/login', inputValue, { withCrendentials: true })
-  //     then(res) => {
-  //       alert("성공");
-
-  //     }
-  //     console.log(res);
-
-  //     console.log(res.status);
-  //     console.log(res.data.message);
-
-  //     // console.log(res.data.message);
-  //     // console.log(res.data);
-  //     // dispatchEvent(setUser(user));
-
-  //     //유저
-  //     // const user = inputValue.find((u) => u.id === id && u.password === password);
-
-  //     // if (!user) {
-  //     //   console.log('Who?');
-  //     //   return;
-  //     // }
-  //     if (res.status === 200) {
-  //       console.log('1로그인 성공');
-  //       router.push('/');
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     console.log('3잘못된 아이디 또는 비밀번호');
-  //   }
-  // };
 
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
 
