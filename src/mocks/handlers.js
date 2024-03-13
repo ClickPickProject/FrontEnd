@@ -53,7 +53,24 @@ export const handlers = [
       title: '제목',
       content: '내용',
       position: '서울 송파구 가락로 2 (석촌동)',
-      hashtag: ['#아아', '#이이'],
+      hashtags: ['#아아', '#이이'],
+      postCategory: '자유',
+    });
+  }),
+
+  // 게시글 삭제
+  http.delete('/api/member/post/:postId', ({ params }) => {
+    const { postId } = params;
+    return HttpResponse.json(`${postId} 삭제가 완료되었습니다.`);
+  }),
+
+  // 게시글 수정
+  http.post('/api/member/post/:postId', () => {
+    return HttpResponse.json({
+      title: '수정된 제목',
+      content: '수정된 내용',
+      position: '수저된 주소',
+      hashtags: ['#수정된태그'],
       postCategory: '자유',
     });
   }),
@@ -201,7 +218,7 @@ export const handlers = [
       },
       last: false,
       totalPages: 2,
-      totalElements: 13,
+      totalElements: 11,
       first: true,
       size: 10,
       number: 0,
@@ -231,6 +248,25 @@ export const handlers = [
       hashtags: ['#해쉬태그', '#테스트'],
       PostCategory: '자유',
       CommentCount: 3,
+      likePostCount: false,
+      comments: [
+        {
+          commentId: 1,
+          nickname: '야놀자',
+          content: '이게 맞나요',
+          createAt: '2024-03-06T18:55:48.884Z',
+          likeCount: 1,
+          likeCommentCheck: false,
+        },
+        {
+          commentId: 2,
+          nickname: '응맞음',
+          content: '네네',
+          createAt: '2024-03-07T18:55:48.884Z',
+          likeCount: 3,
+          likeCommentCheck: true,
+        },
+      ],
     });
   }),
 
@@ -272,10 +308,20 @@ export const handlers = [
       },
     ]);
   }),
-  // 좋아요(like)
+
+  // 게시글 좋아요(like)
   http.get('/api/member/likedpost/:postId', () => {
     return new HttpResponse(null, {
       status: 200,
+    });
+  }),
+
+  /* Comments */
+  // 댓글 작성
+  http.post('/api/member/comment', () => {
+    return HttpResponse.json({
+      postId: 1,
+      content: '댓글 작성입니다',
     });
   }),
 ];
