@@ -31,7 +31,10 @@ export default function PostList({ category }) {
           },
         });
         if (res.status === 200) {
-          setPosts(res.data.content);
+          let sortedPosts = [...res.data.content].sort((a, b) => {
+            return new Date(b.createAt) - new Date(a.createAt);
+          });
+          setPosts(sortedPosts);
           setTotalPages(res.data.totalPages);
           setTotalItems(res.data.totalElements);
           setPostsPerPage(res.data.size);
@@ -62,8 +65,37 @@ export default function PostList({ category }) {
     }
   });
 
+  const [search, setSearch] = useState('');
+  const onClickSearch = async (e) => {
+    try {
+      const res = await axios.get('/api/post/title', {
+        params: {
+          title: search,
+        },
+      });
+      if (res.status === 200) {
+        console.log(res.data.content);
+        setPosts(res.data.content);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className=''>
+      <div className='relative mb-4'>
+        <input
+          type='text'
+          placeholder='검색어를 입력하세요.'
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className='w-full rounded-md border border-gray-300 px-3 py-2'
+        />
+        <button className='absolute right-0 mr-2 h-full items-center' onClick={onClickSearch}>
+          검색
+        </button>
+      </div>
       {loading ? (
         '로딩중...'
       ) : (
