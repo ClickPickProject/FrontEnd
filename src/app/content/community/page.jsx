@@ -5,8 +5,7 @@ import { motion } from 'framer-motion';
 import { PencilIcon } from '@/components/UI/Icons';
 import Link from 'next/link';
 import { useState } from 'react';
-import AuthContext from '@/components/context/AuthContext';
-function CommunityPage() {
+export default function CommunityPage() {
   const [category, setCategory] = useState('');
   const onChangeOptions = (e) => {
     setCategory(e.target.value);
@@ -55,4 +54,4 @@ function CommunityPage() {
   );
 }
 
-export default AuthContext(CommunityPage, { adminRequired: false });
+// export default AuthContext(CommunityPage, { adminRequired: false });
