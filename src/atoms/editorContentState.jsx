@@ -14,3 +14,8 @@ export const editorTagState = atom({
   key: 'editorTagState',
   default: [],
 });
+
+export const userPostState = atom({
+  key: 'userPostState',
+  default: {},
+});
