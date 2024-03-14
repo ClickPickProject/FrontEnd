@@ -42,7 +42,7 @@ export const handlers = [
   http.post('/api/login', () => {
     return HttpResponse.json('로그인 되었습니다.', {
       headers: {
-        Authorization: 'Bearer token123',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
       },
     });
   }),
@@ -91,7 +91,7 @@ export const handlers = [
           likeCount: 1,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 2,
@@ -102,7 +102,7 @@ export const handlers = [
           likeCount: 2,
           hashtags: ['#해시태그', '#하이'],
           postCategory: '음식',
-          CommentCount: 300,
+          commentCount: 300,
         },
         {
           postId: 3,
@@ -113,7 +113,7 @@ export const handlers = [
           likeCount: 1,
           hashtags: ['#해시태그'],
           postCategory: '여행지',
-          CommentCount: 10,
+          commentCount: 10,
         },
         {
           postId: 4,
@@ -124,7 +124,7 @@ export const handlers = [
           likeCount: 2,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 5,
@@ -135,7 +135,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 6,
@@ -146,7 +146,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 7,
@@ -157,7 +157,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 8,
@@ -168,7 +168,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 9,
@@ -179,7 +179,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 10,
@@ -190,7 +190,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '자유',
-          CommentCount: 30,
+          commentCount: 30,
         },
         {
           postId: 11,
@@ -201,7 +201,7 @@ export const handlers = [
           likeCount: 30,
           hashtags: ['#해시태그'],
           postCategory: '여행지',
-          CommentCount: 30,
+          commentCount: 30,
         },
       ],
       pageable: {
@@ -234,40 +234,47 @@ export const handlers = [
   // 게시글 상세 조회
   http.get('/api/post/:postId', ({ params }) => {
     const { postId } = params;
-    return HttpResponse.json({
-      postId: postId,
-      nickname: 'testAccount',
-      title: 'title',
-      content:
-        '<p><span style="color:#e06c75;">"users"</span><span style="color:#bbbbbb;">: </span><span style="color:#abb2bf;">[</span></p><p><span style="color:#bbbbbb;">{</span></p><p><span style="color:#e06c75;">"userId"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"userId"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"title"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"title"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"content"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"content"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"position"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">""</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"hashtag"</span><span style="color:#bbbbbb;">: </span><span style="color:#abb2bf;">[]</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"id"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"0"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"date"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"2024-03-01T18:42:43.406Z"</span></p><p><span style="color:#bbbbbb;">}</span></p><p><span style="color:#abb2bf;">]</span><span style="color:#bbbbbb;">,</span></p>',
-      date: '2024-03-05T18:55:48.884Z',
-      likeCount: 1,
-      viewCount: 1,
-      position: '',
-      photoDate: '2024-03-05T18:55:48.884Z',
-      hashtags: ['#해쉬태그', '#테스트'],
-      PostCategory: '자유',
-      CommentCount: 3,
-      likePostCount: false,
-      comments: [
-        {
-          commentId: 1,
-          nickname: '야놀자',
-          content: '이게 맞나요',
-          createAt: '2024-03-06T18:55:48.884Z',
-          likeCount: 1,
-          likeCommentCheck: false,
+    return HttpResponse.json(
+      {
+        postId: postId,
+        nickname: 'testAccount',
+        title: 'title',
+        content:
+          '<p><span style="color:#e06c75;">"users"</span><span style="color:#bbbbbb;">: </span><span style="color:#abb2bf;">[</span></p><p><span style="color:#bbbbbb;">{</span></p><p><span style="color:#e06c75;">"userId"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"userId"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"title"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"title"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"content"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"content"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"position"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">""</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"hashtag"</span><span style="color:#bbbbbb;">: </span><span style="color:#abb2bf;">[]</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"id"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"0"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"date"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"2024-03-01T18:42:43.406Z"</span></p><p><span style="color:#bbbbbb;">}</span></p><p><span style="color:#abb2bf;">]</span><span style="color:#bbbbbb;">,</span></p>',
+        date: '2024-03-05T18:55:48.884Z',
+        likeCount: 1,
+        viewCount: 1,
+        position: '',
+        photoDate: '2024-03-05T18:55:48.884Z',
+        hashtags: ['#해쉬태그', '#테스트'],
+        PostCategory: '자유',
+        commentCount: 3,
+        likePostCheck: false,
+        comments: [
+          {
+            commentId: 1,
+            nickname: '야놀자',
+            content: '이게 맞나요',
+            createAt: '2024-03-06T18:55:48.884Z',
+            likeCount: 1,
+            likeCommentCheck: false,
+          },
+          {
+            commentId: 2,
+            nickname: '응맞음',
+            content: '네네',
+            createAt: '2024-03-07T18:55:48.884Z',
+            likeCount: 3,
+            likeCommentCheck: true,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
         },
-        {
-          commentId: 2,
-          nickname: '응맞음',
-          content: '네네',
-          createAt: '2024-03-07T18:55:48.884Z',
-          likeCount: 3,
-          likeCommentCheck: true,
-        },
-      ],
-    });
+      },
+    );
   }),
 
   // 베스트 게시글 리스트 조회
@@ -310,9 +317,12 @@ export const handlers = [
   }),
 
   // 게시글 좋아요(like)
-  http.get('/api/member/likedpost/:postId', () => {
-    return new HttpResponse(null, {
-      status: 200,
+  http.get('/api/member/likedpost/:postId', ({ params }) => {
+    const { postId } = params;
+    return HttpResponse.json(`${postId} 좋아요 클릭`, {
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+      },
     });
   }),
 
@@ -322,6 +332,21 @@ export const handlers = [
     return HttpResponse.json({
       postId: 1,
       content: '댓글 작성입니다',
+    });
+  }),
+
+  // 게시글 제목 검색
+  http.get('/api/post/title', () => {
+    return HttpResponse.json({
+      postId: 1132,
+      nickname: '게시글 제목검색',
+      title: '제목제목검색',
+      createAt: '2024-03-10T18:55:48.884Z',
+      viewCount: 382,
+      likeCount: 300,
+      hashtags: ['#봄'],
+      postCategory: '여행지',
+      commentCount: 1024,
     });
   }),
 ];
