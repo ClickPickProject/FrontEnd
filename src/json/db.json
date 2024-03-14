@@ -180,6 +180,10 @@
     {
       "id": "test@naver.com",
       "password": "41235"
+    },
+    {
+      "id": "123123@naver.com",
+      "password": "1234"
     }
   ],
   "posts": [
