@@ -1,21 +1,22 @@
 'use client';
+import { loginState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 export default function HomeNavbar() {
-  const [token, setToken] = useState(null);
+  const token = useRecoilValue(tokenState);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedToken = localStorage.getItem('token');
-      setToken(storedToken);
-    }
-  }, []);
+    token ? setIsLogin(true) : setIsLogin(false);
+  }, [token]);
+
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent t pb-1 transition-all';
   const onClickLogout = () => {
-    localStorage.removeItem('token');
-    window.location.reload();
+    localStorage.clear();
+    setIsLogin(false);
   };
   return (
     <>
@@ -35,7 +36,7 @@ export default function HomeNavbar() {
                 <li className={hoverStyle}>커뮤니티</li>
               </Link>
             </div>
-            {token ? (
+            {isLogin ? (
               <button onClick={onClickLogout} className={`mr-[50px] ${hoverStyle} `}>
                 로그아웃
               </button>

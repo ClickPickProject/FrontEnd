@@ -1,18 +1,17 @@
 'use client';
+import { tokenState } from '@/atoms/tokenState';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 
 const AuthContext = (WrappedComponent, options = {}) => {
   const { adminRequired = false } = options;
-
   const AuthComponent = (props) => {
     const router = useRouter();
+    const token = useRecoilValue(tokenState);
     useEffect(() => {
       if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token');
-        console.log('hoc', token);
         // const isAdmin = localStorage.getItem('admin') === 'true';
-
         if (!token) {
           console.log('토큰 없음');
           router.push('/login');

@@ -1,5 +1,6 @@
 'use client';
 import { editorContentState, editorTagState, editorTitleState } from '@/atoms/editorContentState';
+import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
 import Postcode from '@/components/Postcode';
@@ -17,6 +18,7 @@ function WritePage() {
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
+  const token = useRecoilValue(tokenState);
   useEffect(() => {
     setTitle('');
   }, [setTitle]);
@@ -34,7 +36,6 @@ function WritePage() {
         hashtags: tag,
         postCategory: category,
       };
-      const token = localStorage.getItem('token');
       const res = await axios.post(`/api/member/post`, body, {
         withCredentials: true,
         headers: {
