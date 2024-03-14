@@ -6,40 +6,36 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function LoginPage() {
   let [id, setId] = useState(''); // setState로 id 초기값 공백
   let [pw, setPw] = useState(''); // setState로 password초기값 공백
-  const [button, setButton] = useState(true);
+  const [token, setToken] = useRecoilState(tokenState);
   const router = useRouter();
   const goToMain = () => {
     router.push('/');
-    // router.push('/');최상단 root로 가는길
   };
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
-  function changeButton() {
-    id.includes('@') && pw.length >= 5 ? setButton(false) : setButton(true);
-  } // changeButton()함수는 id에 @가 포함되어있고 pw의 글자가 5글자 이상일때 조건식이 맞을때 false, 맞지 않을때 true로 견경해줌.
-  //API요청하는코드
 
-  const isFormValid = () => {
-    const allowedProperties = ['id', 'nickname', 'phone'];
-    return (
-      Object.values(inputStatus).every((field) => field.valid) &&
-      Object.keys(inputStatus)
-        .filter((key) => allowedProperties.includes(key))
-        .every((key) => inputStatus[key].duplicateCheck)
-    );
-  };
-
-  // post방식으로 axios 사용하기.
   const handleRegister = async (e) => {
     e.preventDefault();
-    if (0) return;
     try {
-      const res = await axios.post(`http://localhost:3001/login`, { userId, userPw }, { withCredentials: true });
+      const res = await axios.post(
+        `/api/login`,
+        { id: id, password: pw },
+        {
+          withCredentials: true,
+        },
+      );
+
+      const token = res.headers['authorization'];
+      console.log(token);
+
       if (res.status === 200) {
-        alert('로그인이 완료되었습니다.');
+        localStorage.clear();
+        setToken(token);
         router.push('/');
       }
     } catch (err) {
@@ -71,7 +67,6 @@ export default function LoginPage() {
                 onChange={(e) => {
                   setId(e.target.value);
                 }}
-                onKeyUp={changeButton}
               />
               {/* //input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 id로 담김 */}
             </div>
@@ -89,20 +84,12 @@ export default function LoginPage() {
                 onChange={(e) => {
                   setPw(e.target.value);
                 }}
-                onKeyUp={changeButton}
               />
-              {/* input에 입력되는 내용이 바뀔때마다 e.target.value의 값이 pw로 담김 */}
             </div>
 
             <div className='flex justify-center'>
               <button
-                type='button'
-                disabled={button}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                // button의 값이 true일경우 disabled가 작동 false일 경우 disabled가 작동하지 않도록 disabled={button}을 작성
-                // 아직 백앤드와 통신하지 않기 때문에 realId와 realPw라는 변수에 임의로 값을 지정해주고 만약 일치할 경우에만 main페이지로 이동하도록 goToMain함수를 실행
+                type='submit'
                 className='flex h-[50px] w-[350px] items-center
                justify-center rounded-lg bg-pink-400 text-2xl font-semibold  text-white transition-all
                 hover:bg-pink-500 hover:text-white
@@ -119,7 +106,6 @@ export default function LoginPage() {
                 </Link>
               </div>
             </div>
-            {/* <div>소셜 로그인</div> */}
           </form>
         </section>
       </div>
