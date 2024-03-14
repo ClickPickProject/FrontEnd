@@ -15,6 +15,10 @@ export default function LoginPage() {
     id: '',
     password: '',
   });
+  const [inputValue1, setInputValue1] = useState({
+    id: '',
+    password: '',
+  });
 
   //로그인 체크
   const [check, setCheck] = useState({
@@ -34,39 +38,36 @@ export default function LoginPage() {
   const doLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:3001/login', inputValue);
-
+      const data = await axios.post('/api/login', inputValue1, { withCredentials: true });
+      console.log(data);
+      console.log(inputValue);
       //문제점 : input에 값을 넣으면 post로 db에 값을 넣음 그 db값과 inputValue에 값이 같기 때문에 애매하당
-      console.log('로그인 되었습니다.');
-      const user = data;
-      console.log(data.id);
-      console.log(inputValue.id);
-      console.log(data.status);
-      if (data.id === inputValue.id) {
-        if (data.password === inputValue.password) {
-          //변경해야함.
-          try {
-            console.log('로그인되었습니다!');
-            router.push('/');
-            //서버로 토큰을 받은 후 받은 토큰으로 LoginSuccess실행
-            //           const tokenResponse = await apiInstance.post('/auth', { email: values.email });
-          } catch (error) {
-            console.log(error);
-          }
-        } else console.log('이메일이나 비밀번호 확인!');
-        setCheck({
-          ...check,
-          login: false,
-          user: true,
-        }); // 로그인 실패, 이메일이나 비밀번호 확인
-      } else {
-        console.log('이메일이 존재하지 않습니다!');
-        setCheck({
-          ...check,
-          login: false,
-          user: false,
-        }); // 존재하지 않는 이메일
-      }
+      // if (data.id === inputValue.id) {
+      //   if (data.password === inputValue.password) {
+      //     //변경해야함.
+      //     console.log(data);
+      //     try {
+      //       console.log('로그인되었습니다!');
+      //       router.push('/');
+      //       //서버로 토큰을 받은 후 받은 토큰으로 LoginSuccess실행
+      //       //           const tokenResponse = await apiInstance.post('/auth', { email: values.email });
+      //     } catch (error) {
+      //       console.log(error);
+      //     }
+      //   } else console.log('이메일이나 비밀번호 확인!');
+      //   setCheck({
+      //     ...check,
+      //     login: false,
+      //     user: true,
+      //   }); // 로그인 실패, 이메일이나 비밀번호 확인
+      // } else {
+      //   console.log('이메일이 존재하지 않습니다!');
+      //   setCheck({
+      //     ...check,
+      //     login: false,
+      //     user: false,
+      //   }); // 존재하지 않는 이메일
+      // }
     } catch (error) {
       console.log(error);
     }
