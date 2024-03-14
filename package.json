@@ -27,6 +27,7 @@
     "react-js-pagination": "^3.0.3",
     "recharts": "^2.12.2",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "sass": "^1.71.0"
   },
   "devDependencies": {
