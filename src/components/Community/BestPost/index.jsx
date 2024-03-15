@@ -5,18 +5,19 @@ import WriterView from './WriterView';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useQuery } from 'react-query';
+import Loading from '@/components/Loading';
 
 export default function BestPost() {
-  const [bestPosts, setBestPosts] = useState([]);
-  useEffect(() => {
-    const bestPostUpdate = async () => {
-      const res = await axios.get('/api/post/list/best');
-      if (res.status === 200) {
-        setBestPosts(res.data);
-      }
-    };
-    bestPostUpdate();
-  }, []);
+  const {
+    data: bestPosts,
+    isLoading,
+    isError,
+  } = useQuery(['bestPosts'], async () => {
+    const res = await axios.get('/api/post/list/best');
+    return res.data;
+  });
+  if (isLoading || isError) return <Loading isLoading={isLoading} isError={isError} />;
   return (
     <>
       {bestPosts.map((data) => (

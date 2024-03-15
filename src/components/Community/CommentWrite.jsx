@@ -6,12 +6,14 @@ import { useParams } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenState } from '@/atoms/tokenState';
 import { commentsState } from '@/atoms/PostState';
+import { useQueryClient } from 'react-query';
 
 export default function CommentWrite() {
   const params = useParams();
   const setComments = useSetRecoilState(commentsState);
   const [comment, setComment] = useState('');
   const token = useRecoilValue(tokenState);
+  const queryClient = useQueryClient();
 
   const handleTextareaChange = (e) => {
     e.target.style.height = 'auto';
@@ -33,8 +35,8 @@ export default function CommentWrite() {
       });
       if (res.status === 200) {
         commentsUpdate();
+        queryClient.invalidateQueries(['comments', params.id]);
         setComment('');
-        console.log(res.data);
       }
     } catch (err) {
       console.log(err);
