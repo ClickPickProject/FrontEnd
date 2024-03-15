@@ -4,7 +4,7 @@ import { FaEnvelope, FaPhone } from 'react-icons/fa6';
 export default function layout({ children }) {
   return (
     <>
-      <div className='mx-auto flex max-w-7xl bg-white'>
+      <div className='mx-auto flex w-full max-w-6xl bg-white'>
         <SideNavbar />
         {children}
       </div>

@@ -12,7 +12,7 @@ export default function CommunityPage() {
   };
   return (
     <>
-      <section className='flex flex-col'>
+      <section className='flex w-[inherit] flex-col justify-center'>
         <motion.nav
           className='menu'
           initial={{ opacity: 0, y: 0 }}

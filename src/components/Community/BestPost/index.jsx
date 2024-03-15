@@ -30,9 +30,9 @@ export default function BestPost() {
                 <Image
                   alt='#'
                   src='/sakura.jpg'
-                  width={250}
-                  height={150}
-                  className='h-[150px] w-[250px] rounded-lg object-cover'
+                  width={270}
+                  height={170}
+                  className='h-[170px] w-[270px] rounded-lg object-cover'
                 />
               </Link>
             </figure>
