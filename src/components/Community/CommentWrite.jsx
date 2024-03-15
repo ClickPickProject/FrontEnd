@@ -36,6 +36,7 @@ export default function CommentWrite() {
       if (res.status === 200) {
         commentsUpdate();
         queryClient.invalidateQueries(['comments', params.id]);
+        queryClient.invalidateQueries(['post', params.id]);
         setComment('');
       }
     } catch (err) {

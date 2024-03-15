@@ -1,10 +1,7 @@
 import { MdReportGmailerrorred } from 'react-icons/md';
 import WriterView from './BestPost/WriterView';
-import { useRecoilValue } from 'recoil';
-import { commentsState } from '@/atoms/PostState';
 
-export default function Comments() {
-  const comments = useRecoilValue(commentsState);
+export default function Comments({ comments }) {
   if (!comments || comments.length === 0) {
     return null;
   }

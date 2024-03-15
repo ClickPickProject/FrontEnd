@@ -39,7 +39,6 @@ export default function PostDetail() {
 
   const { title, nickname, date, viewCount, content, hashtags, likePostCheck, likeCount, commentCount, comments } =
     userPost;
-
   const onClickLike = async () => {
     try {
       if (likePostCheck === true) {
@@ -96,7 +95,7 @@ export default function PostDetail() {
         </div>
         {/* 경계선 */}
         <div className='my-4 border-b-2' />
-        <Comments />
+        <Comments comments={comments} />
         <CommentWrite />
       </div>
     </>

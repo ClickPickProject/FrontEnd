@@ -13,17 +13,21 @@ export default function PostList({ category }) {
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
   const [totalItems, setTotalItems] = useState(0);
-  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(category);
-  const [sortedPosts, setSortedPosts] = useState([]);
+  // const [sortedPosts, setSortedPosts] = useState([]);
   const queryClient = useQueryClient();
+  useEffect(() => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  }, [category]);
 
   const {
     data: posts,
     isLoading,
     isError,
+    refetch,
   } = useQuery(
-    ['posts'],
+    ['posts', currentPage],
     async () => {
       const res = await axios.get(`/api/post/list`, {
         params: {
@@ -34,10 +38,6 @@ export default function PostList({ category }) {
     },
     {
       onSuccess: (data) => {
-        const sortedPosts = [...data.content].sort((a, b) => {
-          return new Date(b.createAt) - new Date(a.createAt);
-        });
-        setSortedPosts(sortedPosts);
         setTotalPages(data.totalPages);
         setTotalItems(data.totalElements);
         setPostsPerPage(data.size);
@@ -47,9 +47,10 @@ export default function PostList({ category }) {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    refetch();
   };
 
-  const filteredPosts = sortedPosts.filter((post) => {
+  const filteredPosts = posts?.content?.filter((post) => {
     switch (selectedCategory) {
       case '자유':
         return post.postCategory === '자유';
@@ -62,6 +63,7 @@ export default function PostList({ category }) {
     }
   });
   const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState(null);
   const onClickSearch = async (e) => {
     try {
       const res = await axios.get('/api/post/title', {
@@ -70,13 +72,13 @@ export default function PostList({ category }) {
         },
       });
       if (res.status === 200) {
-        console.log(res.data);
-        queryClient.invalidateQueries(['posts']);
+        setSearchResults(res.data);
       }
     } catch (err) {
       console.log(err);
     }
   };
+  const displayPosts = searchResults || filteredPosts;
   if (isLoading || isError) return <Loading isLoading={isLoading} isError={isError} />;
   return (
     <div className=''>
@@ -93,7 +95,7 @@ export default function PostList({ category }) {
         </button>
       </div>
       <ul>
-        {filteredPosts.map((data) => (
+        {displayPosts?.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='flex items-center gap-2 font-semibold'>
@@ -119,7 +121,6 @@ export default function PostList({ category }) {
           activePage={currentPage}
           itemsCountPerPage={postsPerPage}
           totalItemsCount={totalItems}
-          pageRangeDisplayed={10}
           onChange={handlePageChange}
           itemClass='px-3 py-1 rounded-md mr-2 cursor-pointer'
           activeClass='bg-pink-400 text-white'
