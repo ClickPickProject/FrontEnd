@@ -5,8 +5,8 @@ import WriterView from './BestPost/WriterView';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
-import { useQuery, useQueryClient } from 'react-query';
 import Loading from '../Loading';
+import { useQuery } from '@tanstack/react-query';
 
 export default function PostList({ category }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
@@ -14,8 +14,6 @@ export default function PostList({ category }) {
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
   const [totalItems, setTotalItems] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState(category);
-  // const [sortedPosts, setSortedPosts] = useState([]);
-  const queryClient = useQueryClient();
   useEffect(() => {
     setSelectedCategory(category);
     setCurrentPage(1);
@@ -23,27 +21,25 @@ export default function PostList({ category }) {
 
   const {
     data: posts,
-    isLoading,
+    isPending,
     isError,
     refetch,
-  } = useQuery(
-    ['posts', currentPage],
-    async () => {
+  } = useQuery({
+    queryKey: ['posts', currentPage],
+    queryFn: async () => {
       const res = await axios.get(`/api/post/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
       });
+      if (res.status === 200) {
+        setTotalPages(res.data.totalPages);
+        setTotalItems(res.data.totalElements);
+        setPostsPerPage(res.data.size);
+      }
       return res.data;
     },
-    {
-      onSuccess: (data) => {
-        setTotalPages(data.totalPages);
-        setTotalItems(data.totalElements);
-        setPostsPerPage(data.size);
-      },
-    },
-  );
+  });
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -72,14 +68,14 @@ export default function PostList({ category }) {
         },
       });
       if (res.status === 200) {
-        setSearchResults(res.data);
+        setSearchResults(res.data.content);
       }
     } catch (err) {
       console.log(err);
     }
   };
   const displayPosts = searchResults || filteredPosts;
-  if (isLoading || isError) return <Loading isLoading={isLoading} isError={isError} />;
+  if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className=''>
       <div className='relative mb-4'>
@@ -95,7 +91,7 @@ export default function PostList({ category }) {
         </button>
       </div>
       <ul>
-        {displayPosts?.map((data) => (
+        {displayPosts.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='flex items-center gap-2 font-semibold'>

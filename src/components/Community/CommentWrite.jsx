@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenState } from '@/atoms/tokenState';
 import { commentsState } from '@/atoms/PostState';
-import { useQueryClient } from 'react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function CommentWrite() {
   const params = useParams();
@@ -61,7 +61,7 @@ export default function CommentWrite() {
   };
 
   return (
-    <div className='h-auto'>
+    <div className='mt-5 h-auto'>
       <div className='grid h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
         <div className='mt-2'>
           <WriterView writer={'댓글작성자'} />

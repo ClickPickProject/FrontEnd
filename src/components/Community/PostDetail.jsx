@@ -10,31 +10,35 @@ import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
 import CommentWrite from './CommentWrite';
 import Comments from './Comments';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Loading from '../Loading';
 export default function PostDetail() {
   const params = useParams();
   const queryClient = useQueryClient();
   const token = useRecoilValue(tokenState);
   const {
     data: userPost,
-    isLoading,
+    isPending,
     isError,
-  } = useQuery(['post', params.id], async () => {
-    const res = await axios.get(`/api/post/${params.id}`, {
-      withCredentials: true,
-      headers: {
-        Authorization: token,
-      },
-    });
+  } = useQuery({
+    queryKey: ['post', params.id],
+    queryFn: async () => {
+      const res = await axios.get(`/api/post/${params.id}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
 
-    if (res.status !== 200) {
-      throw new Error('Failed to fetch data');
-    }
+      if (res.status !== 200) {
+        throw new Error('Failed to fetch data');
+      }
 
-    return res.data;
+      return res.data;
+    },
   });
 
-  if (isLoading) return <div>로딩중입니다...</div>;
+  if (isPending) return <Loading isPending={isPending} />;
   if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
   const { title, nickname, date, viewCount, content, hashtags, likePostCheck, likeCount, commentCount, comments } =
