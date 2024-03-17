@@ -1,15 +1,15 @@
 'use client';
-import { loginState, tokenState } from '@/atoms/tokenState';
+import { tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
-    token ? setIsLogin(true) : setIsLogin(false);
+    if (localStorage.getItem('token')) setIsLogin(true);
   }, [token]);
 
   const hoverStyle =
@@ -21,30 +21,32 @@ export default function HomeNavbar() {
   return (
     <>
       <header className='h-[78px] bg-white'>
-        <nav className='flex h-full items-center'>
-          <figure className='ml-4'>
+        <nav className='flex h-full w-full items-center'>
+          <figure className='absolute ml-4'>
             <Link alt='logo' href='/'>
               <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
             </Link>
           </figure>
-          <ul className='flex w-full justify-between gap-4 text-[20px] font-bold'>
-            <div className='mx-auto flex gap-4'>
+          <ul className='relative flex w-full justify-center gap-4 text-[20px] font-bold'>
+            <div className='flex flex-1 items-center justify-center gap-4'>
               <Link href='/content/place'>
                 <li className={`${hoverStyle} `}>장소찾기</li>
               </Link>
               <Link href='/content/community'>
                 <li className={hoverStyle}>커뮤니티</li>
               </Link>
+              <div className='absolute right-0 flex pr-8'>
+                {isLogin ? (
+                  <button onClick={onClickLogout} className={`${hoverStyle} `}>
+                    로그아웃
+                  </button>
+                ) : (
+                  <Link href='/login' className={`${hoverStyle} `}>
+                    로그인
+                  </Link>
+                )}
+              </div>
             </div>
-            {isLogin ? (
-              <button onClick={onClickLogout} className={`mr-[50px] ${hoverStyle} `}>
-                로그아웃
-              </button>
-            ) : (
-              <Link href='/login' className={`mr-[50px] ${hoverStyle} `}>
-                로그인
-              </Link>
-            )}
           </ul>
         </nav>
       </header>
