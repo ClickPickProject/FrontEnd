@@ -1,8 +1,7 @@
-import { MdReportGmailerrorred } from 'react-icons/md';
 import WriterView from './BestPost/WriterView';
-import { IoArrowRedoOutline } from 'react-icons/io5';
 import { useState } from 'react';
 import ReplyComments from './ReplyComments';
+import { ReplyIcon, ReportIcon } from '../UI/Icons';
 
 export default function Comments({ comments }) {
   const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
@@ -29,14 +28,14 @@ export default function Comments({ comments }) {
             {/* 신고 및 답글 버튼 */}
             <div className='flex items-center gap-1'>
               <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
-                <MdReportGmailerrorred color='red' />
+                <ReportIcon color='red' />
                 <div className='text-sm font-semibold'>신고</div>
               </div>
               <div
                 className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
                 onClick={() => onClickReply(comment.commentId)}
               >
-                <IoArrowRedoOutline color='#ec4899' />
+                <ReplyIcon color='#ec4899' />
                 <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
               </div>
               {comment.nickname === '올빼미' ? <div className='text-sm font-semibold'>수정</div> : null}

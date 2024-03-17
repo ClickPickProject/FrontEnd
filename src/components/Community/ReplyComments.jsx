@@ -1,5 +1,5 @@
-import { MdReportGmailerrorred } from 'react-icons/md';
 import WriterView from './BestPost/WriterView';
+import { ReplyIcon } from '../UI/Icons';
 
 export default function ReplyComments({ reply }) {
   return (
@@ -8,7 +8,7 @@ export default function ReplyComments({ reply }) {
         <WriterView writer={reply.nickname} date={reply.createAt} />
         <div>{reply.content}</div>
         <div className='flex items-center gap-1'>
-          <MdReportGmailerrorred color='red' opacity='70%' />
+          <ReplyIcon color='red' opacity='70%' />
           <div className='text-sm font-semibold opacity-50'>신고</div>
           {reply.nickname === '올빼미' ? <div className='text-sm font-semibold opacity-50'>삭제</div> : null}
         </div>

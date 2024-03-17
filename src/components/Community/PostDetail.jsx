@@ -1,16 +1,15 @@
 'use client';
 import StatusView from './BestPost/StatusView';
 import WriterView from './BestPost/WriterView';
-import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
-import { FaRegCommentDots } from 'react-icons/fa6';
-import { useParams } from 'next/navigation';
-import HashtagView from './HashtagView';
-import axios from 'axios';
-import { tokenState } from '@/atoms/tokenState';
-import { useRecoilValue } from 'recoil';
 import CommentWrite from './CommentWrite';
 import Comments from './Comments';
+import HashtagView from './HashtagView';
+import axios from 'axios';
+import { useParams } from 'next/navigation';
+import { tokenState } from '@/atoms/tokenState';
+import { useRecoilValue } from 'recoil';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { CommentIcon, EmptyHeartIcon, FillHeartIcon } from '../UI/Icons';
 import Loading from '../Loading';
 export default function PostDetail() {
   const params = useParams();
@@ -89,12 +88,12 @@ export default function PostDetail() {
         </div>
         <div className='flex items-center gap-1 text-base '>
           {likePostCheck ? (
-            <IoMdHeart size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
+            <FillHeartIcon size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
           ) : (
-            <IoMdHeartEmpty size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
+            <EmptyHeartIcon size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
           )}
           좋아요 {likeCount}
-          <FaRegCommentDots size={18} />
+          <CommentIcon size={18} />
           댓글 {commentCount}
         </div>
         {/* 경계선 */}
