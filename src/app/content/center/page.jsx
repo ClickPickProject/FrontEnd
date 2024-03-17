@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export default function CenterPage() {
   return (
     <>
-      <section className='flex w-[inherit] flex-col justify-center'>
+      <section className='flex h-full w-[inherit] flex-col justify-center'>
         <motion.nav
           className='menu'
           initial={{ opacity: 0, y: 0 }}
