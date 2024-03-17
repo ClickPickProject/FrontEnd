@@ -16,7 +16,7 @@ import {
 } from '@/components/UI/Icons';
 import { usePathname } from 'next/navigation';
 import { loginState, tokenState } from '@/atoms/tokenState';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 export default function SideNavbar() {
   const pathName = usePathname();

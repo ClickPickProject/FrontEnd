@@ -156,7 +156,7 @@ export default function SignUpPage() {
         <section className='absolute left-1/2 top-1/2 flex h-[850px] w-[500px] -translate-x-1/2 -translate-y-1/2 flex-col rounded-2xl bg-pink-200  shadow-[1px_1px_200px_1px]  shadow-pink-200'>
           <figure className='mx-auto p-6'>
             <Link href='/'>
-              <Image src='/Images/clickpick_icon.png' alt='' width={52} height={52} />
+              <Image src='/Images/clickpick_icon.png' alt='signup' width={52} height={52} />
             </Link>
           </figure>
           <h2 className='mx-auto mb-8 text-2xl font-bold'>클릭픽 회원가입</h2>

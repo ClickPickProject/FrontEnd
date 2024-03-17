@@ -13,7 +13,7 @@ export default function HomeFirstSection() {
           원하는 <span className='text-pink-400'>핫플레이스</span>, 더욱 확실하게
         </p>
       </section>
-      <div className='m-auto flex h-[60px] w-[200px] flex-col justify-center gap-[10px] rounded-lg border bg-pink-500 font-bold text-white md:h-[50px] md:w-[160px]'>
+      <div className='m-auto flex h-[60px] w-[200px] flex-col justify-center gap-[10px] rounded-lg border bg-pink-500 font-bold  text-white duration-200 hover:scale-105 hover:bg-pink-600 md:h-[50px] md:w-[160px]'>
         <Link href='/content/community' className='flex h-full w-full items-center justify-center gap-2 text-lg'>
           <FillMapIcon size={24} />
           탐색하기
