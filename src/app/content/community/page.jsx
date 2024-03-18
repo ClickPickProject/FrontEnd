@@ -1,22 +1,19 @@
 'use client';
 import BestLikePost from '@/components/Community/BestPost';
 import PostList from '@/components/Community/PostList';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { PencilIcon } from '@/components/UI/Icons';
+import Link from 'next/link';
 import { useState } from 'react';
-import { loginState } from '@/atoms/tokenState';
-import { useRecoilValue } from 'recoil';
-export default function CommunityPage() {
+import AuthContext from '@/components/context/AuthContext';
+function CommunityPage() {
   const [category, setCategory] = useState('');
-  const isLogin = useRecoilValue(loginState);
   const onChangeOptions = (e) => {
     setCategory(e.target.value);
   };
-
   return (
     <>
-      <section className='flex h-full w-[inherit] flex-col justify-center'>
+      <section className='flex flex-col'>
         <motion.nav
           className='menu'
           initial={{ opacity: 0, y: 0 }}
@@ -45,7 +42,7 @@ export default function CommunityPage() {
               <option value='여행지'>여행지</option>
             </select>
             <Link
-              href={`${isLogin ? '/content/community/write' : '/login'}`}
+              href='/content/community/write'
               className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
             >
               <PencilIcon color='white' size={18} />글 작성
@@ -57,3 +54,5 @@ export default function CommunityPage() {
     </>
   );
 }
+
+export default AuthContext(CommunityPage, { adminRequired: false });

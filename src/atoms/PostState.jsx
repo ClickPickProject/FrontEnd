@@ -16,7 +16,17 @@ export const postState = atom({
   },
 });
 
-export const commentsState = atom({
-  key: 'commentsState',
-  default: [],
+export const postSelectorFamily = selectorFamily({
+  key: 'postSelectorFamily',
+  get: (params) => async () => {
+    try {
+      // const res = await axios.get(`${process.env.NEXT_PUBLIC_LOCAL_API_URL}/posts/${params}`);
+      const res = await axios.get(`/api/post/${params}`);
+      if (res.status === 200) {
+        return res.data;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
 });

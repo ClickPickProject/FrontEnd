@@ -1,7 +1,4 @@
 export default function HashtagView({ tags }) {
-  if (!tags || tags.length === 0) {
-    return null;
-  }
   return (
     <>
       <div className='flex flex-wrap gap-2'>
