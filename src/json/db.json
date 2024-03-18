@@ -8,64 +8,12 @@
       "hashtag": [],
       "id": "0",
       "date": "2024-03-01T18:42:43.406Z"
-    },
-    {
-      "id": "chlwjd022@gmail.com",
-      "password": "asd123"
     }
   ],
   "login": [
     {
-      "id": "chlwjd022@gmail.com",
-      "password": "asd123"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "2134"
-    },
-    {
-      "id": "1234",
-      "password": "1234"
-    },
-    {
-      "id": "1234",
-      "password": "1234"
-    },
-    {
-      "id": "1234",
-      "password": "1234"
-    },
-    {
-      "id": "1234",
-      "password": "1234"
+      "userId": "test@naver.com",
+      "userPw": "123456789"
     }
   ],
   "posts": [

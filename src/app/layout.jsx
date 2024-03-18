@@ -2,6 +2,7 @@ import { Open_Sans } from 'next/font/google';
 import './globals.css';
 import RecoilRootWrapper from '@/components/RecoilRootWrapper';
 import { MSWComponent } from '@/mocks/MSWComponent';
+import ReactQueryClientProvider from '@/components/ReactQueryClientProvider';
 
 const open = Open_Sans({ subsets: ['latin'] });
 
@@ -17,9 +18,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body className={open.className}>
-        <MSWComponent>
-          <RecoilRootWrapper>{children}</RecoilRootWrapper>
-        </MSWComponent>
+        <ReactQueryClientProvider>
+          <RecoilRootWrapper>
+            <MSWComponent>{children}</MSWComponent>
+          </RecoilRootWrapper>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );

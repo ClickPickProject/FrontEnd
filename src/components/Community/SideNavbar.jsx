@@ -15,9 +15,21 @@ import {
   QuestionIcon,
 } from '@/components/UI/Icons';
 import { usePathname } from 'next/navigation';
-
+import { loginState, tokenState } from '@/atoms/tokenState';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 export default function SideNavbar() {
   const pathName = usePathname();
+  const token = useRecoilValue(tokenState);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const onClickLogout = () => {
+    localStorage.clear();
+    setIsLogin(false);
+  };
+  useEffect(() => {
+    token ? setIsLogin(true) : setIsLogin(false);
+  }, [token]);
+
   const MENU = [
     {
       name: '장소찾기',
@@ -60,7 +72,7 @@ export default function SideNavbar() {
               <Link
                 key={href}
                 href={href}
-                className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName && 'bg-pink-100'} transition-all active:bg-pink-200`}
+                className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
               >
                 <li className='flex items-center gap-2'>
                   {href === pathName ? clickedIcon : icon} {name}
@@ -83,13 +95,24 @@ export default function SideNavbar() {
             )}
             내 정보
           </Link>
-          <Link
-            href='#'
-            className='flex h-[40px] w-[100px] items-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
-          >
-            <LogoutIcon size={24} />
-            로그아웃
-          </Link>
+
+          {isLogin ? (
+            <button
+              onClick={onClickLogout}
+              className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+            >
+              <LogoutIcon size={24} />
+              로그아웃
+            </button>
+          ) : (
+            <Link
+              href='/login'
+              className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+            >
+              <LogoutIcon size={24} />
+              로그인
+            </Link>
+          )}
         </div>
       </div>
     </>
