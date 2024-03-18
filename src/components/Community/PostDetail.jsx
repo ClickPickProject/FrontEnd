@@ -88,9 +88,13 @@ export default function PostDetail() {
         </div>
         <div className='flex items-center gap-1 text-base '>
           {likePostCheck ? (
-            <FillHeartIcon size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
+            <span onClick={onClickLike} className='hover:cursor-pointer'>
+              <FillHeartIcon size={20} color='red' />
+            </span>
           ) : (
-            <EmptyHeartIcon size={20} color='red' onClick={onClickLike} className='hover:cursor-pointer' />
+            <span onClick={onClickLike} className='hover:cursor-pointer'>
+              <EmptyHeartIcon size={20} color='red' />
+            </span>
           )}
           좋아요 {likeCount}
           <CommentIcon size={18} />
