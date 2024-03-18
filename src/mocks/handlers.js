@@ -42,7 +42,7 @@ export const handlers = [
   http.post('/api/login', () => {
     return HttpResponse.json('로그인 되었습니다.', {
       headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+        Authorization: `Bearer ${Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)}`,
       },
     });
   }),
@@ -231,9 +231,69 @@ export const handlers = [
       empty: false,
     });
   }),
+
+  // 게시글 제목 검색
+  http.get('/api/post/title', ({ request }) => {
+    const url = new URL(request.url);
+    const title = url.searchParams.get('title');
+    return HttpResponse.json({
+      content: [
+        {
+          postId: 123123123,
+          nickname: '제목검색',
+          title: title,
+          createAt: '2024-03-14T18:55:48.884Z',
+          photoDate: '2024-03-14T18:55:48.884Z',
+          hashtags: ['#해쉬태그', '#검색'],
+          postCategory: '음식',
+          commentCount: 1111,
+        },
+      ],
+    });
+  }),
+  // 게시글 내용 검색
+  http.get('/api/post/content', ({ request }) => {
+    const url = new URL(request.url);
+    const content = url.searchParams.get('content');
+    return HttpResponse.json({
+      content: [
+        {
+          postId: 101010,
+          nickname: '내용검색',
+          title: '내용검색',
+          createAt: '2024-03-14T18:55:48.884Z',
+          photoDate: '2024-03-14T18:55:48.884Z',
+          hashtags: ['#해쉬태그', '#검색'],
+          postCategory: '음식',
+          commentCount: 0,
+        },
+      ],
+    });
+  }),
+  // 게시글 태그 검색
+  http.get('/api/post/hashtag', ({ request }) => {
+    const url = new URL(request.url);
+    const hashtag = url.searchParams.get('hashtag');
+    return HttpResponse.json({
+      content: [
+        {
+          postId: 123123123,
+          nickname: '태그검색',
+          title: '태그검색',
+          createAt: '2024-03-14T18:55:48.884Z',
+          photoDate: '2024-03-14T18:55:48.884Z',
+          hashtags: hashtag,
+          postCategory: '음식',
+          commentCount: 2,
+        },
+      ],
+    });
+  }),
+
   // 게시글 상세 조회
   http.get('/api/post/:postId', ({ params }) => {
     const { postId } = params;
+    console.log('상세조회');
     return HttpResponse.json(
       {
         postId: postId,
@@ -247,7 +307,7 @@ export const handlers = [
         position: '',
         photoDate: '2024-03-05T18:55:48.884Z',
         hashtags: ['#해쉬태그', '#테스트'],
-        PostCategory: '자유',
+        postCategory: '자유',
         commentCount: 3,
         likePostCheck: false,
         comments: [
@@ -258,6 +318,16 @@ export const handlers = [
             createAt: '2024-03-06T18:55:48.884Z',
             likeCount: 1,
             likeCommentCheck: false,
+            recommentList: [
+              {
+                commentId: 1,
+                nickname: '기사',
+                content: '탑승',
+                createAt: '2024-03-086T10:55:48.884Z',
+                likeCount: 13,
+                likeCommentCheck: false,
+              },
+            ],
           },
           {
             commentId: 2,
@@ -266,6 +336,24 @@ export const handlers = [
             createAt: '2024-03-07T18:55:48.884Z',
             likeCount: 3,
             likeCommentCheck: true,
+            recommentList: [
+              {
+                commentId: 2,
+                nickname: '대대대댓',
+                content: '대래대래댓댓 댓걸',
+                createAt: '2024-03-166T10:55:48.884Z',
+                likeCount: 123,
+                likeCommentCheck: false,
+              },
+              {
+                commentId: 233,
+                nickname: '아아악',
+                content: '2빠',
+                createAt: '2024-03-166T11:55:48.884Z',
+                likeCount: 123,
+                likeCommentCheck: false,
+              },
+            ],
           },
         ],
       },
@@ -332,21 +420,6 @@ export const handlers = [
     return HttpResponse.json({
       postId: 1,
       content: '댓글 작성입니다',
-    });
-  }),
-
-  // 게시글 제목 검색
-  http.get('/api/post/title', () => {
-    return HttpResponse.json({
-      postId: 1132,
-      nickname: '게시글 제목검색',
-      title: '제목제목검색',
-      createAt: '2024-03-10T18:55:48.884Z',
-      viewCount: 382,
-      likeCount: 300,
-      hashtags: ['#봄'],
-      postCategory: '여행지',
-      commentCount: 1024,
     });
   }),
 ];
