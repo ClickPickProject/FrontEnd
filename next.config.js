@@ -68,6 +68,10 @@ const nextConfig = {
         source: '/api/member/comment/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/comment/:path*`,
       },
+      {
+        source: '/api/member/*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/comment/:path*`,
+      },
     ];
   },
 };
