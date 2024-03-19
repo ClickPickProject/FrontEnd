@@ -3,29 +3,30 @@ export default function MyProfile() {
   const [name, setName] = useState('초기 이름값');
   const [address, setAddress] = useState('초기 주소값');
   const [bio, setBio] = useState('초기 소개값');
-  const [namechange, setNamechange] = useState(false);
-  const [addresschange, setAddresschange] = useState(false);
-  const [biochange, setBioChange] = useState(false);
+  const [nameChange, setNameChange] = useState(false);
+  const [addressChange, setAddressChange] = useState(false);
+  const [bioChange, setBioChange] = useState(false);
+  //API로 받아올 값
   let resName = '';
   let resAddress = '';
   let resBio = '';
-  const handlenameValuechange = (e) => {
+  const handleNameValueChange = (e) => {
     e.preventDefault();
     console.log('이름이 변경됨');
-    setNamechange((value) => !value);
+    setNameChange((value) => !value);
     //이름변경 저장소
     resName = name;
     console.log(resName);
   };
-  const handleAddressValuechange = (e) => {
+  const handleAddressValueChange = (e) => {
     e.preventDefault();
     console.log('주소가 변경됨');
-    setAddresschange((value) => !value);
+    setAddressChange((value) => !value);
     //주소변경 저장소
     resAddress = address;
     console.log(resAddress);
   };
-  const handleBioValuechange = (e) => {
+  const handleBioValueChange = (e) => {
     e.preventDefault();
     console.log('소개가 변경됨');
     setBioChange((value) => !value);
@@ -46,7 +47,7 @@ export default function MyProfile() {
           </form>
           <div className='mx-auto'>
             {/* 이름 */}
-            <form action='' onSubmit={handlenameValuechange} className='mt-5'>
+            <form action='' onSubmit={handleNameValueChange} className='mt-5'>
               <label htmlFor='name' className='m-5'>
                 이름
               </label>
@@ -56,13 +57,13 @@ export default function MyProfile() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder='이름을 입력하세요'
-                disabled={!namechange}
+                disabled={!nameChange}
                 className='mx-2 w-[250px] disabled:bg-pink-100'
               />
               <button className='font-semibold'>변경</button>
             </form>
             {/* 위치 */}
-            <form action='' onSubmit={handleAddressValuechange} className='mt-3'>
+            <form action='' onSubmit={handleAddressValueChange} className='mt-3'>
               <label htmlFor='address' className='mx-5'>
                 위치
               </label>
@@ -73,12 +74,12 @@ export default function MyProfile() {
                 className='mx-2 w-[250px] disabled:bg-pink-100'
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder='주소를 입력하세요'
-                disabled={!addresschange}
+                disabled={!addressChange}
               />
               <button className='font-semibold'>변경</button>
             </form>
             {/* 소개 */}
-            <form action='' onSubmit={handleBioValuechange} className='mt-3'>
+            <form action='' onSubmit={handleBioValueChange} className='mt-3'>
               <label htmlFor='address' className='mx-5'>
                 소개
               </label>
@@ -89,7 +90,7 @@ export default function MyProfile() {
                 className='mx-2 w-[250px] py-10 disabled:bg-pink-100'
                 onChange={(e) => setBio(e.target.value)}
                 placeholder='주소를 입력하세요'
-                disabled={!biochange}
+                disabled={!bioChange}
               />
               <button className='font-semibold'>변경</button>
             </form>

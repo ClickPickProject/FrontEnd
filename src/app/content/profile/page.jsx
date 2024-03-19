@@ -8,9 +8,9 @@ import { useState } from 'react';
 export default function ProfilePage() {
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent t pb-1 transition-all';
-  const [activeSection, setactiveSection] = useState(1);
+  const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {
-    setactiveSection(e);
+    setActiveSection(e);
   };
 
   return (
