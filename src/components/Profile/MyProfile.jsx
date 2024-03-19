@@ -2,17 +2,13 @@ import { useState } from 'react';
 export default function MyProfile() {
   const [name, setName] = useState('초기 이름값');
   const [address, setAddress] = useState('초기 주소값');
+  const [bio, setBio] = useState('초기 소개값');
   const [namechange, setNamechange] = useState(false);
   const [addresschange, setAddresschange] = useState(false);
+  const [biochange, setBioChange] = useState(false);
   let resName = '';
   let resAddress = '';
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-  const handleAddressChange = (e) => {
-    setAddress(e.target.value);
-  };
-
+  let resBio = '';
   const handlenameValuechange = (e) => {
     e.preventDefault();
     console.log('이름이 변경됨');
@@ -29,37 +25,73 @@ export default function MyProfile() {
     resAddress = address;
     console.log(resAddress);
   };
+  const handleBioValuechange = (e) => {
+    e.preventDefault();
+    console.log('소개가 변경됨');
+    setBioChange((value) => !value);
+    //주소변경 저장소
+    resBio = bio;
+    console.log(resBio);
+  };
   return (
     <>
       <div className='flex w-full flex-col'>
         <h1 className='mb-5 text-2xl font-bold '>🙋‍♂️마이 프로필</h1>
         <div className='mb-10 border border-pink-200'></div>
+
         <div className='mx-auto flex h-96 w-2/3 rounded-2xl border border-pink-200'>
-          <div>
-            <img src='' alt='#' />
-            <form action='' onSubmit={handlenameValuechange}>
-              <label htmlFor='name'>이름</label>
+          <form action='' className='margin ml-8 mt-5'>
+            <img src='/sakura.jpg' alt='#' className='h-[150px] w-[150px] rounded-full' />
+            <button className=' mt-2 w-[150px] rounded-lg  bg-pink-100'>📝img</button>
+          </form>
+          <div className='mx-auto'>
+            {/* 이름 */}
+            <form action='' onSubmit={handlenameValuechange} className='mt-5'>
+              <label htmlFor='name' className='m-5'>
+                이름
+              </label>
               <input
                 type='text'
                 id='name'
                 value={name}
-                onChange={handleNameChange}
+                onChange={(e) => setName(e.target.value)}
                 placeholder='이름을 입력하세요'
                 disabled={!namechange}
+                className='mx-2 w-[250px] disabled:bg-pink-100'
               />
-              <button>변경</button>
+              <button className='font-semibold'>변경</button>
             </form>
-            <form action='' onSubmit={handleAddressValuechange}>
-              <label htmlFor='address'>사는곳</label>
+            {/* 위치 */}
+            <form action='' onSubmit={handleAddressValuechange} className='mt-3'>
+              <label htmlFor='address' className='mx-5'>
+                위치
+              </label>
               <input
                 id='address'
                 type='text'
                 value={address}
-                onChange={handleAddressChange}
+                className='mx-2 w-[250px] disabled:bg-pink-100'
+                onChange={(e) => setAddress(e.target.value)}
                 placeholder='주소를 입력하세요'
                 disabled={!addresschange}
               />
-              <button>변경</button>
+              <button className='font-semibold'>변경</button>
+            </form>
+            {/* 소개 */}
+            <form action='' onSubmit={handleBioValuechange} className='mt-3'>
+              <label htmlFor='address' className='mx-5'>
+                소개
+              </label>
+              <input
+                id='address'
+                type='text'
+                value={bio}
+                className='mx-2 w-[250px] py-10 disabled:bg-pink-100'
+                onChange={(e) => setBio(e.target.value)}
+                placeholder='주소를 입력하세요'
+                disabled={!biochange}
+              />
+              <button className='font-semibold'>변경</button>
             </form>
           </div>
         </div>
