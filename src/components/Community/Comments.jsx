@@ -7,6 +7,7 @@ import axios from 'axios';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useParams } from 'next/navigation';
+import ReplyToggle from './ReplyToggle';
 
 export default function Comments({ comments }) {
   const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
@@ -16,16 +17,15 @@ export default function Comments({ comments }) {
   const [reply, setReply] = useState('');
   const [parentCommentId, setParentCommentId] = useState('');
   const [myNickname, setMyNickname] = useRecoilState(MyNicknameState);
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   if (!comments || comments.length === 0) {
     return null;
   }
 
   const onClickReply = (commentId) => {
-    console.log(replyToggle);
+    setParentCommentId(commentId);
     setReplyToggle((prevToggles) => {
-      setParentCommentId(commentId);
       const newToggles = [...prevToggles];
       newToggles.fill(false);
       newToggles[commentId] = !prevToggles[commentId];
@@ -34,18 +34,21 @@ export default function Comments({ comments }) {
   };
 
   const onClickCommentDelete = async (commentId) => {
-    const res = await axios.delete(
-      `/api/member/comment/${params.id}`,
-      { comment_id: commentId },
-      {
+    try {
+      const body = {
+        comment_id: commentId,
+      };
+      const res = await axios.delete(`/api/member/comment/${commentId}`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
         },
-      },
-    );
-    if (res.status === 200) {
-      // queryClient.invalidateQueries(['comments', params.id]);
+      });
+      if (res.status === 200) {
+        queryClient.invalidateQueries(['post', params.id]);
+      }
+    } catch (error) {
+      console.error('댓글 삭제 오류:', error);
     }
   };
 
@@ -63,19 +66,13 @@ export default function Comments({ comments }) {
     setEditMode(null); // 추가: 취소 버튼 클릭 시 수정 모드 종료
   };
 
-  const handleReplyChange = (e) => {
-    e.target.style.height = 'auto';
-    e.target.style.height = `${e.target.scrollHeight}px`;
-    setReply(e.target.value);
-  };
-
-  const onClickReplyWrite = async () => {
-    const body = {
-      parentcommentId: parentCommentId,
-      postId: params.id,
-      content: reply,
-    };
+  const onSubmitReply = async (content) => {
     try {
+      const body = {
+        parentCommentId: parentCommentId,
+        postId: params.id,
+        content: content,
+      };
       const res = await axios.post('/api/member/recomment', body, {
         withCredentials: true,
         headers: {
@@ -83,15 +80,18 @@ export default function Comments({ comments }) {
         },
       });
       if (res.status === 200) {
-        // commentsUpdate();
-        queryClient.invalidateQueries(['comments', params.id]);
-        queryClient.invalidateQueries(['post', params.id]);
-        setReply('');
+        queryClient.invalidateQueries({ queryKey: ['post', params.id] });
+        setReplyToggle((prevToggles) => {
+          const newToggles = [...prevToggles];
+          newToggles[parentCommentId] = false;
+          return newToggles;
+        });
       }
-    } catch (err) {
-      alert(err);
+    } catch (error) {
+      console.error('답글 작성 오류:', error);
     }
   };
+
   return (
     <div>
       <ul>
@@ -130,10 +130,11 @@ export default function Comments({ comments }) {
                 onClick={() => onClickReply(comment.commentId)}
               >
                 <ReplyIcon color='#ec4899' />
-                <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>
-                  다압글 {comment.commentId}
-                </div>
+
+                <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글 {comment.commentId}</div>
               </div>
+
+              {/* 댓글 수정 및 삭제 */}
               {comment.nickname === myNickname ? (
                 <button
                   className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
@@ -158,25 +159,8 @@ export default function Comments({ comments }) {
                 <ReplyComments key={reply.commentId} reply={reply} />
               ))}
             </div>
-
-            {/* 답글 토글 */}
             {replyToggle[comment.commentId] && (
-              <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
-                <div className='mt-2'>
-                  <WriterView writer={'답글작성자'} />
-                </div>
-                <textarea
-                  placeholder='답글을 입력하세요'
-                  className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
-                  value={reply}
-                  onChange={handleReplyChange}
-                />
-                <div className='m-2 flex w-[54px] cursor-pointer justify-center rounded-md bg-pink-300 py-1 text-sm transition-all hover:bg-pink-400 hover:text-white'>
-                  <button className='h-full w-full' onClick={onClickReplyWrite}>
-                    등록
-                  </button>
-                </div>
-              </div>
+              <ReplyToggle commentId={comment.commentId} onSubmitReply={onSubmitReply} />
             )}
           </li>
         ))}

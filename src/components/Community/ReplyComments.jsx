@@ -34,7 +34,7 @@ export default function ReplyComments({ reply }) {
 
   const onClickReplyWrite = async () => {
     const body = {
-      parentcommentId: parentCommentId,
+      parentCommentId: parentCommentId,
       postId: params.id,
       content: reply,
     };
@@ -83,8 +83,8 @@ export default function ReplyComments({ reply }) {
             <textarea
               placeholder='답글을 입력하세요'
               className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
-              // value={reply}
-              // onChange={handleReplyChange}
+              value={reply}
+              onChange={handleReplyChange}
             />
             <div className='m-2 flex w-[54px] cursor-pointer justify-center rounded-md bg-pink-300 py-1 text-sm transition-all hover:bg-pink-400 hover:text-white'>
               <button className='h-full w-full' onClick={onClickReplyWrite}>
