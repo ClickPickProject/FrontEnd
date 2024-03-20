@@ -2,7 +2,6 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-//token값 받아옴
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
@@ -14,6 +13,7 @@ export default function MyProfile() {
   const [phone, setPhone] = useRecoilState(userPhoneState);
   //token값 받아옴
   const token = useRecoilValue(tokenState);
+  //유저 정보 받아오기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,6 +40,25 @@ export default function MyProfile() {
     // cleanup 함수 (optional)
     return () => {};
   }, []);
+  //
+  const handleNickNameChange = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.get(`/api/member/new-nickname/${nickName}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        console.log(nickName);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //style값
   const btnStyle = 'ml-8  w-[150px] rounded-lg border border-black bg-pink-100 font-semibold p-1';
   const inputFont = 'mx-2 w-[400px] bg-pink-100 text-gray-500 border border-black p-1';
   //API로 받아올 값
@@ -50,7 +69,7 @@ export default function MyProfile() {
   };
   const handleAddressValueChange = (e) => {
     e.preventDefault();
-    //d
+
     console.log('주소가 변경됨');
     //주소변경 저장소
   };
@@ -59,14 +78,9 @@ export default function MyProfile() {
     console.log('소개가 변경됨');
     //주소변경 저장소
   };
-  const handleNickNameValueChange = (e) => {
-    e.preventDefault();
-    console.log('별명이 변경됨');
-    //주소변경 저장소
-  };
   const handlePhoneValueChange = (e) => {
     e.preventDefault();
-    console.log('별명이 변경됨');
+    console.log('전화번호가 변경됨');
     //주소변경 저장소
   };
   const handleSecession = (e) => {
@@ -129,7 +143,7 @@ export default function MyProfile() {
               <button className={btnStyle}>변경</button>
             </form>
             {/* 별명 */}
-            <form onSubmit={handleAddressValueChange} className='mt-3'>
+            <form onSubmit={handleNickNameChange} className='mt-3'>
               <label htmlFor='nickname' className='mx-5 font-semibold'>
                 별명
               </label>
