@@ -75,7 +75,7 @@ const nextConfig = {
       },
       // 회원 탈퇴
       {
-        source: '/api/member/":path*',
+        source: '/api/member/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/:path*`,
       },
       // 자신이 작성한 게시글 리스트 조회
@@ -100,8 +100,13 @@ const nextConfig = {
       },
       // 닉네임 변경
       {
-        source: '/api/member/new-nickname/list/:path*',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-nickname/list/:path*`,
+        source: '/api/member/new-nickname/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-nickname/:path*`,
+      },
+      // 전화번호 변경
+      {
+        source: '/api/member/new-phone-number/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-phone-number/:path*`,
       },
     ];
   },
