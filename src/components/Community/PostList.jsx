@@ -77,9 +77,9 @@ export default function PostList({ category }) {
   const handleSearchResults = (res) => {
     if (res.status === 200) {
       setSearchResults(res.data.content);
-      // setTotalPages(res.data.totalPages);
-      // setTotalItems(res.data.totalElements);
-      // setPostsPerPage(res.data.size);
+      setTotalPages(res.data.totalPages);
+      setTotalItems(res.data.totalElements);
+      setCurrentPage(1);
     }
   };
 
