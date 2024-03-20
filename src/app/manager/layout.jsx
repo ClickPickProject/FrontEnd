@@ -1,5 +1,5 @@
 'use client';
-import { FillNoticeIcon, NoticeIcon } from '@/components/UI/Icons';
+import { FillNoticeIcon } from '@/components/UI/Icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -65,31 +65,9 @@ export default function layout({ children }) {
                   </li>
                 </Link>
               ))}
-
-              {/* <Link href='/manager'>
-                <li className={`${navStyle}`}>
-                  <IoHome size={20} /> 홈
-                </li>
-              </Link>
-              <li className={`${navStyle}`}>
-                <FillNoticeIcon size={20} />
-                공지사항
-              </li>
-              <Link href='/manager/users'>
-                <li className={`${navStyle}`}>
-                  <FaUsers size={20} />
-                  사용자 관리
-                </li>
-              </Link>
-              <Link href='#'>
-                <li className={`${navStyle}`}>
-                  <PiSirenFill size={20} />
-                  신고자 관리
-                </li>
-              </Link> */}
             </ul>
           </nav>
-          <div className='mt-8 flex items-center gap-4 pl-8'>
+          {/* <div className='mt-8 flex items-center gap-4 pl-8'>
             <img
               className='h-10 w-10 rounded-full border-2 border-pink-500'
               src='https://i.namu.wiki/i/vDDaVK4wm1-vPZgAOI65rbhLhr1vPCzBgoRKSS7mEFx4IH2vtHvvMN41Umw-taptksIW_WqnjwOdcGbAMpAmrQ.webp'
@@ -98,7 +76,7 @@ export default function layout({ children }) {
             <button className='mr-4 rounded-md bg-gray-200 px-4 py-2 font-semibold text-gray-800 hover:bg-gray-300'>
               시스템 설정
             </button>
-          </div>
+          </div> */}
         </div>
         {children}
       </div>

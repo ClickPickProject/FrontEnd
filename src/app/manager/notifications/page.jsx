@@ -4,7 +4,7 @@ export default function page() {
       <div className='bg-gray-200 px-6 py-4 text-lg font-semibold text-gray-800'>공지사항 작성</div>
       <div className='p-6'>
         <div className='mb-6'>
-          <label className='mb-2 text-sm font-bold text-gray-700' for='title'>
+          <label className='mb-2 text-sm font-bold text-gray-700' htmlFor='title'>
             제목
           </label>
           <input
@@ -15,7 +15,7 @@ export default function page() {
           />
         </div>
         <div className='mb-6'>
-          <label className='mb-2 block text-sm font-bold text-gray-700' for='notice'>
+          <label className='mb-2 block text-sm font-bold text-gray-700' htmlFor='notice'>
             내용
           </label>
           <textarea
