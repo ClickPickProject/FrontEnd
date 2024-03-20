@@ -1,5 +1,7 @@
 'use client';
 import { tokenState } from '@/atoms/tokenState';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -9,7 +11,7 @@ export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
   useEffect(() => {
-    if (localStorage.getItem('token')) setIsLogin(true);
+    localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
 
   const hoverStyle =
@@ -37,11 +39,18 @@ export default function HomeNavbar() {
               </Link>
               <div className='absolute right-0 flex pr-8'>
                 {isLogin ? (
-                  <button onClick={onClickLogout} className={`${hoverStyle} `}>
-                    로그아웃
-                  </button>
+                  <>
+                    <div className='flex gap-4'>
+                      <button onClick={onClickLogout} className={`${hoverStyle}`}>
+                        로그아웃
+                      </button>
+                      <Link href='/profile' className={`${hoverStyle}`}>
+                        내 정보
+                      </Link>
+                    </div>
+                  </>
                 ) : (
-                  <Link href='/login' className={`${hoverStyle} `}>
+                  <Link href='/login' className={`${hoverStyle}`}>
                     로그인
                   </Link>
                 )}
