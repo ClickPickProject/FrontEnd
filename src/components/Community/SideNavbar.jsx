@@ -27,7 +27,7 @@ export default function SideNavbar() {
     setIsLogin(false);
   };
   useEffect(() => {
-    token ? setIsLogin(true) : setIsLogin(false);
+    localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
 
   const MENU = [
