@@ -2,8 +2,8 @@
 import { MailIcon, PasswordIcon } from '@/components/UI/Icons';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSetRecoilState } from 'recoil';
-import { tokenState } from '@/atoms/tokenState';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
@@ -12,6 +12,7 @@ export default function LoginPage() {
   let [id, setId] = useState('');
   let [pw, setPw] = useState('');
   const setToken = useSetRecoilState(tokenState);
+  const [MyNickname, setMyNickname] = useRecoilState(MyNicknameState);
   const router = useRouter();
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
 
@@ -30,6 +31,7 @@ export default function LoginPage() {
       if (res.status === 200) {
         localStorage.clear();
         setToken(token);
+        setMyNickname(res.data.nickname);
         router.push('/');
       }
     } catch (err) {
