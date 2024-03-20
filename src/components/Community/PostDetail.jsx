@@ -51,7 +51,6 @@ export default function PostDetail() {
             Authorization: token,
           },
         });
-        console.log('likePostCheck true');
         queryClient.invalidateQueries(['post', params.id]);
       }
       if (likePostCheck === false) {
