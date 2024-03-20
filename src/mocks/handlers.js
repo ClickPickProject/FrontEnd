@@ -40,10 +40,24 @@ export const handlers = [
 
   // 로그인
   http.post('/api/login', () => {
-    return HttpResponse.json('로그인 되었습니다.', {
-      headers: {
-        Authorization: `Bearer ${Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)}`,
+    return HttpResponse.json(
+      { nickname: '야놀자' },
+      {
+        headers: {
+          Authorization: `Bearer ${Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)}`,
+        },
       },
+    );
+  }),
+
+  // 유저 정보 확인
+  http.get('/api/member/userinfo', () => {
+    return HttpResponse.json({
+      id: 'testAccount',
+      name: '크아아앙',
+      nickname: '야놀자',
+      phone: '010-1234-5678',
+      createAt: '2024-03-05T18:55:48.884Z',
     });
   }),
 
@@ -320,7 +334,7 @@ export const handlers = [
             likeCommentCheck: false,
             recommentList: [
               {
-                commentId: 1,
+                commentId: 2,
                 nickname: '기사',
                 content: '탑승',
                 createAt: '2024-03-086T10:55:48.884Z',
@@ -330,7 +344,7 @@ export const handlers = [
             ],
           },
           {
-            commentId: 2,
+            commentId: 3,
             nickname: '응맞음',
             content: '네네',
             createAt: '2024-03-07T18:55:48.884Z',
@@ -338,7 +352,7 @@ export const handlers = [
             likeCommentCheck: true,
             recommentList: [
               {
-                commentId: 2,
+                commentId: 4,
                 nickname: '대대대댓',
                 content: '대래대래댓댓 댓걸',
                 createAt: '2024-03-166T10:55:48.884Z',
@@ -346,7 +360,7 @@ export const handlers = [
                 likeCommentCheck: false,
               },
               {
-                commentId: 233,
+                commentId: 5,
                 nickname: '아아악',
                 content: '2빠',
                 createAt: '2024-03-166T11:55:48.884Z',
@@ -420,6 +434,21 @@ export const handlers = [
     return HttpResponse.json({
       postId: 1,
       content: '댓글 작성입니다',
+    });
+  }),
+
+  // 댓글 삭제
+  http.delete('/api/member/comment/:commentId', ({ params }) => {
+    const { commentId } = params;
+    return HttpResponse.json(`${commentId} 삭제가 완료되었습니다.`);
+  }),
+
+  // 답글 작성
+  http.post('/api/member/recomment', () => {
+    return HttpResponse.json({
+      parentcommentId: 1,
+      postId: 1,
+      content: '답글 작성',
     });
   }),
 ];
