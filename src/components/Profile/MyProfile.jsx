@@ -4,47 +4,32 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { userNameState, userPhoneState, userNickNameState } from '@/atoms/userInfoState';
 export default function MyProfile() {
-  // const Users = async () => {
-  //   const body = {
-  //     postId: params.id,
-  //     content: comment,
-  //   };
-  //   try {
-  //     const res = await axios.post('/api/member/comment', body, {
-  //       withCredentials: true,
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     });
-  //     if (res.status === 200) {
-  //       commentsUpdate();
-  //       queryClient.invalidateQueries(['comments', params.id]);
-  //       queryClient.invalidateQueries(['post', params.id]);
-  //       setComment('');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const [name, setName] = useRecoilState(userNameState);
+  const [nickName, setNickName] = useRecoilState(userNickNameState);
+  const [address, setAddress] = useState('미국');
+  const [bio, setBio] = useState('홍박사님을아세요?');
+  const [phone, setPhone] = useRecoilState(userPhoneState);
   const token = useRecoilValue(tokenState);
-  const onClick = async () => {
-    const body = {
-      name: name,
-      nickName: nickName,
-      phone: phone,
-    };
+  // useEffect(() => {
+  const onClick = async (e) => {
+    e.preventDefault();
     try {
+      const body = {
+        name: name,
+        nickname: nickName,
+        phone: phone,
+      };
       const res = await axios.get('/api/member/userinfo', body, {
         withCredentials: true,
         headers: {
           Authorization: token,
         },
       });
-      console.log(res);
-      if (res.status === 200 || 201) {
+      if (res.status === 200) {
         console.log(res);
-        alert('gdgd 불러올 수 없습니다');
+        alert('ㅎㅇㅎㅇ');
       }
     } catch (e) {
       console.log(e);
@@ -52,11 +37,6 @@ export default function MyProfile() {
     }
   };
 
-  const [name, setName] = useState('홍길동');
-  const [nickName, setNickName] = useState('홍박사');
-  const [address, setAddress] = useState('미국');
-  const [bio, setBio] = useState('홍박사님을아세요?');
-  const [phone, setPhone] = useState('01012345678');
   const inputFont = 'mx-2 w-[250px] bg-pink-100 text-gray-500';
   //API로 받아올 값
   const handleNameValueChange = (e) => {
@@ -98,9 +78,9 @@ export default function MyProfile() {
     // setBio();
     // setNickName();
     // setPhone();
-    onClick();
     alert('저장되었습니다.');
   };
+
   return (
     <>
       <div className='flex w-full flex-col'>
@@ -204,7 +184,7 @@ export default function MyProfile() {
                 placeholder='소개를 입력하세요'
               />
               <br />
-              <button onClick={handleSave} className='float-end mt-3 font-semibold'>
+              <button onClick={onClick} className='float-end mt-3 font-semibold'>
                 저장
               </button>
             </form>
