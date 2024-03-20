@@ -2,42 +2,46 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+//token값 받아옴
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { userNameState, userPhoneState, userNickNameState } from '@/atoms/userInfoState';
+import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 export default function MyProfile() {
   const [name, setName] = useRecoilState(userNameState);
   const [nickName, setNickName] = useRecoilState(userNickNameState);
-  const [address, setAddress] = useState('미국');
+  const [userId, setUserId] = useRecoilState(userIdState);
   const [bio, setBio] = useState('홍박사님을아세요?');
   const [phone, setPhone] = useRecoilState(userPhoneState);
+  //token값 받아옴
   const token = useRecoilValue(tokenState);
-  // useEffect(() => {
-  const onClick = async (e) => {
-    e.preventDefault();
-    try {
-      const body = {
-        name: name,
-        nickname: nickName,
-        phone: phone,
-      };
-      const res = await axios.get('/api/member/userinfo', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        console.log(res);
-        alert('ㅎㅇㅎㅇ');
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get('/api/member/userinfo', {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          setName(res.data.name);
+          setNickName(res.data.nickname);
+          setPhone(res.data.phone);
+          setUserId(res.data.id);
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Error: 데이터를 불러올 수 없습니다');
       }
-    } catch (e) {
-      console.log(e);
-      alert('Error데이터를 불러올 수 없습니다');
-    }
-  };
+    };
+    // 데이터를 가져오는 함수 호출
+    fetchData();
 
-  const inputFont = 'mx-2 w-[250px] bg-pink-100 text-gray-500';
+    // cleanup 함수 (optional)
+    return () => {};
+  }, []);
+  const btnStyle = 'ml-8  w-[150px] rounded-lg border border-black bg-pink-100 font-semibold p-1';
+  const inputFont = 'mx-2 w-[400px] bg-pink-100 text-gray-500 border border-black p-1';
   //API로 받아올 값
   const handleNameValueChange = (e) => {
     e.preventDefault();
@@ -46,6 +50,7 @@ export default function MyProfile() {
   };
   const handleAddressValueChange = (e) => {
     e.preventDefault();
+    //d
     console.log('주소가 변경됨');
     //주소변경 저장소
   };
@@ -71,13 +76,8 @@ export default function MyProfile() {
   const handleInputImg = (e) => {
     e.preventDefault();
   };
-  const handleSave = (e) => {
-    // e.preventDefault();
-    // setName();
-    // setAddress();
-    // setBio();
-    // setNickName();
-    // setPhone();
+  const onSave = (e) => {
+    set;
     alert('저장되었습니다.');
   };
 
@@ -87,7 +87,7 @@ export default function MyProfile() {
         <h1 className='mb-5 text-2xl font-bold '>🙋‍♂️마이 프로필</h1>
         <div className='mb-10 border border-pink-200'></div>
 
-        <div className='mx-auto flex h-96 w-2/3 rounded-2xl border border-pink-200'>
+        <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
             <form action='' className='margin ml-8 mt-5'>
               <img src='/sakura.jpg' alt='#' className='h-[150px] w-[150px] rounded-full' />
@@ -127,6 +127,7 @@ export default function MyProfile() {
                 placeholder='이름을 입력하세요'
                 className={inputFont}
               />
+              <button className={btnStyle}>변경</button>
             </form>
             {/* 별명 */}
             <form onSubmit={handleAddressValueChange} className='mt-3'>
@@ -141,20 +142,22 @@ export default function MyProfile() {
                 onChange={(e) => setNickName(e.target.value)}
                 placeholder='별명을 입력하세요'
               />
+              <button className={btnStyle}>변경</button>
             </form>
-            {/* 위치 */}
+            {/* 아이디 */}
             <form onSubmit={handleAddressValueChange} className='mt-3'>
-              <label htmlFor='address' className='mx-5 font-semibold'>
-                위치
+              <label htmlFor='id' className='mx-5 font-semibold'>
+                아디
               </label>
               <input
-                id='address'
+                id='id'
                 type='text'
-                value={address}
+                value={userId}
                 className={inputFont}
-                onChange={(e) => setAddress(e.target.value)}
-                placeholder='주소를 입력하세요'
+                onChange={(e) => setUserId(e.target.value)}
+                placeholder='아이디를 입력하세요'
               />
+              <button className={btnStyle}>변경</button>
             </form>
             {/* 폰번호 */}
             <form onSubmit={handleBioValueChange} className='mt-3'>
@@ -169,6 +172,7 @@ export default function MyProfile() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder='휴대폰 번호를 입력하세요'
               />
+              <button className={btnStyle}>변경</button>
             </form>
             {/* 소개 */}
             <form onSubmit={handleBioValueChange} className='mt-3'>
@@ -179,15 +183,15 @@ export default function MyProfile() {
                 id='introduce'
                 type='text'
                 value={bio}
-                className='top mx-2 ml-[80px] h-[170px] w-[250px] bg-pink-100 py-10 align-text-top text-gray-500'
+                className='top mx-2 ml-[80px] h-[170px] w-[400px] border border-black bg-pink-100 py-10 align-text-top text-gray-500'
                 onChange={(e) => setBio(e.target.value)}
                 placeholder='소개를 입력하세요'
               />
-              <br />
-              <button onClick={onClick} className='float-end mt-3 font-semibold'>
-                저장
-              </button>
+              <button className={btnStyle}>변경</button>
             </form>
+            <button onClick={onSave} className='float-end mt-3 font-semibold'>
+              저장
+            </button>
           </div>
         </div>
       </div>

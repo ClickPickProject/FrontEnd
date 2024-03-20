@@ -14,3 +14,8 @@ export const userPhoneState = atom({
   key: 'userPhoneState',
   default: '',
 });
+
+export const userIdState = atom({
+  key: 'userIdState',
+  default: '',
+});
