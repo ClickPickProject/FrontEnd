@@ -34,26 +34,8 @@ export default function CommentWrite() {
         },
       });
       if (res.status === 200) {
-        commentsUpdate();
-        queryClient.invalidateQueries(['comments', params.id]);
-        queryClient.invalidateQueries(['post', params.id]);
+        queryClient.invalidateQueries(['posts', params.id]);
         setComment('');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const commentsUpdate = async () => {
-    try {
-      const res = await axios.get(`/api/post/${params.id}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        setComments(res.data.comments);
       }
     } catch (err) {
       console.log(err);
