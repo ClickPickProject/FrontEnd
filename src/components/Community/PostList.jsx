@@ -124,7 +124,8 @@ export default function PostList({ category }) {
   };
 
   // 검색 버튼 클릭 핸들러
-  const onClickSearch = async () => {
+  const onClickSearch = async (e) => {
+    e.preventDefault();
     switch (searchOption) {
       case 'title':
         await searchByTitle();
