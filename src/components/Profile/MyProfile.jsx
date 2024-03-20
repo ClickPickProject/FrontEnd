@@ -2,8 +2,56 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { tokenState } from '@/atoms/tokenState';
+import { useRecoilValue, useRecoilState } from 'recoil';
 export default function MyProfile() {
+  // const Users = async () => {
+  //   const body = {
+  //     postId: params.id,
+  //     content: comment,
+  //   };
+  //   try {
+  //     const res = await axios.post('/api/member/comment', body, {
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     });
+  //     if (res.status === 200) {
+  //       commentsUpdate();
+  //       queryClient.invalidateQueries(['comments', params.id]);
+  //       queryClient.invalidateQueries(['post', params.id]);
+  //       setComment('');
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  const token = useRecoilValue(tokenState);
+  const onClick = async () => {
+    const body = {
+      name: name,
+      nickName: nickName,
+      phone: phone,
+    };
+    try {
+      const res = await axios.get('/api/member/userinfo', body, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      console.log(res);
+      if (res.status === 200 || 201) {
+        console.log(res);
+        alert('gdgd 불러올 수 없습니다');
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Error데이터를 불러올 수 없습니다');
+    }
+  };
+
   const [name, setName] = useState('홍길동');
   const [nickName, setNickName] = useState('홍박사');
   const [address, setAddress] = useState('미국');
@@ -44,12 +92,13 @@ export default function MyProfile() {
     e.preventDefault();
   };
   const handleSave = (e) => {
-    e.preventDefault();
-    setName();
-    setAddress();
-    setBio();
-    setNickName();
-    setPhone();
+    // e.preventDefault();
+    // setName();
+    // setAddress();
+    // setBio();
+    // setNickName();
+    // setPhone();
+    onClick();
     alert('저장되었습니다.');
   };
   return (
