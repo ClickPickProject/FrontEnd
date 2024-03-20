@@ -98,6 +98,11 @@ const nextConfig = {
         source: '/api/member/liked/comment/list/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/liked/comment/list/:path*`,
       },
+      // 닉네임 변경
+      {
+        source: '/api/member/new-nickname/list/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-nickname/list/:path*`,
+      },
     ];
   },
 };

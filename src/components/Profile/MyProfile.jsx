@@ -77,7 +77,6 @@ export default function MyProfile() {
     e.preventDefault();
   };
   const onSave = (e) => {
-    set;
     alert('저장되었습니다.');
   };
 
