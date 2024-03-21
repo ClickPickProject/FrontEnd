@@ -451,4 +451,12 @@ export const handlers = [
       content: '답글 작성',
     });
   }),
+  // 댓글 신고
+  http.post('/api/member/report/comment', () => {
+    return HttpResponse.json({
+      reportedUserNickname: '신고하고자 하는 댓글 닉',
+      commentId: 666,
+      reason: '신고 사유',
+    });
+  }),
 ];
