@@ -39,7 +39,6 @@ export default function LoginPage() {
       alert('로그인 불가');
     }
   };
-
   return (
     <>
       <div className='h-[100dvh] bg-[#fdf4f5]'>

@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
 import WriterView from './BestPost/WriterView';
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
+import { MyNicknameState } from '@/atoms/tokenState';
 
-export default function ReplyToggle({ commentId, onSubmitReply }) {
+export default function ReplyToggle({ commentNickname, onSubmitReply }) {
   const [reply, setReply] = useState('');
+  const myNickname = useRecoilValue(MyNicknameState);
 
   const handleReplyChange = (e) => {
     e.target.style.height = 'auto';
@@ -14,16 +15,16 @@ export default function ReplyToggle({ commentId, onSubmitReply }) {
   };
 
   const onClickReplyWrite = async () => {
-    console.log('onClickReplytWrite');
-    onSubmitReply(reply);
-
+    const mentionedWriter = `@${commentNickname}`; // 작성자의 닉네임을 멘션
+    const fullReplyContent = `${mentionedWriter} ${reply}`;
+    onSubmitReply(fullReplyContent);
     setReply('');
   };
 
   return (
     <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
       <div className='mt-2'>
-        <WriterView writer={'답글작성자'} />
+        <WriterView writer={myNickname} />
       </div>
       <textarea
         placeholder='답글을 입력하세요'

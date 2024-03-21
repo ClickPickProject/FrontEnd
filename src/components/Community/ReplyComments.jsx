@@ -1,93 +1,124 @@
+'use client';
 import WriterView from './BestPost/WriterView';
 import { ReplyIcon } from '../UI/Icons';
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
-import axios from 'axios';
-import { tokenState } from '@/atoms/tokenState';
-import { useRecoilValue } from 'recoil';
-import { useQueryClient } from '@tanstack/react-query';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { MyNicknameState } from '@/atoms/tokenState';
+import { parentCommentIdState } from '@/atoms/commentState';
 
-export default function ReplyComments({ reply }) {
+export default function ReplyComments({
+  reply,
+  onSubmitReply,
+  onClickEdit,
+  editMode,
+  onSaveEdit,
+  onCancelEdit,
+  onClickCommentDelete,
+}) {
   const [replyComment, setReplyComment] = useState('');
-  const [replyToggle, setReplyToggle] = useState(Array(reply.length).fill(false));
-  const [parentCommentId, setParentCommentId] = useState('');
-  const token = useRecoilValue(tokenState);
-  const params = useParams();
-  const queryClient = useQueryClient();
+  const [isReplyOpen, setIsReplyOpen] = useState(false);
+
+  const myNickname = useRecoilValue(MyNicknameState);
+  const setParentCommentId = useSetRecoilState(parentCommentIdState);
 
   const handleReplyChange = (e) => {
-    e.target.style.height = 'auto';
-    e.target.style.height = `${e.target.scrollHeight}px`;
     setReplyComment(e.target.value);
   };
 
-  const onClickReply = (commentId) => {
-    setReplyToggle((prevToggles) => {
-      const newToggles = [...prevToggles];
-      newToggles.fill(false);
-      newToggles[commentId] = !prevToggles[commentId];
-      console.log(commentId);
-      return newToggles;
-    });
-    setParentCommentId(commentId);
+  const toggleReply = () => {
+    setParentCommentId(reply.parentId);
+    setIsReplyOpen((prevIsReplyOpen) => !prevIsReplyOpen);
   };
 
-  const onClickReplyWrite = async () => {
-    const body = {
-      parentCommentId: parentCommentId,
-      postId: params.id,
-      content: reply,
-    };
-    try {
-      const res = await axios.post('/api/member/recomment', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        // commentsUpdate();
-        queryClient.invalidateQueries(['comments', params.id]);
-        queryClient.invalidateQueries(['post', params.id]);
-        setReplyComment('');
-      }
-    } catch (err) {
-      alert(err);
-    }
+  const submitReply = () => {
+    const mentionedWriter = `@${reply.nickname}`; // 작성자의 닉네임을 멘션
+    const fullReplyContent = `${mentionedWriter} ${replyComment}`;
+    onSubmitReply(fullReplyContent);
+    setReplyComment('');
+    toggleReply(); // 답글 제출 후 답글 폼 close
   };
+
+  const mentionMatch = reply.content.match(/(@\S+)\s(.+)/);
+  const mention = mentionMatch ? mentionMatch[1] : ''; // match 결과가 null이 아니면 첫 번째 그룹을 가져옴
+  const commentContent = mentionMatch ? mentionMatch[2] : ''; // match 결과가 null이 아니면 두 번째 그룹을 가져옴
+
+  const onChangeTextarea = (e) => {
+    setReplyComment(e.target.value);
+  };
+
   return (
     <>
+      {/* 답글 목록 */}
       <div className='flex flex-col gap-2'>
         <WriterView writer={reply.nickname} date={reply.createAt} />
-        <div>{reply.content}</div>
+        {/* <div>
+          <span className='text-sm opacity-50'>{mention}</span> {commentContent}
+        </div> */}
+
+        {editMode === reply.commentId ? ( // 수정 모드인 경우
+          <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
+            <textarea
+              defaultValue={''} // 기존 내용을 입력창에 미리 표시
+              onChange={onChangeTextarea}
+              className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
+            />
+            <div>
+              <button
+                className='hover:text-pink-400'
+                onClick={() => onSaveEdit(reply.commentId, replyComment, '@' + reply.nickname)}
+              >
+                저장
+              </button>
+            </div>
+            <div>
+              <button className='hover:text-pink-400' onClick={onCancelEdit}>
+                취소
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <span className='text-sm opacity-50'>{mention}</span> {commentContent}
+          </div>
+        )}
         <div className='flex items-center gap-1'>
           <ReplyIcon color='red' opacity='70%' />
           <div className='text-sm font-semibold opacity-50'>신고</div>
           <div
-            className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-            onClick={() => onClickReply(reply.commentId)}
+            className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'
+            onClick={() => toggleReply(reply)}
           >
             <ReplyIcon color='#ec4899' />
-            <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글 일세 {reply.commentId}</div>
+            <div className='text-sm font-semibold hover:opacity-100'>답글</div>
           </div>
-          {reply.nickname === '올빼미' ? <div className='text-sm font-semibold opacity-50'>삭제</div> : null}
+          {reply.nickname === myNickname ? (
+            <button
+              className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
+              onClick={() => onClickEdit(reply.commentId)}
+            >
+              {reply.commentStatus === 'DELETE' ? null : '수정'}
+            </button>
+          ) : null}
+          {reply.nickname === myNickname ? (
+            <button onClick={() => onClickCommentDelete(reply.commentId)} className='text-sm font-semibold opacity-50'>
+              {reply.commentStatus === 'DELETE' ? null : '삭제'}
+            </button>
+          ) : null}
         </div>
         <div className='my-2 border' />
-
-        {/* 답글 토글 */}
-        {replyToggle[reply.commentId] && (
-          <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
+        {isReplyOpen && (
+          <div className='mb-5 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
             <div className='mt-2'>
-              <WriterView writer={'답글작성자'} />
+              <WriterView writer={myNickname} />
             </div>
             <textarea
               placeholder='답글을 입력하세요'
-              className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
-              value={reply}
+              className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
+              value={replyComment}
               onChange={handleReplyChange}
             />
             <div className='m-2 flex w-[54px] cursor-pointer justify-center rounded-md bg-pink-300 py-1 text-sm transition-all hover:bg-pink-400 hover:text-white'>
-              <button className='h-full w-full' onClick={onClickReplyWrite}>
+              <button className='h-full w-full' onClick={submitReply}>
                 등록
               </button>
             </div>

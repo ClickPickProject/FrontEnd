@@ -1,29 +1,31 @@
 import WriterView from './BestPost/WriterView';
 import { useState } from 'react';
-import ReplyComments from './ReplyComments';
 import { ReplyIcon, ReportIcon } from '../UI/Icons';
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import { MyNicknameState, tokenState } from '@/atoms/tokenState';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { parentCommentIdState, parentCommentNickState } from '@/atoms/commentState';
+import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
+import axios from 'axios';
 
 export default function Comments({ comments }) {
   const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
   const params = useParams();
   const token = useRecoilValue(tokenState);
   const [editMode, setEditMode] = useState(null); // 추가: 수정 모드를 저장하는 상태
-  const [reply, setReply] = useState('');
-  const [parentCommentId, setParentCommentId] = useState('');
-  const [myNickname, setMyNickname] = useRecoilState(MyNicknameState);
+  const [parentCommentId, setParentCommentId] = useRecoilState(parentCommentIdState);
+  const setParentCommentNickname = useSetRecoilState(parentCommentNickState);
+  const myNickname = useRecoilValue(MyNicknameState);
   const queryClient = useQueryClient();
 
   if (!comments || comments.length === 0) {
     return null;
   }
 
-  const onClickReply = (commentId) => {
+  const onClickReply = (commentId, nickname) => {
+    setParentCommentNickname(nickname);
     setParentCommentId(commentId);
     setReplyToggle((prevToggles) => {
       const newToggles = [...prevToggles];
@@ -34,11 +36,9 @@ export default function Comments({ comments }) {
   };
 
   const onClickCommentDelete = async (commentId) => {
+    console.log('delete');
     try {
-      const body = {
-        comment_id: commentId,
-      };
-      const res = await axios.delete(`/api/member/comment/${commentId}`, body, {
+      const res = await axios.delete(`/api/member/comment/${commentId}`, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -56,9 +56,27 @@ export default function Comments({ comments }) {
     setEditMode(commentId); // 추가: 수정 버튼 클릭 시 수정 모드로 변경
   };
 
-  const onSaveEdit = async (commentId, newContent) => {
+  const onSaveEdit = async (commentId, newContent, nickname) => {
     // 추가: 저장 버튼 클릭 시 수정된 내용을 저장
-    // axios 통신 코드 추가 필요
+    try {
+      console.log(nickname + newContent);
+      const body = {
+        postId: commentId,
+        content: `${nickname} ${newContent}`,
+      };
+      const res = await axios.post(`/api/member/comment/${commentId}`, body, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        console.log('저장');
+        queryClient.invalidateQueries(['post', params.id]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
     setEditMode(null); // 저장 후 수정 모드 종료
   };
 
@@ -106,7 +124,7 @@ export default function Comments({ comments }) {
                   className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
                 />
                 <div>
-                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId, '수정된 내용')}>
+                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId)}>
                     저장
                   </button>
                 </div>
@@ -127,11 +145,11 @@ export default function Comments({ comments }) {
               </div>
               <div
                 className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-                onClick={() => onClickReply(comment.commentId)}
+                onClick={() => onClickReply(comment.commentId, comment.nickname)}
               >
                 <ReplyIcon color='#ec4899' />
 
-                <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글 {comment.commentId}</div>
+                <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
               </div>
 
               {/* 댓글 수정 및 삭제 */}
@@ -140,7 +158,7 @@ export default function Comments({ comments }) {
                   className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
                   onClick={() => onClickEdit(comment.commentId)}
                 >
-                  수정
+                  {comment.commentStatus === 'DELETE' ? null : '수정'}
                 </button>
               ) : null}
               {comment.nickname === myNickname ? (
@@ -148,20 +166,35 @@ export default function Comments({ comments }) {
                   onClick={() => onClickCommentDelete(comment.commentId)}
                   className='text-sm font-semibold opacity-50'
                 >
-                  삭제
+                  {comment.commentStatus === 'DELETE' ? null : '삭제'}
                 </button>
               ) : null}
             </div>
             <div className='my-2 border' />
+            {replyToggle[comment.commentId] && (
+              <ReplyToggle
+                commentId={comment.commentId}
+                commentNickname={comment.nickname}
+                parentNickname={comment.nickname}
+                onSubmitReply={onSubmitReply}
+              />
+            )}
             {/* 답글 목록 */}
             <div className='ml-4'>
               {comment.recommentList.map((reply) => (
-                <ReplyComments key={reply.commentId} reply={reply} />
+                <ReplyComments
+                  key={reply.commentId}
+                  reply={reply}
+                  comments={comments}
+                  onSubmitReply={onSubmitReply}
+                  onClickEdit={onClickEdit}
+                  editMode={editMode}
+                  onSaveEdit={onSaveEdit}
+                  onCancelEdit={onCancelEdit}
+                  onClickCommentDelete={onClickCommentDelete}
+                />
               ))}
             </div>
-            {replyToggle[comment.commentId] && (
-              <ReplyToggle commentId={comment.commentId} onSubmitReply={onSubmitReply} />
-            )}
           </li>
         ))}
       </ul>
