@@ -2,7 +2,7 @@ import { FaSearch } from 'react-icons/fa';
 
 export default function ReportersSearch() {
   return (
-    <div className='mb-4 flex w-full'>
+    <div className='mx-auto mb-4 flex w-1/4'>
       {/* 검색어 입력 */}
       <form className='relative w-full'>
         <input

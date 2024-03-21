@@ -1,25 +1,36 @@
 'use client';
 import dynamic from 'next/dynamic';
-// import Chart from 'react-apexcharts';
+import { useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
 export default function ReporterCharts() {
-  const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+  // const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setMounted(true);
+    } else {
+      return null;
+    }
+  }, []);
+
   const series = [
     {
-      name: 'Desktops',
-      data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+      name: '신고요청 수',
+      data: [10, 41, 35, 51, 49],
     },
   ];
 
   const options = {
     chart: {
-      height: 350,
+      height: 200,
       type: 'line',
       zoom: {
         enabled: false,
       },
     },
     dataLabels: {
-      enabled: false,
+      enabled: true,
     },
     stroke: {
       curve: 'straight',
@@ -35,16 +46,14 @@ export default function ReporterCharts() {
       },
     },
     xaxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
     },
   };
 
   return (
     <>
       <div>
-        <div id='chart'>
-          {typeof window !== 'undefined' && <Chart type='line' options={options} series={series} height={350} />}
-        </div>
+        <div id='chart'>{mounted && <Chart type='line' options={options} series={series} height={200} />}</div>
         <div id='html-dist'></div>
       </div>
     </>
