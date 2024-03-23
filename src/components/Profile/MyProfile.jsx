@@ -11,7 +11,7 @@ export default function MyProfile() {
   const [name, setName] = useRecoilState(userNameState);
   const [nickName, setNickName] = useRecoilState(userNickNameState);
   const [userId, setUserId] = useRecoilState(userIdState);
-  const [bio, setBio] = useState('홍박사님을아세요?');
+  const [bio, setBio] = useState('');
   const [phone, setPhone] = useRecoilState(userPhoneState);
   const [nickNameDisabled, setNickNameDisabled] = useState(false);
   const [phoneDisabled, setPhoneDisabled] = useState(false);
@@ -64,6 +64,29 @@ export default function MyProfile() {
     return () => {};
   }, []);
 
+  //프로필사진 삭제
+  const [imgDelete, setImgDelete] = useState(false); // 탈퇴 확인 상태를 저장하는 상태 변수
+  const handleImgDelete = async (e) => {
+    e.preventDefault();
+    if (!imgDelete) {
+      setImgDelete(true); // 확인 버튼을 누르기 전에 확인 메시지를 표시
+    } else {
+      try {
+        const res = await axios.delete('/api/member/profileimage', {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          console.log('이미지 삭제 완료');
+          alert('이미지가 삭제 되셨습니다');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
   //회원탈퇴
   const [confirmDelete, setConfirmDelete] = useState(false); // 탈퇴 확인 상태를 저장하는 상태 변수
   const handleDelete = async (e) => {
@@ -139,7 +162,7 @@ export default function MyProfile() {
   };
 
   //style값
-  const btnStyle = 'ml-8  w-[70px] rounded-lg border border-black bg-pink-100 font-semibold p-1';
+  const btnStyle = 'mx-4  w-[70px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner';
   const inputFont =
     'mx-2 w-[350px] bg-pink-100 text-gray-500 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
   //API로 받아올 값
@@ -173,33 +196,54 @@ export default function MyProfile() {
 
   return (
     <>
+      {/* 탈퇴 확인 */}
       {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
         <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
           <p>정말로 탈퇴하시겠습니까?</p>
-          <button className=' p-2 font-bold' onClick={handleDelete}>
+          <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleDelete}>
             {' '}
             확인
           </button>
-          <button className='p-2 font-bold' onClick={() => setConfirmDelete(false)}>
+          <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
+            취소{' '}
+          </button>
+        </div>
+      )}
+      {/* 이미지 삭제 확인 */}
+      {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+        <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
+          <p>정말로 사진을 삭제하시겠습니까?</p>
+          <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleImgDelete}>
+            {' '}
+            확인
+          </button>
+          <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setImgDelete(false)}>
             취소{' '}
           </button>
         </div>
       )}
       <div className='flex w-full flex-col'>
-        <h1 className='mb-5 text-2xl font-bold '>🙋‍♂️마이 프로필</h1>
+        <h1 className='mb-5 text-2xl font-bold'>🙋‍♂️마이 프로필</h1>
+        <p className='mb-4 text-sm opacity-50'> 나의 프로필을 자유롭게 꾸며보세요.</p>
         <div className='mb-10 border border-pink-200'></div>
 
         <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
             <form action='' className='margin ml-8 mt-5'>
               <div>
-                <img src={image} alt='#' className='mb-2 h-[150px] w-[150px] rounded-full' />
+                <img
+                  src={image}
+                  alt='#'
+                  className='mx-auto mb-2 h-[150px] w-[150px] rounded-full border-4 border-white shadow-xl '
+                />
+                <br />
                 <label
                   htmlFor='file'
-                  className='mx-auto flex cursor-pointer justify-center rounded-lg border-black bg-pink-100 p-3 font-semibold'
+                  className='mx-auto flex cursor-pointer justify-center rounded-lg border-black bg-pink-100 p-3 font-semibold  hover:shadow-inner'
                 >
                   이미지 변경
                 </label>
+
                 <input
                   type='file'
                   id='file'
@@ -215,9 +259,21 @@ export default function MyProfile() {
               <p>💬게시수 {`()`}</p>
               <p>💬댓글수 {`()`}</p>
               <p>💬조회수 {`()`}</p>
-              <button onClick={handleDelete} className='my-5 ml-8 w-[150px] rounded-lg bg-pink-100 p-3 font-semibold'>
-                회원탈퇴
-              </button>
+              <br />
+              <div className='ml-9'>
+                <button
+                  onClick={handleDelete}
+                  className=' w-[150px] rounded-lg bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                >
+                  회원탈퇴
+                </button>
+                <button
+                  onClick={handleImgDelete}
+                  className='mb-3 ml-5 w-[150px] rounded-lg bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                >
+                  사진삭제
+                </button>
+              </div>
             </div>
           </div>
           <div className='mx-auto'>
