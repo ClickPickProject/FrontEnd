@@ -76,14 +76,14 @@ const ReportModal = ({ nickname, commentId }) => {
           {/* 제출 버튼 */}
           <button
             onClick={() => handleSubmit(nickname, commentId, reportReason)}
-            className='inline-flex w-full justify-center rounded-md border border-transparent bg-pink-400 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm'
+            className='w-full justify-center rounded-md border border-transparent bg-pink-400 px-4 py-2 text-base font-medium text-white shadow-sm transition-all hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm'
           >
             신고
           </button>
           {/* 취소 버튼 */}
           <button
             onClick={closeReportModal}
-            className='mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm'
+            className='mt-3 w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm'
           >
             취소
           </button>

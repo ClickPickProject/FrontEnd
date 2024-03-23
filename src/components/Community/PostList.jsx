@@ -154,7 +154,7 @@ export default function PostList({ category }) {
         {displayPosts?.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
-            <div className='flex items-center gap-2 font-semibold'>
+            <div className='flex items-center gap-1 font-semibold'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
               <span className='text-center font-semibold'>[{data.commentCount}]</span>
             </div>
