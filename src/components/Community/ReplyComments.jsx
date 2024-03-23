@@ -90,7 +90,7 @@ export default function ReplyComments({
           <div
             className='fixed inset-0 z-10 overflow-y-auto'
             onKeyDown={(e) => {
-              if (e.key === 'Escape') setReportModal(false);
+              if (e.code === 'Escape') setReportModal(false);
             }}
           >
             <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
