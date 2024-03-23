@@ -1,9 +1,7 @@
 'use client';
-import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 export default function ReporterCharts() {
-  // const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

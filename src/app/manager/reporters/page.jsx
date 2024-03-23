@@ -1,10 +1,11 @@
 'use client';
-import ReporterCharts from './ReporterCharts';
+import dynamic from 'next/dynamic';
 import ReporterList from './ReporterList';
 import ReportersSearch from './ReportersSearch';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function page() {
+  const ReporterCharts = dynamic(() => import('./ReporterCharts'), { ssr: false });
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 콤보박스를 열고 닫는 상태
 
@@ -27,9 +28,9 @@ export default function page() {
           <h2 className='text-2xl font-bold'>🚨 신고자 관리</h2>
           <p className='mb-4 text-sm opacity-50'>들어온 신고를 처리하는 곳입니다.</p>
         </div>
-        {/* <div className='mb-8'>
+        <div className='mb-8'>
           <ReporterCharts />
-        </div> */}
+        </div>
         <ReportersSearch />
         <div className='mx-auto flex w-full flex-col'>
           <div className='overflow-hidden rounded-md border-b border-gray-200 shadow'>
