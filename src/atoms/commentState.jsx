@@ -13,3 +13,8 @@ export const topParentCommentState = atom({
   key: 'topParentCommentState',
   default: '',
 });
+
+export const reportModalState = atom({
+  key: 'reportModalState',
+  default: false,
+});

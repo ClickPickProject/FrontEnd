@@ -1,10 +1,11 @@
 'use client';
 import WriterView from './BestPost/WriterView';
-import { ReplyIcon } from '../UI/Icons';
+import { EmptyHeartIcon, FillHeartIcon, ReplyIcon, ReportIcon } from '../UI/Icons';
 import { useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { MyNicknameState } from '@/atoms/tokenState';
-import { parentCommentIdState } from '@/atoms/commentState';
+import { parentCommentIdState, reportModalState } from '@/atoms/commentState';
+import ReportModal from './ReportModal';
 
 export default function ReplyComments({
   reply,
@@ -14,9 +15,12 @@ export default function ReplyComments({
   onSaveEdit,
   onCancelEdit,
   onClickCommentDelete,
+  onClickCommentLike,
+  onClickCommentReport,
 }) {
   const [replyComment, setReplyComment] = useState('');
   const [isReplyOpen, setIsReplyOpen] = useState(false);
+  const [reportModal, setReportModal] = useRecoilState(reportModalState);
 
   const myNickname = useRecoilValue(MyNicknameState);
   const setParentCommentId = useSetRecoilState(parentCommentIdState);
@@ -51,6 +55,7 @@ export default function ReplyComments({
       {/* 답글 목록 */}
       <div className='flex flex-col gap-2'>
         <WriterView writer={reply.nickname} date={reply.createAt} />
+        {/* <div>{reply.content}</div> */}
         {/* <div>
           <span className='text-sm opacity-50'>{mention}</span> {commentContent}
         </div> */}
@@ -60,7 +65,7 @@ export default function ReplyComments({
             <textarea
               defaultValue={''} // 기존 내용을 입력창에 미리 표시
               onChange={onChangeTextarea}
-              className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
+              className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
             />
             <div>
               <button
@@ -81,9 +86,46 @@ export default function ReplyComments({
             <span className='text-sm opacity-50'>{mention}</span> {commentContent}
           </div>
         )}
+        {reportModal && (
+          <div
+            className='fixed inset-0 z-10 overflow-y-auto'
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') setReportModal(false);
+            }}
+          >
+            <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
+              <ReportModal nickname={reply.nickname} commentId={reply.commentId} />
+            </div>
+          </div>
+        )}
         <div className='flex items-center gap-1'>
-          <ReplyIcon color='red' opacity='70%' />
-          <div className='text-sm font-semibold opacity-50'>신고</div>
+          <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
+            {reply.likeCommentCheck ? (
+              <div
+                className='flex items-center gap-1'
+                onClick={() => onClickCommentLike(reply.commentId, reply.likeCommentCheck)}
+              >
+                <EmptyHeartIcon color='red' />
+                <div className='text-sm font-semibold'>{reply.likeCount}</div>
+              </div>
+            ) : (
+              <div
+                className='flex items-center gap-1'
+                onClick={() => onClickCommentLike(reply.commentId, reply.likeCommentCheck)}
+              >
+                <FillHeartIcon color='red' />
+                <div className='text-sm font-semibold'>{reply.likeCount}</div>
+              </div>
+            )}
+          </div>
+
+          <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
+            <ReportIcon color='red' opacity='70%' />
+            <div className='text-sm font-semibold' onClick={onClickCommentReport}>
+              신고
+            </div>
+          </div>
+
           <div
             className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'
             onClick={() => toggleReply(reply)}

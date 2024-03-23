@@ -1,14 +1,15 @@
 import WriterView from './BestPost/WriterView';
 import { useState } from 'react';
-import { ReplyIcon, ReportIcon } from '../UI/Icons';
+import { EmptyHeartIcon, FillHeartIcon, ReplyIcon, ReportIcon } from '../UI/Icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { parentCommentIdState, parentCommentNickState } from '@/atoms/commentState';
+import { parentCommentIdState, parentCommentNickState, reportModalState } from '@/atoms/commentState';
 import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
 import axios from 'axios';
+import ReportModal from './ReportModal';
 
 export default function Comments({ comments }) {
   const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
@@ -19,6 +20,7 @@ export default function Comments({ comments }) {
   const setParentCommentNickname = useSetRecoilState(parentCommentNickState);
   const myNickname = useRecoilValue(MyNicknameState);
   const queryClient = useQueryClient();
+  const [reportModal, setReportModal] = useRecoilState(reportModalState);
 
   if (!comments || comments.length === 0) {
     return null;
@@ -81,7 +83,7 @@ export default function Comments({ comments }) {
   };
 
   const onCancelEdit = () => {
-    setEditMode(null); // 추가: 취소 버튼 클릭 시 수정 모드 종료
+    setEditMode(null); // 취소 버튼 클릭 시 수정 모드 종료
   };
 
   const onSubmitReply = async (content) => {
@@ -110,6 +112,36 @@ export default function Comments({ comments }) {
     }
   };
 
+  const onClickCommentReport = () => {
+    setReportModal(true);
+  };
+
+  const onClickCommentLike = async (commentId, likeCheck) => {
+    console.log(commentId, likeCheck);
+    try {
+      if (likeCheck === true) {
+        await axios.get(`/api/member/likedcomment/${commentId}`, {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        queryClient.invalidateQueries(['post', params.id]);
+      }
+      if (likeCheck === false) {
+        await axios.get(`/api/member/likedcomment/${commentId}`, {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        queryClient.invalidateQueries(['post', params.id]);
+      }
+    } catch (err) {
+      console.error('댓글 좋아요 오류', err);
+    }
+  };
+
   return (
     <div>
       <ul>
@@ -121,7 +153,7 @@ export default function Comments({ comments }) {
               <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
                 <textarea
                   defaultValue={comment.content} // 기존 내용을 입력창에 미리 표시
-                  className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
+                  className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
                 />
                 <div>
                   <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId)}>
@@ -138,11 +170,47 @@ export default function Comments({ comments }) {
               <div>{comment.content}</div>
             )}
             {/* 신고 및 답글 버튼 */}
+            {reportModal && (
+              <div
+                className='fixed inset-0 z-10 overflow-y-auto'
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') setReportModal(false);
+                }}
+              >
+                <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
+                  <ReportModal nickname={comment.nickname} commentId={comment.commentId} />
+                </div>
+              </div>
+            )}
             <div className='flex items-center gap-1'>
+              {/* 댓글 좋아요(like) */}
+              <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
+                {comment.likeCommentCheck ? (
+                  <div
+                    className='flex items-center gap-1'
+                    onClick={() => onClickCommentLike(comment.commentId, comment.likeCommentCheck)}
+                  >
+                    <EmptyHeartIcon color='red' />
+                    <div className='text-sm font-semibold'>{comment.likeCount}</div>
+                  </div>
+                ) : (
+                  <div
+                    className='flex items-center gap-1'
+                    onClick={() => onClickCommentLike(comment.commentId, comment.likeCommentCheck)}
+                  >
+                    <FillHeartIcon color='red' />
+                    <div className='text-sm font-semibold'>{comment.likeCount}</div>
+                  </div>
+                )}
+              </div>
+
               <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
                 <ReportIcon color='red' />
-                <div className='text-sm font-semibold'>신고</div>
+                <div className='text-sm font-semibold' onClick={onClickCommentReport}>
+                  신고
+                </div>
               </div>
+
               <div
                 className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
                 onClick={() => onClickReply(comment.commentId, comment.nickname)}
@@ -192,6 +260,8 @@ export default function Comments({ comments }) {
                   onSaveEdit={onSaveEdit}
                   onCancelEdit={onCancelEdit}
                   onClickCommentDelete={onClickCommentDelete}
+                  onClickCommentLike={onClickCommentLike}
+                  onClickCommentReport={onClickCommentReport}
                 />
               ))}
             </div>
