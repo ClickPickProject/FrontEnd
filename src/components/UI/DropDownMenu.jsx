@@ -1,9 +1,18 @@
 'use client';
-import { useState } from 'react';
+import { postCategoryNameState } from '@/atoms/PostState';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
-export default function DropDownMenu({ onChange }) {
+export default function DropDownMenu({ onChange, editMode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState('');
+  const postCategory = useRecoilValue(postCategoryNameState);
+
+  useEffect(() => {
+    if (editMode) {
+      setOptions(postCategory);
+    }
+  }, []);
 
   // 드롭다운 토글 함수
   const toggleDropdown = () => {

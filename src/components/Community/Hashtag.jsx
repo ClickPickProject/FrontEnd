@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
 import { CrossIcon } from '../UI/Icons';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { editorTagState } from '@/atoms/editorContentState';
+import { postHashtagState } from '@/atoms/PostState';
 
-export default function Hashtag() {
+export default function Hashtag({ editMode }) {
   const [inputTag, setInputTag] = useState('');
   const [tag, setTag] = useRecoilState(editorTagState);
+  const postHashtag = useRecoilValue(postHashtagState);
 
   useEffect(() => {
-    setTag([]);
+    console.log(postHashtag);
+    if (editMode) {
+      setTag(postHashtag);
+    } else {
+      setTag([]);
+    }
   }, [setTag]);
 
   const onChangeTag = (e) => {
