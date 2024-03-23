@@ -173,6 +173,18 @@ export default function MyProfile() {
 
   return (
     <>
+      {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+        <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
+          <p>정말로 탈퇴하시겠습니까?</p>
+          <button className=' p-2 font-bold' onClick={handleDelete}>
+            {' '}
+            확인
+          </button>
+          <button className='p-2 font-bold' onClick={() => setConfirmDelete(false)}>
+            취소{' '}
+          </button>
+        </div>
+      )}
       <div className='flex w-full flex-col'>
         <h1 className='mb-5 text-2xl font-bold '>🙋‍♂️마이 프로필</h1>
         <div className='mb-10 border border-pink-200'></div>
@@ -180,11 +192,11 @@ export default function MyProfile() {
         <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
             <form action='' className='margin ml-8 mt-5'>
-              <div className='relative'>
+              <div>
                 <img src={image} alt='#' className='mb-2 h-[150px] w-[150px] rounded-full' />
                 <label
                   htmlFor='file'
-                  className=' flex cursor-pointer items-center justify-center border-black bg-pink-100 p-2 font-semibold'
+                  className='mx-auto flex cursor-pointer justify-center rounded-lg border-black bg-pink-100 p-3 font-semibold'
                 >
                   이미지 변경
                 </label>
@@ -203,24 +215,9 @@ export default function MyProfile() {
               <p>💬게시수 {`()`}</p>
               <p>💬댓글수 {`()`}</p>
               <p>💬조회수 {`()`}</p>
-              <button
-                onClick={handleDelete}
-                className='my-5 ml-8  w-[150px] rounded-lg border border-black bg-pink-100 font-semibold'
-              >
+              <button onClick={handleDelete} className='my-5 ml-8 w-[150px] rounded-lg bg-pink-100 p-3 font-semibold'>
                 회원탈퇴
               </button>
-              {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-                <div>
-                  <p>정말로 탈퇴하시겠습니까?</p>
-                  <button className='p-2 font-bold' onClick={handleDelete}>
-                    {' '}
-                    확인
-                  </button>
-                  <button className='p-2 font-bold' onClick={() => setConfirmDelete(false)}>
-                    취소{' '}
-                  </button>
-                </div>
-              )}
             </div>
           </div>
           <div className='mx-auto'>
@@ -296,7 +293,7 @@ export default function MyProfile() {
                 id='introduce'
                 type='text'
                 value={bio}
-                className='top mx-2 ml-[80px] h-[170px] w-[350px] border border-black bg-pink-100 py-10 align-text-top text-gray-500'
+                className='top mx-2 mb-3 ml-[80px] h-[170px] w-[350px] border border-black bg-pink-100 py-10 align-text-top text-gray-500'
                 onChange={(e) => setBio(e.target.value)}
                 placeholder='소개를 입력하세요'
               />
