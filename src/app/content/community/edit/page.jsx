@@ -7,8 +7,9 @@ import CustomEditor from '@/components/CustomEditor';
 import Postcode from '@/components/Postcode';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -22,6 +23,8 @@ function EditPage() {
   const token = useRecoilValue(tokenState);
   const postTitle = useRecoilValue(postTitleState);
   const postCategory = useRecoilValue(postCategoryNameState);
+  const queryClient = useQueryClient();
+  const params = useParams();
   useEffect(() => {
     setTitle(postTitle);
     setCategory(postCategory);
@@ -40,7 +43,7 @@ function EditPage() {
         hashtags: tag,
         postCategory: category,
       };
-      const res = await axios.post(`/api/member/post`, body, {
+      const res = await axios.post(`/api/member/post/${params.id}`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -48,6 +51,7 @@ function EditPage() {
       });
       if (res.status === 200) {
         alert('게시글이 수정되었습니다.');
+        queryClient.invalidateQueries(['post', params.id]);
         router.back();
       }
     } catch (err) {
