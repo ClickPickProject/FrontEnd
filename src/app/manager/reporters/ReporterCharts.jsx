@@ -1,17 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 export default function ReporterCharts() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setMounted(true);
-    } else {
-      return null;
-    }
-  }, []);
-
   const series = [
     {
       name: '신고요청 수',
@@ -51,7 +40,9 @@ export default function ReporterCharts() {
   return (
     <>
       <div>
-        <div id='chart'>{mounted && <Chart type='line' options={options} series={series} height={200} />}</div>
+        <div id='chart'>
+          <Chart type='line' options={options} series={series} height={200} />
+        </div>
         <div id='html-dist'></div>
       </div>
     </>
