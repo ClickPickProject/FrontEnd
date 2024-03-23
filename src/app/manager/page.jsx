@@ -1,10 +1,5 @@
 'use client';
-import { FillNoticeIcon, NoticeIcon } from '@/components/UI/Icons';
-import Link from 'next/link';
 import React, { useState } from 'react';
-import { FaUsers } from 'react-icons/fa';
-import { IoHome } from 'react-icons/io5';
-import { PiSirenFill } from 'react-icons/pi';
 
 export default function DashboardPage() {
   const [users, setUsers] = useState([
