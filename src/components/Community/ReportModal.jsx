@@ -63,7 +63,7 @@ const ReportModal = ({ nickname, commentId }) => {
                 {/* 신고 사유 입력 폼 */}
                 <textarea
                   placeholder='신고 사유를 적어주세요.'
-                  className='mb-4 w-full rounded border border-gray-300 p-2'
+                  className='mb-4 w-full resize-none rounded border border-gray-300 p-2'
                   rows='4'
                   value={reportReason}
                   onChange={(e) => setReportReason(e.target.value)}
