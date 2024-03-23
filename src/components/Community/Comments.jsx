@@ -5,7 +5,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { parentCommentIdState, parentCommentNickState, reportModalState } from '@/atoms/commentState';
+import {
+  parentCommentIdState,
+  parentCommentNickState,
+  replyCommentCheckState,
+  reportModalState,
+} from '@/atoms/commentState';
 import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
 import axios from 'axios';
@@ -19,6 +24,7 @@ export default function Comments({ comments }) {
   const [parentCommentId, setParentCommentId] = useRecoilState(parentCommentIdState);
   const setParentCommentNickname = useSetRecoilState(parentCommentNickState);
   const myNickname = useRecoilValue(MyNicknameState);
+  const [commentContent, setCommentContent] = useState('');
   const queryClient = useQueryClient();
   const [reportModal, setReportModal] = useRecoilState(reportModalState);
 
@@ -58,13 +64,12 @@ export default function Comments({ comments }) {
     setEditMode(commentId); // 추가: 수정 버튼 클릭 시 수정 모드로 변경
   };
 
-  const onSaveEdit = async (commentId, newContent, nickname) => {
+  const onSaveEdit = async (commentId, newContent, nickname, replyCommentCheck) => {
     // 추가: 저장 버튼 클릭 시 수정된 내용을 저장
     try {
-      console.log(nickname + newContent);
       const body = {
         postId: commentId,
-        content: `${nickname} ${newContent}`,
+        content: replyCommentCheck ? `${nickname}  ${newContent}` : newContent,
       };
       const res = await axios.post(`/api/member/comment/${commentId}`, body, {
         withCredentials: true,
@@ -117,7 +122,6 @@ export default function Comments({ comments }) {
   };
 
   const onClickCommentLike = async (commentId, likeCheck) => {
-    console.log(commentId, likeCheck);
     try {
       if (likeCheck === true) {
         await axios.get(`/api/member/likedcomment/${commentId}`, {
@@ -142,6 +146,10 @@ export default function Comments({ comments }) {
     }
   };
 
+  const onChangeTextarea = (e) => {
+    setCommentContent(e.target.value);
+  };
+
   return (
     <div>
       <ul>
@@ -154,9 +162,10 @@ export default function Comments({ comments }) {
                 <textarea
                   defaultValue={comment.content} // 기존 내용을 입력창에 미리 표시
                   className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
+                  onChange={onChangeTextarea}
                 />
                 <div>
-                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId)}>
+                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId, commentContent)}>
                     저장
                   </button>
                 </div>
@@ -190,7 +199,7 @@ export default function Comments({ comments }) {
                     className='flex items-center gap-1'
                     onClick={() => onClickCommentLike(comment.commentId, comment.likeCommentCheck)}
                   >
-                    <EmptyHeartIcon color='red' />
+                    <FillHeartIcon color='red' />
                     <div className='text-sm font-semibold'>{comment.likeCount}</div>
                   </div>
                 ) : (
@@ -198,7 +207,7 @@ export default function Comments({ comments }) {
                     className='flex items-center gap-1'
                     onClick={() => onClickCommentLike(comment.commentId, comment.likeCommentCheck)}
                   >
-                    <FillHeartIcon color='red' />
+                    <EmptyHeartIcon color='red' />
                     <div className='text-sm font-semibold'>{comment.likeCount}</div>
                   </div>
                 )}

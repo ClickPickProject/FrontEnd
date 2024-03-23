@@ -4,7 +4,7 @@ import { EmptyHeartIcon, FillHeartIcon, ReplyIcon, ReportIcon } from '../UI/Icon
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { MyNicknameState } from '@/atoms/tokenState';
-import { parentCommentIdState, reportModalState } from '@/atoms/commentState';
+import { parentCommentIdState, replyCommentCheckState, reportModalState } from '@/atoms/commentState';
 import ReportModal from './ReportModal';
 
 export default function ReplyComments({
@@ -21,6 +21,7 @@ export default function ReplyComments({
   const [replyComment, setReplyComment] = useState('');
   const [isReplyOpen, setIsReplyOpen] = useState(false);
   const [reportModal, setReportModal] = useRecoilState(reportModalState);
+  const [replyCommentCheck, setReplyCommentCheck] = useState(true);
 
   const myNickname = useRecoilValue(MyNicknameState);
   const setParentCommentId = useSetRecoilState(parentCommentIdState);
@@ -70,7 +71,7 @@ export default function ReplyComments({
             <div>
               <button
                 className='hover:text-pink-400'
-                onClick={() => onSaveEdit(reply.commentId, replyComment, '@' + reply.nickname)}
+                onClick={() => onSaveEdit(reply.commentId, replyComment, '@' + reply.nickname, replyCommentCheck)}
               >
                 저장
               </button>
@@ -83,7 +84,8 @@ export default function ReplyComments({
           </div>
         ) : (
           <div>
-            <span className='text-sm opacity-50'>{mention}</span> {commentContent}
+            <span className='text-sm opacity-50'>{mention}</span>
+            {commentContent}
           </div>
         )}
         {reportModal && (
@@ -105,7 +107,7 @@ export default function ReplyComments({
                 className='flex items-center gap-1'
                 onClick={() => onClickCommentLike(reply.commentId, reply.likeCommentCheck)}
               >
-                <EmptyHeartIcon color='red' />
+                <FillHeartIcon color='red' />
                 <div className='text-sm font-semibold'>{reply.likeCount}</div>
               </div>
             ) : (
@@ -113,7 +115,7 @@ export default function ReplyComments({
                 className='flex items-center gap-1'
                 onClick={() => onClickCommentLike(reply.commentId, reply.likeCommentCheck)}
               >
-                <FillHeartIcon color='red' />
+                <EmptyHeartIcon color='red' />
                 <div className='text-sm font-semibold'>{reply.likeCount}</div>
               </div>
             )}
