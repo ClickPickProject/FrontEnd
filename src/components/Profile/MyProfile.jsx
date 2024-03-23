@@ -17,6 +17,7 @@ export default function MyProfile() {
   const [phoneDisabled, setPhoneDisabled] = useState(false);
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
+
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
@@ -153,9 +154,32 @@ export default function MyProfile() {
   //API로 받아올 값
 
   //이미지변경
-  const handleInputImg = (e) => {
+  const [image, setImage] = useState('');
+  const handleInputImg = async (e) => {
     e.preventDefault();
+    // 파일이 있는지 확인
+    if (e.target.files && e.target.files[0]) {
+      const formData = new FormData();
+      setImage(e.target.files[0]);
+      formData.append('image', e.target.files[0]);
+      try {
+        const res = await axios.post(`/api/member/profileimage`, formData, {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          console.log(res);
+          alert('이미지가 업로드 되었습니다.');
+        }
+      } catch (err) {
+        console.log(err);
+        alert('이미지 업로드 오류발생!');
+      }
+    }
   };
+
   return (
     <>
       <div className='flex w-full flex-col'>
@@ -165,13 +189,11 @@ export default function MyProfile() {
         <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
             <form action='' className='margin ml-8 mt-5'>
-              <img src='/sakura.jpg' alt='#' className='h-[150px] w-[150px] rounded-full' />
-              <button
-                onClick={handleInputImg}
-                className='mt-2 w-[150px] rounded-lg border  border-black bg-pink-100 font-semibold'
-              >
+              <img src={image} alt='#' className='h-[150px] w-[150px] rounded-full' />
+              <button className='mt-2 w-[150px] rounded-lg border  border-black bg-pink-100 font-semibold'>
                 📝이미지 추가
               </button>
+              <input type='file' onChange={handleInputImg} accept='image/png, image/jpg' />
             </form>
             <div className='mx-auto flex flex-col text-center'>
               <div className='my-5'></div>
@@ -188,18 +210,17 @@ export default function MyProfile() {
               {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
                 <div>
                   <p>정말로 탈퇴하시겠습니까?</p>
-                  <button className='p-2 font-bold' onClick={() => setConfirmDelete(false)}>
-                    취소{' '}
-                  </button>
                   <button className='p-2 font-bold' onClick={handleDelete}>
                     {' '}
                     확인
+                  </button>
+                  <button className='p-2 font-bold' onClick={() => setConfirmDelete(false)}>
+                    취소{' '}
                   </button>
                 </div>
               )}
             </div>
           </div>
-
           <div className='mx-auto'>
             {/* 이름 */}
             <form className='mt-5'>
