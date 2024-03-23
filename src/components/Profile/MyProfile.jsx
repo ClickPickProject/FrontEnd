@@ -17,11 +17,27 @@ export default function MyProfile() {
   const [phoneDisabled, setPhoneDisabled] = useState(false);
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
-
+  const [image, setImage] = useState(null);
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
   useEffect(() => {
+    const handleImg = async () => {
+      try {
+        const res = await axios.get(`/api/member/profileimage`, {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          setImage(res.data.url);
+        }
+      } catch (err) {
+        console.log(err);
+        alert('이미지 업로드 오류발생!');
+      }
+    };
     const fetchData = async () => {
       try {
         const res = await axios.get('/api/member/userinfo', {
@@ -43,7 +59,7 @@ export default function MyProfile() {
     };
     // 데이터를 가져오는 함수 호출
     fetchData();
-
+    handleImg();
     // cleanup 함수 (optional)
     return () => {};
   }, []);
@@ -72,31 +88,6 @@ export default function MyProfile() {
       }
     }
   };
-  // // 프로필 사진 추가/변경
-  // const handleProfileImage = async (e) => {
-  //   setNickNameDisabled((value) => !value);
-  //   e.preventDefault();
-  //    try {
-  //       const res = await axios.post(`/api/member/profileimage`,
-  //       { image :  },
-  //       {
-  //         withCredentials: true,
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       });
-  //       if (res.status === 200) {
-  //         setNickName(nickName);
-  //         console.log(nickName);
-  //         alert('닉네임이 변경되었습니다.');
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //       alert('이미 사용자가 사용중인 닉네임 입니다.');
-  //     }
-  //   }
-  //   setClickNickNameCount((prevCount) => prevCount + 1);
-  // };
   // 닉네임변경
   const handleNickNameChange = async (e) => {
     setNickNameDisabled((value) => !value);
@@ -148,35 +139,35 @@ export default function MyProfile() {
   };
 
   //style값
-  const btnStyle = 'ml-8  w-[150px] rounded-lg border border-black bg-pink-100 font-semibold p-1';
+  const btnStyle = 'ml-8  w-[70px] rounded-lg border border-black bg-pink-100 font-semibold p-1';
   const inputFont =
-    'mx-2 w-[400px] bg-pink-100 text-gray-500 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
+    'mx-2 w-[350px] bg-pink-100 text-gray-500 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
   //API로 받아올 값
 
   //이미지변경
-  const [image, setImage] = useState('');
+
   const handleInputImg = async (e) => {
     e.preventDefault();
     // 파일이 있는지 확인
-    if (e.target.files && e.target.files[0]) {
-      const formData = new FormData();
-      setImage(e.target.files[0]);
-      formData.append('image', e.target.files[0]);
-      try {
-        const res = await axios.post(`/api/member/profileimage`, formData, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        if (res.status === 200) {
-          console.log(res);
-          alert('이미지가 업로드 되었습니다.');
-        }
-      } catch (err) {
-        console.log(err);
-        alert('이미지 업로드 오류발생!');
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    console.log(e.target.files);
+    // setImage(e)
+    try {
+      const res = await axios.post(`/api/member/profileimage`, formData, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (res.status === 200) {
+        console.log(res);
+        alert('이미지가 업로드 되었습니다.');
       }
+    } catch (err) {
+      console.log(err);
+      alert('이미지 업로드 오류발생!');
     }
   };
 
@@ -189,14 +180,25 @@ export default function MyProfile() {
         <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
             <form action='' className='margin ml-8 mt-5'>
-              <img src={image} alt='#' className='h-[150px] w-[150px] rounded-full' />
-              <button className='mt-2 w-[150px] rounded-lg border  border-black bg-pink-100 font-semibold'>
-                📝이미지 추가
-              </button>
-              <input type='file' onChange={handleInputImg} accept='image/png, image/jpg' />
+              <div className='relative'>
+                <img src={image} alt='#' className='mb-2 h-[150px] w-[150px] rounded-full' />
+                <label
+                  htmlFor='file'
+                  className=' flex cursor-pointer items-center justify-center border-black bg-pink-100 p-2 font-semibold'
+                >
+                  이미지 변경
+                </label>
+                <input
+                  type='file'
+                  id='file'
+                  onChange={handleInputImg}
+                  accept='image/png, image/jpg'
+                  className='hidden'
+                />
+              </div>
             </form>
             <div className='mx-auto flex flex-col text-center'>
-              <div className='my-5'></div>
+              <div className='my-2'></div>
 
               <p>💬게시수 {`()`}</p>
               <p>💬댓글수 {`()`}</p>
@@ -294,7 +296,7 @@ export default function MyProfile() {
                 id='introduce'
                 type='text'
                 value={bio}
-                className='top mx-2 ml-[80px] h-[170px] w-[400px] border border-black bg-pink-100 py-10 align-text-top text-gray-500'
+                className='top mx-2 ml-[80px] h-[170px] w-[350px] border border-black bg-pink-100 py-10 align-text-top text-gray-500'
                 onChange={(e) => setBio(e.target.value)}
                 placeholder='소개를 입력하세요'
               />
