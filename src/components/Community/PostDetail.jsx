@@ -113,7 +113,7 @@ export default function PostDetail() {
             <WriterView writer={nickname} date={date} />
             <StatusView viewCount={viewCount} likeCount={likeCount} />
           </div>
-          {nickname !== myNickname ? (
+          {nickname === myNickname ? (
             <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
               <button
                 className='hover:opacity-100'
