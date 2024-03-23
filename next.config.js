@@ -108,6 +108,11 @@ const nextConfig = {
         source: '/api/member/new-phone-number/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-phone-number/:path*`,
       },
+      // 프로필 사진 추가/변경/삭제
+      {
+        source: '/api/member/profileimage/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/profileimage/:path*`,
+      },
     ];
   },
 };

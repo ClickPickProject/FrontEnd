@@ -64,13 +64,38 @@ export default function MyProfile() {
         if (res.status === 200) {
           console.log('탈퇴완료');
           alert('회원이 탈퇴 되셨습니다');
+          router.push('/');
         }
       } catch (err) {
         console.log(err);
       }
     }
   };
-
+  // // 프로필 사진 추가/변경
+  // const handleProfileImage = async (e) => {
+  //   setNickNameDisabled((value) => !value);
+  //   e.preventDefault();
+  //    try {
+  //       const res = await axios.post(`/api/member/profileimage`,
+  //       { image :  },
+  //       {
+  //         withCredentials: true,
+  //         headers: {
+  //           Authorization: token,
+  //         },
+  //       });
+  //       if (res.status === 200) {
+  //         setNickName(nickName);
+  //         console.log(nickName);
+  //         alert('닉네임이 변경되었습니다.');
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //       alert('이미 사용자가 사용중인 닉네임 입니다.');
+  //     }
+  //   }
+  //   setClickNickNameCount((prevCount) => prevCount + 1);
+  // };
   // 닉네임변경
   const handleNickNameChange = async (e) => {
     setNickNameDisabled((value) => !value);
