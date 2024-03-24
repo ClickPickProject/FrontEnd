@@ -23,7 +23,7 @@ Web communities for sharing many different places
 
 > [!NOTE]
 >
-> ### 클릭픽 프로젝트는 다양한 맛집, 명소, 문화적인 장소 등을 발견하고 공유하는 공간입니다. 사용자들이 자신의 경험을 나누고 다른 이들에게 추천을 제공함으로써 여행이나 레저 활동 등을 계획할 때 유용한 정보를 제공하는 커뮤니티입니다.
+> 클릭픽 프로젝트는 다양한 맛집, 명소, 문화적인 장소 등을 발견하고 공유하는 공간입니다. 사용자들이 자신의 경험을 나누고 다른 이들에게 추천을 제공함으로써 여행이나 레저 활동 등을 계획할 때 유용한 정보를 제공하는 커뮤니티입니다.
 
 ## 🛠️ Skills
 
@@ -64,7 +64,7 @@ Web communities for sharing many different places
 
 ## 👩🏻‍💻 Contributors
 
-| 이름   | 최종현                                    | 최정무                                         | 현태민                                               | 김희진                                        |
-| ------ | ----------------------------------------- | ---------------------------------------------- | ---------------------------------------------------- | --------------------------------------------- |
-| 역할   | FrontEnd Developer                        | FrontEnd Developer                             | BackEnd Developer                                    | BackEnd Developer                             |
-| 프로필 | ![Profile](https://github.com/elbyss.png) | ![Profile](https://github.com/choijungmua.png) | ![Profile](https://github.com/taemintaeminHyeon.png) | ![Profile](https://github.com/huijin-kim.png) |
+|  Name   |                  최종현                   |                     최정무                     |                        현태민                        |                    김희진                     |
+| :-----: | :---------------------------------------: | :--------------------------------------------: | :--------------------------------------------------: | :-------------------------------------------: |
+|  Role   |            FrontEnd Developer             |               FrontEnd Developer               |                  BackEnd Developer                   |               BackEnd Developer               |
+| Profile | ![Profile](https://github.com/elbyss.png) | ![Profile](https://github.com/choijungmua.png) | ![Profile](https://github.com/taemintaeminHyeon.png) | ![Profile](https://github.com/huijin-kim.png) |
