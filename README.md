@@ -10,14 +10,14 @@ Web communities for sharing many different places
 
 <div align="center">
   <a href="https://clickpick.vercel.app/">
-    <img alt="ClickPick" title="ClickPick" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/d4d01382-aab1-473c-b65e-0ce6b14f7e1a" width="150">
+    <img alt="ClickPick" title="ClickPick" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/d4d01382-aab1-473c-b65e-0ce6b14f7e1a" width="140">
   </a>
   </div>
 </p>
 
-# 💡 Introduce
+## 💡 Introduce
 
-<img alt="intro" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/ff83cbe5-adb6-438b-af36-8f8759fc1842"> <br /><br />
+<img alt="intro" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/8e962d78-f5bf-4f86-8fe0-736951ae7fed"> <br /><br />
 
 > [!NOTE]
 >
@@ -51,7 +51,7 @@ Web communities for sharing many different places
 
 - Vercel
 
-# Features
+## Features
 
 > 1
 
