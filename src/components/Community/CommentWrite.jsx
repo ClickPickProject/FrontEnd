@@ -3,16 +3,15 @@ import { useState } from 'react';
 import WriterView from './BestPost/WriterView';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { tokenState } from '@/atoms/tokenState';
-import { commentsState } from '@/atoms/PostState';
+import { useRecoilValue } from 'recoil';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function CommentWrite() {
   const params = useParams();
-  const setComments = useSetRecoilState(commentsState);
   const [comment, setComment] = useState('');
   const token = useRecoilValue(tokenState);
+  const myNickname = useRecoilValue(MyNicknameState);
   const queryClient = useQueryClient();
 
   const handleTextareaChange = (e) => {
@@ -34,26 +33,8 @@ export default function CommentWrite() {
         },
       });
       if (res.status === 200) {
-        commentsUpdate();
-        queryClient.invalidateQueries(['comments', params.id]);
-        queryClient.invalidateQueries(['post', params.id]);
+        queryClient.invalidateQueries(['posts', params.id]);
         setComment('');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const commentsUpdate = async () => {
-    try {
-      const res = await axios.get(`/api/post/${params.id}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        setComments(res.data.comments);
       }
     } catch (err) {
       console.log(err);
@@ -64,7 +45,7 @@ export default function CommentWrite() {
     <div className='mt-5 h-auto'>
       <div className='grid h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
         <div className='mt-2'>
-          <WriterView writer={'댓글작성자'} />
+          <WriterView writer={myNickname} />
         </div>
         <textarea
           placeholder='댓글을 입력하세요'

@@ -14,7 +14,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const [category, setCategory] = useState('');
-  const [position, setPostion] = useState('');
+  const [position, setPosition] = useState('');
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
@@ -56,7 +56,7 @@ function WritePage() {
   };
 
   const handlePostCodeClick = (address) => {
-    setPostion(address);
+    setPosition(address);
   };
   return (
     <>

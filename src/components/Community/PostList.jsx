@@ -77,9 +77,9 @@ export default function PostList({ category }) {
   const handleSearchResults = (res) => {
     if (res.status === 200) {
       setSearchResults(res.data.content);
-      // setTotalPages(res.data.totalPages);
-      // setTotalItems(res.data.totalElements);
-      // setPostsPerPage(res.data.size);
+      setTotalPages(res.data.totalPages);
+      setTotalItems(res.data.totalElements);
+      setCurrentPage(1);
     }
   };
 
@@ -124,7 +124,8 @@ export default function PostList({ category }) {
   };
 
   // 검색 버튼 클릭 핸들러
-  const onClickSearch = async () => {
+  const onClickSearch = async (e) => {
+    e.preventDefault();
     switch (searchOption) {
       case 'title':
         await searchByTitle();
@@ -153,7 +154,7 @@ export default function PostList({ category }) {
         {displayPosts?.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
-            <div className='flex items-center gap-2 font-semibold'>
+            <div className='flex items-center gap-1 font-semibold'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
               <span className='text-center font-semibold'>[{data.commentCount}]</span>
             </div>

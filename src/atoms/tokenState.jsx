@@ -18,3 +18,9 @@ export const loginState = atom({
   key: 'loginState',
   default: false,
 });
+
+export const MyNicknameState = atom({
+  key: 'MyNicknameState',
+  default: '',
+  effects_UNSTABLE: [persistAtom],
+});

@@ -1,18 +1,18 @@
 'use client';
-// import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import Editor from 'ckeditor5-custom-build';
 import axios from 'axios';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { editorContentState } from '@/atoms/editorContentState';
 import { useEffect, useRef, useState } from 'react';
+import { postContentState } from '@/atoms/PostState';
 
 const editorConfiguration = {
   toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload'],
 };
 
-export default function CustomEditor() {
+export default function CustomEditor({ editMode }) {
   const editorRef = useRef();
   const [editorLoaded, setEditorLoaded] = useState(false);
+  const content = useRecoilValue(postContentState);
   const { CKEditor, Editor } = editorRef.current || {};
   useEffect(() => {
     editorRef.current = {
@@ -73,6 +73,7 @@ export default function CustomEditor() {
       }}
       onChange={onChangeContent}
       useRef={editorRef}
+      data={editMode && content}
     />
   ) : (
     <div>로딩중입니다...</div>

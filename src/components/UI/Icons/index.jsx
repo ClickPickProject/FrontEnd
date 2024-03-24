@@ -26,3 +26,6 @@ export { default as EmptyHeartIcon } from './EmptyHeartIcon';
 export { default as CommentIcon } from './CommentIcon';
 export { default as ReplyIcon } from './ReplyIcon';
 export { default as ReportIcon } from './ReportIcon';
+export { default as FillHomeIcon } from './FillHomeIcon';
+export { default as FillUserIcon } from './FillUserIcon';
+export { default as FillSirenIcon } from './FillSirenIcon';
