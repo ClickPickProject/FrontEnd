@@ -44,7 +44,7 @@ export default function HomeNavbar() {
                       <button onClick={onClickLogout} className={`${hoverStyle}`}>
                         로그아웃
                       </button>
-                      <Link href='/profile' className={`${hoverStyle}`}>
+                      <Link href='/content/profile' className={`${hoverStyle}`}>
                         내 정보
                       </Link>
                     </div>

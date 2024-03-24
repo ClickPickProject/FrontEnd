@@ -196,37 +196,39 @@ export default function MyProfile() {
 
   return (
     <>
-      {/* 탈퇴 확인 */}
-      {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-        <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
-          <p>정말로 탈퇴하시겠습니까?</p>
-          <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleDelete}>
-            {' '}
-            확인
-          </button>
-          <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
-            취소{' '}
-          </button>
-        </div>
-      )}
-      {/* 이미지 삭제 확인 */}
-      {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-        <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
-          <p>정말로 사진을 삭제하시겠습니까?</p>
-          <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleImgDelete}>
-            {' '}
-            확인
-          </button>
-          <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setImgDelete(false)}>
-            취소{' '}
-          </button>
-        </div>
-      )}
-      <div className='flex w-full flex-col'>
-        <h1 className='mb-5 text-2xl font-bold'>🙋‍♂️마이 프로필</h1>
-        <p className='mb-4 text-sm opacity-50'> 나의 프로필을 자유롭게 꾸며보세요.</p>
-        <div className='mb-10 border border-pink-200'></div>
+      <section className='flex h-full w-[inherit] flex-col justify-center'>
+        {/* 탈퇴 확인 */}
+        {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+          <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
+            <p>정말로 탈퇴하시겠습니까?</p>
+            <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleDelete}>
+              {' '}
+              확인
+            </button>
+            <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
+              취소{' '}
+            </button>
+          </div>
+        )}
+        {/* 이미지 삭제 확인 */}
+        {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+          <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
+            <p>정말로 사진을 삭제하시겠습니까?</p>
+            <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleImgDelete}>
+              {' '}
+              확인
+            </button>
+            <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setImgDelete(false)}>
+              취소{' '}
+            </button>
+          </div>
+        )}
 
+        <div className='flex flex-col gap-2 p-2'>
+          <h2 className='text-2xl font-bold'>🙋‍♂️ 마이 프로필</h2>
+          <p className='mb-4 text-sm opacity-50'>나의 프로필을 자유롭게 꾸며보세요.</p>
+        </div>
+        <div className='mb-10 border border-pink-200' />
         <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
             <form action='' className='margin ml-8 mt-5'>
@@ -241,7 +243,7 @@ export default function MyProfile() {
                   htmlFor='file'
                   className='mx-auto flex cursor-pointer justify-center rounded-lg border-black bg-pink-100 p-3 font-semibold  hover:shadow-inner'
                 >
-                  이미지 변경
+                  이미지 변경!
                 </label>
 
                 <input
@@ -356,7 +358,7 @@ export default function MyProfile() {
             </form>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }
