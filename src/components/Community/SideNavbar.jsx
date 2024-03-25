@@ -25,6 +25,7 @@ export default function SideNavbar() {
   const onClickLogout = () => {
     localStorage.clear();
     setIsLogin(false);
+    window.location.reload();
   };
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
