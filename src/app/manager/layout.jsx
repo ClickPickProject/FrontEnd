@@ -6,8 +6,10 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 import { BiLogOut } from 'react-icons/bi';
 import { FaUsers } from 'react-icons/fa';
-import { IoHome, IoMenu } from 'react-icons/io5';
+import { IoHome } from 'react-icons/io5';
 import { PiSirenFill } from 'react-icons/pi';
+import { Tooltip } from 'react-tooltip';
+
 export default function layout({ children }) {
   const pathname = usePathname();
 
@@ -18,32 +20,27 @@ export default function layout({ children }) {
       name: '홈',
       href: '/manager',
       icon: <IoHome size={20} />,
-      clickedIcon: 'Home',
     },
     {
       name: '공지사항',
       href: '/manager/notifications',
       icon: <FillNoticeIcon size={20} />,
-      clickedIcon: 'Notice',
     },
     {
       name: '사용자 관리',
       href: '/manager/users',
       icon: <FaUsers size={20} />,
-      clickedIcon: 'User',
     },
     {
       name: '신고자 관리',
       href: '/manager/reporters',
       icon: <PiSirenFill size={20} />,
-      clickedIcon: 'Report',
     },
   ];
   return (
     <>
       <div className='flex min-h-screen bg-white'>
         <div className={`w-[84px] bg-white shadow-xl`}>
-          {/* <div className={`w-72 bg-white shadow-xl`}> */}
           {/* Nav */}
           <nav className='flex h-full flex-col justify-between px-4'>
             <figure className='my-4 flex justify-center'>
@@ -52,8 +49,15 @@ export default function layout({ children }) {
               </Link>
             </figure>
             <ul className='flex flex-col gap-2 font-semibold [&>li]:pl-8 [&>li]:text-gray-500'>
-              {MENU.map(({ name, href, icon, clickedIcon }) => (
-                <Link key={href} href={href} title={name}>
+              {MENU.map(({ name, href, icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  data-tooltip-id='manager-tooltip'
+                  data-tooltip-content={name}
+                  data-tooltip-place='right'
+                >
+                  <Tooltip id='manager-tooltip' />
                   <li className={`${navStyle} ${pathname === href && 'bg-pink-200 text-pink-600'}`}>{icon}</li>
                 </Link>
               ))}
