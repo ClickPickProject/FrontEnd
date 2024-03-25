@@ -3,8 +3,8 @@ import WriterView from './BestPost/WriterView';
 import { EmptyHeartIcon, FillHeartIcon, ReplyIcon, ReportIcon } from '../UI/Icons';
 import { useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { MyNicknameState } from '@/atoms/tokenState';
-import { parentCommentIdState, replyCommentCheckState, reportModalState } from '@/atoms/commentState';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
+import { parentCommentIdState, reportModalState } from '@/atoms/commentState';
 import ReportModal from './ReportModal';
 
 export default function ReplyComments({
@@ -25,6 +25,7 @@ export default function ReplyComments({
 
   const myNickname = useRecoilValue(MyNicknameState);
   const setParentCommentId = useSetRecoilState(parentCommentIdState);
+  const token = useRecoilValue(tokenState);
 
   const handleReplyChange = (e) => {
     setReplyComment(e.target.value);
@@ -56,11 +57,6 @@ export default function ReplyComments({
       {/* 답글 목록 */}
       <div className='flex flex-col gap-2'>
         <WriterView writer={reply.nickname} date={reply.createAt} />
-        {/* <div>{reply.content}</div> */}
-        {/* <div>
-          <span className='text-sm opacity-50'>{mention}</span> {commentContent}
-        </div> */}
-
         {editMode === reply.commentId ? ( // 수정 모드인 경우
           <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
             <textarea
@@ -156,8 +152,9 @@ export default function ReplyComments({
               <WriterView writer={myNickname} />
             </div>
             <textarea
-              placeholder='답글을 입력하세요'
-              className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
+              placeholder={token ? '답글을 입력하세요' : '로그인 후 이용해주세요'}
+              disabled={token ? false : true}
+              className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none disabled:bg-white'
               value={replyComment}
               onChange={handleReplyChange}
             />

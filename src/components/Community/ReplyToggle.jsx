@@ -2,11 +2,12 @@
 import { useState } from 'react';
 import WriterView from './BestPost/WriterView';
 import { useRecoilValue } from 'recoil';
-import { MyNicknameState } from '@/atoms/tokenState';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 
 export default function ReplyToggle({ commentNickname, onSubmitReply }) {
   const [reply, setReply] = useState('');
   const myNickname = useRecoilValue(MyNicknameState);
+  const token = useRecoilValue(tokenState);
 
   const handleReplyChange = (e) => {
     e.target.style.height = 'auto';
@@ -27,8 +28,9 @@ export default function ReplyToggle({ commentNickname, onSubmitReply }) {
         <WriterView writer={myNickname} />
       </div>
       <textarea
-        placeholder='답글을 입력하세요'
-        className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
+        placeholder={token ? '답글을 입력하세요' : '로그인 후 이용해주세요'}
+        disabled={token ? false : true}
+        className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none disabled:bg-white'
         value={reply}
         onChange={handleReplyChange}
       />

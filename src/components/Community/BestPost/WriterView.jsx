@@ -14,7 +14,7 @@ export default function WriterView({ writer, date }) {
         height={24}
         className='h-[24px] w-[24px] rounded-full border-2 border-gray-300 object-cover'
       />
-      {writer}
+      {writer ? writer : 'Guest'}
       <span className='opacity-50'>{date ? ' · ' + dayjs(date).fromNow() : null}</span>
     </span>
   );
