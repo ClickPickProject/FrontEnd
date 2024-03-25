@@ -46,7 +46,7 @@ export default function BestPost() {
                   <span className='text-center text-sm font-semibold'>[{data.commentCount}]</span>
                 </div>
               </Link>
-              <WriterView writer={data.writer} date={data.createAt} />
+              <WriterView writer={data.nickname} date={data.createAt} />
               <StatusView viewCount={data.viewCount} likeCount={data.likeCount} />
             </div>
           </>
