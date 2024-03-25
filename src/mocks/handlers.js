@@ -307,7 +307,6 @@ export const handlers = [
   // 게시글 상세 조회
   http.get('/api/post/:postId', ({ params }) => {
     const { postId } = params;
-    console.log('상세조회');
     return HttpResponse.json(
       {
         postId: postId,
@@ -332,11 +331,12 @@ export const handlers = [
             createAt: '2024-03-06T18:55:48.884Z',
             likeCount: 1,
             likeCommentCheck: false,
+            commentStatus: 'LIVE',
             recommentList: [
               {
                 commentId: 2,
-                nickname: '기사',
-                content: '탑승',
+                nickname: '기사일세',
+                content: '@야놀자 탑승',
                 createAt: '2024-03-086T10:55:48.884Z',
                 likeCount: 13,
                 likeCommentCheck: false,
@@ -350,11 +350,12 @@ export const handlers = [
             createAt: '2024-03-07T18:55:48.884Z',
             likeCount: 3,
             likeCommentCheck: true,
+            commentStatus: 'LIVE',
             recommentList: [
               {
                 commentId: 4,
                 nickname: '대대대댓',
-                content: '대래대래댓댓 댓걸',
+                content: '@응맞음 대래대래댓댓 댓걸',
                 createAt: '2024-03-166T10:55:48.884Z',
                 likeCount: 123,
                 likeCommentCheck: false,
@@ -362,7 +363,7 @@ export const handlers = [
               {
                 commentId: 5,
                 nickname: '아아악',
-                content: '2빠',
+                content: '@대대대댓 2빠',
                 createAt: '2024-03-166T11:55:48.884Z',
                 likeCount: 123,
                 likeCommentCheck: false,
@@ -443,6 +444,16 @@ export const handlers = [
     return HttpResponse.json(`${commentId} 삭제가 완료되었습니다.`);
   }),
 
+  // 댓글 좋아요(like)
+  http.get('/api/member/likedcomment/:commentId', ({ params }) => {
+    const { commentId } = params;
+    return HttpResponse.json(`${commentId} 좋아요 클릭`, {
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+      },
+    });
+  }),
+
   // 답글 작성
   http.post('/api/member/recomment', () => {
     return HttpResponse.json({
@@ -458,5 +469,23 @@ export const handlers = [
       commentId: 666,
       reason: '신고 사유',
     });
+  }),
+
+  /* Admin */
+  // 공지사항 작성
+  http.post('/api/admin/notice', () => {
+    return HttpResponse.json('공지사항이 등록되었습니다.');
+  }),
+
+  // 공지사항 수정
+  http.post('/api/admin/notice/:noticeId', ({ params }) => {
+    const { noticeId } = params;
+    return HttpResponse.json(`${noticeId} 공지사항이 수정되었습니다.`);
+  }),
+
+  // 공지사항 삭제
+  http.delete('/api/admin/notice/:noticeId', ({ params }) => {
+    const { noticeId } = params;
+    return HttpResponse.json(`${noticeId} 공지사항 삭제 완료`);
   }),
 ];
