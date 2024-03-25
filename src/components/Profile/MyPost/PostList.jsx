@@ -8,7 +8,8 @@ import Search from '@/components/Search';
 import Loading from '@/components/Loading';
 import WriterView from '@/components/Community/BestPost/WriterView';
 import StatusView from '@/components/Community/BestPost/StatusView';
-
+import { tokenState } from '@/atoms/tokenState';
+import { useRecoilValue } from 'recoil';
 export default function PostList({ category }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
@@ -18,7 +19,7 @@ export default function PostList({ category }) {
   const [searchOption, setSearchOption] = useState('title'); // 검색 옵션 (기본값: 제목검색)
   const [search, setSearch] = useState(''); // 검색어
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
-
+  const token = useRecoilValue(tokenState);
   useEffect(() => {
     setSelectedCategory(category);
     setCurrentPage(1);
@@ -33,6 +34,10 @@ export default function PostList({ category }) {
     queryKey: ['posts', currentPage],
     queryFn: async () => {
       const res = await axios.get(`/api/member/post/list`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
         params: {
           page: currentPage - 1,
         },
