@@ -5,12 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  parentCommentIdState,
-  parentCommentNickState,
-  replyCommentCheckState,
-  reportModalState,
-} from '@/atoms/commentState';
+import { parentCommentIdState, parentCommentNickState, reportModalState } from '@/atoms/commentState';
 import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
 import axios from 'axios';

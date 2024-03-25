@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 // import WriterView from './BestPost/WriterView';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { useQuery } from '@tanstack/react-query';
