@@ -38,7 +38,8 @@ export default function MyPostList() {
               <PencilIcon color='white' size={18} />글 작성
             </Link>
           </div>
-          <PostList category={category} />
+
+          <PostList category={category} url={'/api/member/post/list'} />
         </motion.nav>
       </section>
     </>

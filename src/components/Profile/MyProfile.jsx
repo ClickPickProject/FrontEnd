@@ -5,19 +5,20 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { postCountState } from '@/atoms/PostState';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 export default function MyProfile() {
   const router = useRouter();
   const [name, setName] = useRecoilState(userNameState);
   const [nickName, setNickName] = useRecoilState(userNickNameState);
   const [userId, setUserId] = useRecoilState(userIdState);
-  const [bio, setBio] = useState('');
   const [phone, setPhone] = useRecoilState(userPhoneState);
   const [nickNameDisabled, setNickNameDisabled] = useState(false);
   const [phoneDisabled, setPhoneDisabled] = useState(false);
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
   const [image, setImage] = useState(null);
+  const postCount = useRecoilValue(postCountState);
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
@@ -243,7 +244,7 @@ export default function MyProfile() {
                   htmlFor='file'
                   className='mx-auto flex cursor-pointer justify-center rounded-lg border-black bg-pink-100 p-3 font-semibold  hover:shadow-inner'
                 >
-                  이미지 변경!
+                  이미지 변경
                 </label>
 
                 <input
@@ -258,9 +259,9 @@ export default function MyProfile() {
             <div className='mx-auto flex flex-col text-center'>
               <div className='my-2'></div>
 
-              <p>💬게시수 {`()`}</p>
-              <p>💬댓글수 {`()`}</p>
-              <p>💬조회수 {`()`}</p>
+              <p>💬게시수 {`(${postCount}개)`}</p>
+              <p>💬댓글수 {`(구현예정)`}</p>
+              <p>💬조회수 {`(구현예정)`}</p>
               <br />
               <div className='ml-9'>
                 <button
@@ -341,20 +342,6 @@ export default function MyProfile() {
                 disabled={!phoneDisabled}
               />
               <button className={btnStyle}>변경</button>
-            </form>
-            {/* 소개 */}
-            <form className='mt-3'>
-              <label htmlFor='introduce ' className='top absolute mx-5 font-semibold'>
-                소개
-              </label>
-              <input
-                id='introduce'
-                type='text'
-                value={bio}
-                className='top mx-2 mb-3 ml-[80px] h-[170px] w-[350px] border border-black bg-pink-100 py-10 align-text-top text-gray-500'
-                onChange={(e) => setBio(e.target.value)}
-                placeholder='소개를 입력하세요'
-              />
             </form>
           </div>
         </div>
