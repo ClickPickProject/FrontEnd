@@ -32,7 +32,7 @@ export default function LoginPage() {
         localStorage.clear();
         setToken(token);
         setMyNickname(res.data.nickname);
-        router.back();
+        router.replace('/');
       }
     } catch (err) {
       console.log(err);
