@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { postCountState } from '@/atoms/PostState';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 export default function MyProfile() {
   const router = useRouter();
@@ -18,7 +17,6 @@ export default function MyProfile() {
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
   const [image, setImage] = useState(null);
-  const postCount = useRecoilValue(postCountState);
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
@@ -198,33 +196,6 @@ export default function MyProfile() {
   return (
     <>
       <section className='flex h-full w-[inherit] flex-col justify-center'>
-        {/* 탈퇴 확인 */}
-        {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-          <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
-            <p>정말로 탈퇴하시겠습니까?</p>
-            <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleDelete}>
-              {' '}
-              확인
-            </button>
-            <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
-              취소{' '}
-            </button>
-          </div>
-        )}
-        {/* 이미지 삭제 확인 */}
-        {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-          <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
-            <p>정말로 사진을 삭제하시겠습니까?</p>
-            <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleImgDelete}>
-              {' '}
-              확인
-            </button>
-            <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setImgDelete(false)}>
-              취소{' '}
-            </button>
-          </div>
-        )}
-
         <div className='flex flex-col gap-2 p-2'>
           <h2 className='text-2xl font-bold'>🙋‍♂️ 마이 프로필</h2>
           <p className='mb-4 text-sm opacity-50'>나의 프로필을 자유롭게 꾸며보세요.</p>
@@ -258,10 +229,6 @@ export default function MyProfile() {
             </form>
             <div className='mx-auto flex flex-col text-center'>
               <div className='my-2'></div>
-
-              <p>💬게시수 {`(${postCount}개)`}</p>
-              <p>💬댓글수 {`(구현예정)`}</p>
-              <p>💬조회수 {`(구현예정)`}</p>
               <br />
               <div className='ml-9'>
                 <button
@@ -343,6 +310,32 @@ export default function MyProfile() {
               />
               <button className={btnStyle}>변경</button>
             </form>
+            {/* 탈퇴 확인 */}
+            {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+              <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
+                <p>정말로 탈퇴하시겠습니까?</p>
+                <button className='flex-end p-2 font-bold hover:shadow-inner ' onClick={handleDelete}>
+                  {' '}
+                  확인
+                </button>
+                <button className='flex-end p-2  font-bold hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
+                  취소{' '}
+                </button>
+              </div>
+            )}
+            {/* 이미지 삭제 확인 */}
+            {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+              <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
+                <p>정말로 사진을 삭제하시겠습니까?</p>
+                <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleImgDelete}>
+                  {' '}
+                  확인
+                </button>
+                <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setImgDelete(false)}>
+                  취소{' '}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>

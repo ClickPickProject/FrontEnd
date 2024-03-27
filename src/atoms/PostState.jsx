@@ -45,8 +45,3 @@ export const postCategoryNameState = atom({
   key: 'postCategoryNameState',
   default: '',
 });
-
-export const postCountState = atom({
-  key: 'postCountState',
-  default: '',
-});
