@@ -39,7 +39,7 @@ export default function MyPostList() {
             </Link>
           </div>
 
-          <PostList category={category} url={'/api/member/post/list'} />
+          <PostList category={category} url={'/api/member/comment/list'} />
         </motion.nav>
       </section>
     </>
