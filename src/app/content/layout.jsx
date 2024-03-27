@@ -2,6 +2,7 @@ import SideNavbar from '@/components/Community/SideNavbar';
 import { CallIcon, LetterIcon } from '@/components/UI/Icons';
 
 export default function layout({ children }) {
+  // h-[100dvh]
   return (
     <>
       <div className='mx-auto flex w-full max-w-6xl bg-white'>
