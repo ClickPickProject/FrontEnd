@@ -69,6 +69,8 @@ export const handlers = [
       position: '서울 송파구 가락로 2 (석촌동)',
       hashtags: ['#아아', '#이이'],
       postCategory: '자유',
+      thumbnailImage: '/Images/cloud.jpg',
+      imageNames: ['cloud.jpg', 'barn.jpg'],
     });
   }),
 
@@ -86,6 +88,8 @@ export const handlers = [
       position: '수저된 주소',
       hashtags: ['#수정된태그'],
       postCategory: '자유',
+      thumbnailImage: '/Images/cloud.jpg',
+      updateImageNames: ['cloud.jpg', 'barn.jpg'],
     });
   }),
 
@@ -98,7 +102,7 @@ export const handlers = [
       content: [
         {
           postId: 1,
-          nickname: 'testAccount',
+          nickname: '테스트계정',
           title: '제목일세',
           createAt: '2024-03-01T18:55:48.884Z',
           viewCount: 30,
@@ -106,6 +110,7 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '/Images/barn.jpg',
         },
         {
           postId: 2,
@@ -117,10 +122,11 @@ export const handlers = [
           hashtags: ['#해시태그', '#하이'],
           postCategory: '음식',
           commentCount: 300,
+          profileUrl: '/Images/cloud.jpg',
         },
         {
           postId: 3,
-          nickname: 'isd',
+          nickname: '거북이',
           title: '제목일세',
           createAt: '2024-03-03T18:55:48.884Z',
           viewCount: 1,
@@ -128,10 +134,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '여행지',
           commentCount: 10,
+          profileUrl: '/Images/nature-Milky.jpg',
         },
         {
           postId: 4,
-          nickname: 'testAccount',
+          nickname: '토끼',
           title: '제목일세',
           createAt: '2024-03-04T18:55:48.884Z',
           viewCount: 2,
@@ -139,10 +146,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '/Images/barn.jpg',
         },
         {
           postId: 5,
-          nickname: 'testAccount',
+          nickname: '강아지',
           title: '안녕하세요',
           createAt: '2024-03-05T18:55:48.884Z',
           viewCount: 50,
@@ -150,10 +158,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '/Images/forest.jpg',
         },
         {
           postId: 6,
-          nickname: 'testAccount',
+          nickname: '오리',
           title: '안녕하세요',
           createAt: '2024-03-06T18:55:48.884Z',
           viewCount: 50,
@@ -161,10 +170,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '/Images/dawn.jpg',
         },
         {
           postId: 7,
-          nickname: 'testAccount',
+          nickname: '고양이',
           title: '안녕하세요',
           createAt: '2024-03-07T18:55:48.884Z',
           viewCount: 50,
@@ -172,10 +182,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '/Images/barn.jpg',
         },
         {
           postId: 8,
-          nickname: 'testAccount',
+          nickname: '앵무새',
           title: '안녕하세요',
           createAt: '2024-03-08T18:55:48.884Z',
           viewCount: 50,
@@ -183,10 +194,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '',
         },
         {
           postId: 9,
-          nickname: 'testAccount',
+          nickname: '김치',
           title: '안녕하세요',
           createAt: '2024-03-09T18:55:48.884Z',
           viewCount: 50,
@@ -194,10 +206,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '',
         },
         {
           postId: 10,
-          nickname: 'testAccount',
+          nickname: '된장',
           title: '안녕하세요',
           createAt: '2024-03-10T18:55:48.884Z',
           viewCount: 50,
@@ -205,10 +218,11 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '자유',
           commentCount: 30,
+          profileUrl: '',
         },
         {
           postId: 11,
-          nickname: 'ㅎㅇㅎㅇ',
+          nickname: '인절미',
           title: '2페',
           createAt: '2024-03-11T18:55:48.884Z',
           viewCount: 50,
@@ -216,33 +230,9 @@ export const handlers = [
           hashtags: ['#해시태그'],
           postCategory: '여행지',
           commentCount: 30,
+          profileUrl: '',
         },
       ],
-      pageable: {
-        pageNumber: 0,
-        pageSize: 10,
-        sort: {
-          empty: false,
-          sorted: true,
-          unsorted: false,
-        },
-        offset: 0,
-        paged: true,
-        unpaged: false,
-      },
-      last: false,
-      totalPages: 2,
-      totalElements: 11,
-      first: true,
-      size: 10,
-      number: 0,
-      sort: {
-        empty: false,
-        sorted: true,
-        unsorted: false,
-      },
-      numberOfElements: 10,
-      empty: false,
     });
   }),
 
@@ -253,14 +243,15 @@ export const handlers = [
     return HttpResponse.json({
       content: [
         {
-          postId: 123123123,
+          postId: 1004,
           nickname: '제목검색',
           title: title,
           createAt: '2024-03-14T18:55:48.884Z',
           photoDate: '2024-03-14T18:55:48.884Z',
           hashtags: ['#해쉬태그', '#검색'],
           postCategory: '음식',
-          commentCount: 1111,
+          commentCount: 1004,
+          profileUrl: '/Images/cloud.jpg',
         },
       ],
     });
@@ -272,14 +263,15 @@ export const handlers = [
     return HttpResponse.json({
       content: [
         {
-          postId: 101010,
+          postId: 10210,
           nickname: '내용검색',
           title: '내용검색',
           createAt: '2024-03-14T18:55:48.884Z',
           photoDate: '2024-03-14T18:55:48.884Z',
           hashtags: ['#해쉬태그', '#검색'],
           postCategory: '음식',
-          commentCount: 0,
+          commentCount: 1,
+          profileUrl: '/Images/black.jpg',
         },
       ],
     });
@@ -291,14 +283,15 @@ export const handlers = [
     return HttpResponse.json({
       content: [
         {
-          postId: 123123123,
+          postId: 999,
           nickname: '태그검색',
           title: '태그검색',
           createAt: '2024-03-14T18:55:48.884Z',
           photoDate: '2024-03-14T18:55:48.884Z',
           hashtags: hashtag,
           postCategory: '음식',
-          commentCount: 2,
+          commentCount: 104,
+          profileUrl: '/Images/barn.jpg',
         },
       ],
     });
@@ -312,9 +305,7 @@ export const handlers = [
         postId: postId,
         nickname: 'testAccount',
         title: 'title',
-        content:
-          '<p><span style="color:#e06c75;">"users"</span><span style="color:#bbbbbb;">: </span><span style="color:#abb2bf;">[</span></p><p><span style="color:#bbbbbb;">{</span></p><p><span style="color:#e06c75;">"userId"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"userId"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"title"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"title"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"content"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"content"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"position"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">""</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"hashtag"</span><span style="color:#bbbbbb;">: </span><span style="color:#abb2bf;">[]</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"id"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"0"</span><span style="color:#bbbbbb;">,</span></p><p><span style="color:#e06c75;">"date"</span><span style="color:#bbbbbb;">: </span><span style="color:#98c379;">"2024-03-01T18:42:43.406Z"</span></p><p><span style="color:#bbbbbb;">}</span></p><p><span style="color:#abb2bf;">]</span><span style="color:#bbbbbb;">,</span></p>',
-        date: '2024-03-05T18:55:48.884Z',
+        content: '내용 테스트 중입니다.',
         likeCount: 1,
         viewCount: 1,
         position: '',
@@ -323,6 +314,7 @@ export const handlers = [
         postCategory: '자유',
         commentCount: 3,
         likePostCheck: false,
+        profileUrl: '/Images/iphone.png',
         comments: [
           {
             commentId: 1,
@@ -332,6 +324,7 @@ export const handlers = [
             likeCount: 1,
             likeCommentCheck: false,
             commentStatus: 'LIVE',
+            profileUrl: '/Images/barn.jpg',
             recommentList: [
               {
                 commentId: 2,
@@ -340,6 +333,8 @@ export const handlers = [
                 createAt: '2024-03-086T10:55:48.884Z',
                 likeCount: 13,
                 likeCommentCheck: false,
+                profileUrl: '/Images/barn.jpg',
+                parentId: 1,
               },
             ],
           },
@@ -359,6 +354,8 @@ export const handlers = [
                 createAt: '2024-03-166T10:55:48.884Z',
                 likeCount: 123,
                 likeCommentCheck: false,
+                profileUrl: '/Images/cloud.jpg',
+                parentId: 3,
               },
               {
                 commentId: 5,
@@ -367,6 +364,8 @@ export const handlers = [
                 createAt: '2024-03-166T11:55:48.884Z',
                 likeCount: 123,
                 likeCommentCheck: false,
+                profileUrl: '/Images/black.jpg',
+                parentId: 3,
               },
             ],
           },
@@ -393,6 +392,8 @@ export const handlers = [
         hashtags: ['#봄'],
         postCategory: '여행지',
         commentCount: 1024,
+        profileUrl: '/Images/barn.jpg',
+        thumbnail: '/Images/forest.jpg',
       },
       {
         postId: 222,
@@ -404,6 +405,8 @@ export const handlers = [
         hashtags: [],
         postCategory: '음식',
         commentCount: 98,
+        profileUrl: '/Images/black.jpg',
+        thumbnail: '/Images/cloud.jpg',
       },
       {
         postId: 333,
@@ -415,6 +418,8 @@ export const handlers = [
         hashtags: ['#추천', '#감사'],
         postCategory: '자유',
         commentCount: 24,
+        profileUrl: '/Images/clickpick_icon.png',
+        thumbnail: '/Images/dawn.jpg',
       },
     ]);
   }),
