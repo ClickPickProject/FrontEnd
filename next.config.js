@@ -94,6 +94,51 @@ const nextConfig = {
         source: '/api/member/report/comment',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/report/comment`,
       },
+      // 유저정보 확인
+      {
+        source: '/api/member/userinfo',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/userinfo`,
+      },
+      // 회원 탈퇴
+      {
+        source: '/api/member/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/:path*`,
+      },
+      // 자신이 작성한 게시글 리스트 조회
+      {
+        source: '/api/member/post/list/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/post/list/:path*`,
+      },
+      // 자신이 작성한 댓글 리스트 조회
+      {
+        source: '/api/member/comment/list/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/comment/list/:path*`,
+      },
+      // 좋아요 한 게시글 리스트 조회
+      {
+        source: '/api/member/liked/post/list/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/liked/post/list/:path*`,
+      },
+      // 좋아요 한 댓글의 게시글 리스트 조회
+      {
+        source: '/api/member/liked/comment/list/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/liked/comment/list/:path*`,
+      },
+      // 닉네임 변경
+      {
+        source: '/api/member/new-nickname/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-nickname/:path*`,
+      },
+      // 전화번호 변경
+      {
+        source: '/api/member/new-phone-number/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/new-phone-number/:path*`,
+      },
+      // 프로필 사진 추가/변경/삭제
+      {
+        source: '/api/member/profileimage/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/profileimage/:path*`,
+      },
     ];
   },
 };
