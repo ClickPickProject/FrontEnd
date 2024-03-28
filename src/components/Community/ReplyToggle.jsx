@@ -25,7 +25,7 @@ export default function ReplyToggle({ commentNickname, onSubmitReply }) {
   return (
     <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
       <div className='mt-2'>
-        <WriterView writer={myNickname} />
+        <WriterView writer={myNickname} profile={''} />
       </div>
       <textarea
         placeholder={token ? '답글을 입력하세요' : '로그인 후 이용해주세요'}

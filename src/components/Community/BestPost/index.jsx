@@ -32,7 +32,7 @@ export default function BestPost() {
               <Link href={`/content/community/${data.postId}`}>
                 <Image
                   alt='#'
-                  src='/sakura.jpg'
+                  src={data.thumbnail}
                   width={270}
                   height={170}
                   className='h-[170px] w-[270px] rounded-lg object-cover'

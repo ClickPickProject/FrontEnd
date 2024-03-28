@@ -66,6 +66,7 @@ export default function PostDetail() {
     likeCount,
     commentCount,
     comments,
+    profileUrl,
   } = userPost;
   const onClickLike = async () => {
     try {
@@ -110,7 +111,7 @@ export default function PostDetail() {
           <h2 className='text-2xl font-semibold'>{title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>
-            <WriterView writer={nickname} date={date} />
+            <WriterView writer={nickname} date={date} profile={profileUrl} />
             <StatusView viewCount={viewCount} likeCount={likeCount} />
           </div>
           {nickname === myNickname ? (

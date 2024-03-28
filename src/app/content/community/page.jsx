@@ -1,5 +1,5 @@
 'use client';
-import BestLikePost from '@/components/Community/BestPost';
+import BestPost from '@/components/Community/BestPost';
 import PostList from '@/components/Community/PostList';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -28,7 +28,7 @@ export default function CommunityPage() {
             <p className='mb-4 text-sm opacity-50'>가장 많은 좋아요를 받은 게시글이에요.</p>
           </div>
           <div className='mb-10 flex w-full justify-center gap-10'>
-            <BestLikePost />
+            <BestPost />
           </div>
           {/* 경계선 */}
           <div className='mb-10 border border-pink-200' />

@@ -151,7 +151,7 @@ export default function Comments({ comments }) {
         {/* 댓글 목록 */}
         {comments.map((comment) => (
           <li key={comment.commentId} className='flex flex-col gap-2'>
-            <WriterView writer={comment.nickname} date={comment.createAt} />
+            <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             {editMode === comment.commentId ? ( // 수정 모드인 경우
               <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
                 <textarea
