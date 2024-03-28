@@ -22,7 +22,7 @@ export default function BestPost() {
   if (isLoading || isError) return <Loading isLoading={isLoading} isError={isError} />;
   return (
     <>
-      {bestPosts.map((data) => (
+      {bestPosts?.map((data) => (
         <div key={data.postId} className='relative flex flex-col overflow-hidden rounded-lg'>
           <>
             <div className='absolute left-2 top-1 z-10 flex h-[30px] w-[150px] -translate-x-[50px] translate-y-[15px] -rotate-45 transform items-center justify-center bg-pink-400 p-2 text-xl font-bold'>
