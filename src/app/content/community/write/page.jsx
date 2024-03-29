@@ -1,8 +1,9 @@
 'use client';
-import { editorContentState, editorTagState, editorTitleState } from '@/atoms/editorContentState';
+import { editorContentState, editorTagState, editorTitleState, mapModalState } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
+import MapSearch from '@/components/Map/MapSearch';
 import Postcode from '@/components/Postcode';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
@@ -15,6 +16,7 @@ function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const [category, setCategory] = useState('');
   const [position, setPosition] = useState('');
+  const [mapModal, setMapModal] = useRecoilState(mapModalState);
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
@@ -65,7 +67,24 @@ function WritePage() {
         <div className='flex flex-col gap-4'>
           <div className='flex justify-around gap-3'>
             <DropDownMenu onChange={handleMenuClick} />
-            <Postcode onChange={handlePostCodeClick} />
+            {/* <Postcode onChange={handlePostCodeClick} /> */}
+            <button
+              onClick={() => setMapModal(true)}
+              className='h-10 w-20 rounded-lg border-2 border-pink-300 font-semibold shadow-md transition-all hover:bg-pink-300 hover:text-white'
+            >
+              지도검색
+            </button>
+            {mapModal && (
+              <>
+                <div
+                  className={`fixed inset-0 z-50 flex items-center justify-center ${mapModal && 'bg-black bg-opacity-50'}`}
+                >
+                  <div className='rounded-lg border-2 border-pink-300 bg-white'>
+                    <MapSearch />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           <input

@@ -19,3 +19,8 @@ export const userPostState = atom({
   key: 'userPostState',
   default: {},
 });
+
+export const mapModalState = atom({
+  key: 'mapModalState',
+  default: false,
+});
