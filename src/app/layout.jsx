@@ -3,6 +3,7 @@ import './globals.css';
 import RecoilRootWrapper from '@/components/RecoilRootWrapper';
 import { MSWComponent } from '@/mocks/MSWComponent';
 import ReactQueryClientProvider from '@/components/ReactQueryClientProvider';
+import Script from 'next/script';
 
 const open = Open_Sans({ subsets: ['latin'] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body className={open.className}>
+        <Script defer src={process.env.NEXT_PUBLIC_MAP_API} strategy='beforeInteractive' />
         <ReactQueryClientProvider>
           <RecoilRootWrapper>
             <MSWComponent>{children}</MSWComponent>
