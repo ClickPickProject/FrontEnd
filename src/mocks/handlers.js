@@ -493,4 +493,39 @@ export const handlers = [
     const { noticeId } = params;
     return HttpResponse.json(`${noticeId} 공지사항 삭제 완료`);
   }),
+
+  // 사용자 목록
+  http.get('/api/admin/manager/userlist', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          id: 'tm4839@naver.com',
+          name: '태민',
+          nickname: '태민',
+          phone: '01012345678',
+        },
+        {
+          id: 'ban@naver.com',
+          name: 'ban',
+          nickname: 'ban',
+          phone: '01012345679',
+        },
+      ],
+    });
+  }),
+
+  // 정지된(banned) 사용자 목록
+  http.post('/api/admin/manager/banuserlist', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          id: 'ban@naver.com', //정지된 유저 정보
+          password: null,
+          name: 'ban',
+          nickname: 'ban',
+          phone: '01012345679',
+        },
+      ],
+    });
+  }),
 ];
