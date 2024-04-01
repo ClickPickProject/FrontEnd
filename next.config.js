@@ -110,8 +110,8 @@ const nextConfig = {
       },
       // 프로필 사진 추가/변경/삭제
       {
-        source: '/api/member/profile/image/:path*',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/profile/image/:path*`,
+        source: '/api/profile/image/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/profile/image/:path*`,
       },
     ];
   },

@@ -30,7 +30,7 @@ export default function MyProfile() {
   } = useQuery({
     queryKey: ['userInfo'],
     queryFn: async () => {
-      const res = await axios.get('/api/member/userinfo', {
+      const res = await axios.get('/api/member/userinfo1', {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -52,7 +52,7 @@ export default function MyProfile() {
   } = useQuery({
     queryKey: ['proImg'],
     queryFn: async () => {
-      const res = await axios.get('/api/member/profile/image', {
+      const res = await axios.get('/api/profile/image', {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -73,7 +73,7 @@ export default function MyProfile() {
       setImgDelete(true); // 확인 버튼을 누르기 전에 확인 메시지를 표시
     } else {
       try {
-        const res = await axios.delete('/api/member/profile/image', {
+        const res = await axios.delete('/api/profile/image', {
           withCredentials: true,
           headers: {
             Authorization: token,
@@ -179,7 +179,7 @@ export default function MyProfile() {
     console.log(e.target.files);
     // setImage(e)
     try {
-      const res = await axios.post(`/api/member/profile/image`, formData, {
+      const res = await axios.post(`/api/profile/image`, formData, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -198,7 +198,8 @@ export default function MyProfile() {
 
   const isPending = isPending1 || isPending2;
   const isError = isError1 || isError2;
-  if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
+  if (isPending1 || isError1) return <Loading isPending={isPending} isError={isError} />;
+  if (isPending2 || isError2) return <Loading isPending={isPending} isError={isError} />;
 
   return (
     <>
