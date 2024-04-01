@@ -2,55 +2,45 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { FillHomeIcon } from '../UI/Icons';
+import { FaStar } from 'react-icons/fa6';
 
 export default function MapNavMenu() {
   const pathName = usePathname();
   const menu = [
     {
-      href: '#',
-      icon: '',
+      href: '/place',
+      icon: <FillHomeIcon size={20} />,
       clickedIcon: '',
-      content: '홈 화면',
+      content: '지도 홈',
     },
     {
-      href: '#',
-      icon: '',
-      clickedIcon: '',
-      content: '탐색하기',
-    },
-    {
-      href: '#',
-      icon: '',
+      href: '/place/favorite',
+      icon: <FaStar size={20} />,
       clickedIcon: '',
       content: '즐겨찾기',
     },
-    {
-      href: '#',
-      icon: '',
-      clickedIcon: '',
-      content: '날씨현황',
-    },
   ];
 
-  const defaultClass = 'flex w-full justify-center py-4 text-sm';
+  const defaultClass = 'flex w-full justify-center py-4 text-sm rounded-xl font-semibold transition-all';
   return (
-    <nav className='w-[100px] border-2 border-red-300'>
-      <div className='flex flex-col items-center font-bold'>
-        <figure className='p-4'>
-          <Image src='/Images/clickpick_icon.png' width={40} height={40} alt='logo' />
-        </figure>
-        {menu.map(({ content, href }) => (
-          <ul key={content} className='w-full'>
-            <Link href={href}>
-              <div
-                className={`${defaultClass} ${pathName === href ? 'bg-pink-400 text-white' : 'bg-white text-pink-500 transition-all hover:bg-pink-100 hover:text-pink-500'}`}
-              >
-                <li className='px-2 py-2'>{content}</li>
-              </div>
-            </Link>
-          </ul>
-        ))}
-      </div>
+    <nav className='flex min-h-screen min-w-[80px] flex-col bg-white  shadow-md'>
+      <figure className='flex justify-center p-4'>
+        <Image src='/Images/clickpick_icon.png' width={40} height={40} alt='logo' />
+      </figure>
+      {menu.map(({ content, href, icon }) => (
+        <ul key={content} className='p-2'>
+          <Link href={href}>
+            <div
+              className={`${defaultClass} ${pathName === href ? 'bg-pink-200 text-pink-600' : 'bg-white text-pink-500  hover:bg-pink-200 hover:text-pink-500'}`}
+            >
+              <li className='flex flex-col items-center gap-1 text-xs'>
+                {icon} {content}
+              </li>
+            </div>
+          </Link>
+        </ul>
+      ))}
     </nav>
   );
 }
