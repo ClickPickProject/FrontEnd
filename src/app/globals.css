@@ -10,3 +10,19 @@
   min-height: 300px;
   min-width: 830px;
 }
+
+.contentsArea .image-style-side {
+  float: right;
+  margin-left: var(--ck-image-style-spacing);
+}
+.contentsArea figure.image {
+  margin: 0.9em auto;
+  text-align: center;
+}
+.contentsArea .image.image_resized {
+  display: block;
+  box-sizing: border-box;
+}
+.contentsArea .image.image_resized img {
+  width: 100%;
+}
