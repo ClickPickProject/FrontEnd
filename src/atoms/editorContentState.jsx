@@ -24,3 +24,16 @@ export const mapModalState = atom({
   key: 'mapModalState',
   default: false,
 });
+
+export const mapPositionState = atom({
+  key: 'mapPositionState',
+  default: {
+    lat: 0,
+    lng: 0,
+  },
+});
+
+export const mapAddressState = atom({
+  key: 'mapAddressState',
+  default: '',
+});

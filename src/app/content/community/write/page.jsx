@@ -1,10 +1,15 @@
 'use client';
-import { editorContentState, editorTagState, editorTitleState, mapModalState } from '@/atoms/editorContentState';
+import {
+  editorContentState,
+  editorTagState,
+  editorTitleState,
+  mapAddressState,
+  mapModalState,
+} from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
 import MapSearch from '@/components/Map/MapSearch';
-import Postcode from '@/components/Postcode';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
 import axios from 'axios';
@@ -21,8 +26,10 @@ function WritePage() {
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
   const token = useRecoilValue(tokenState);
+  const [mapAddress, setMapAddress] = useRecoilState(mapAddressState);
   useEffect(() => {
     setTitle('');
+    setMapAddress('');
   }, [setTitle]);
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
@@ -68,12 +75,21 @@ function WritePage() {
           <div className='flex justify-around gap-3'>
             <DropDownMenu onChange={handleMenuClick} />
             {/* <Postcode onChange={handlePostCodeClick} /> */}
-            <button
-              onClick={() => setMapModal(true)}
-              className='h-10 w-20 rounded-lg border-2 border-pink-300 font-semibold shadow-md transition-all hover:bg-pink-300 hover:text-white'
-            >
-              지도검색
-            </button>
+            <div className='flex w-full flex-1 justify-center gap-2 rounded-lg transition-all'>
+              <input
+                disabled
+                className='h-full w-full rounded-lg border pl-2 text-sm outline-none'
+                placeholder='장소를 입력하세요'
+                value={mapAddress}
+              />
+              <button
+                onClick={() => setMapModal(true)}
+                className='flex w-16 items-center justify-center rounded-lg bg-pink-300 text-sm shadow-md transition-all hover:bg-pink-400 hover:text-white'
+              >
+                검색
+              </button>
+            </div>
+
             {mapModal && (
               <>
                 <div

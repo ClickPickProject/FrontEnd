@@ -1,4 +1,4 @@
-import { mapModalState } from '@/atoms/editorContentState';
+import { mapAddressState, mapModalState, mapPositionState } from '@/atoms/editorContentState';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { FaSearch, FaTimes, FaTimesCircle } from 'react-icons/fa';
@@ -20,6 +20,8 @@ export default function MapSearch() {
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
   const [searchResult, setSearchResult] = useState(null);
   const [mapModal, setMapModal] = useRecoilState(mapModalState);
+  const [mapPosition, setMapPosition] = useRecoilState(mapPositionState);
+  const [mapAddress, setMapAddress] = useRecoilState(mapAddressState);
 
   useEffect(() => {
     const options = {
@@ -80,6 +82,8 @@ export default function MapSearch() {
   };
 
   const handleMarkerClick = (marker) => {
+    setMapPosition({ lng: marker.position.lng, lat: marker.position.lat });
+    console.log(mapPosition);
     setInfo(marker);
     const moveLatLng = new kakao.maps.LatLng(marker.position.lat, marker.position.lng);
     map.panTo(moveLatLng, {
@@ -87,6 +91,13 @@ export default function MapSearch() {
         duration: 500,
       },
     });
+  };
+
+  const onclickMapPosition = ({ content, placeAddressName, position }) => {
+    console.log('장소 선택');
+    setMapPosition({ lng: position.lng, lat: position.lat });
+    setMapAddress(content);
+    setMapModal(false);
   };
   return (
     <>
@@ -171,7 +182,10 @@ export default function MapSearch() {
                   {info && info.content === marker.content && (
                     <>
                       <div className='flex w-48 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
-                        <div className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'>
+                        <div
+                          className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'
+                          onClick={() => onclickMapPosition(marker)}
+                        >
                           <span className='mx-auto'>{marker.content}</span>
                           <span className='flex items-center'>
                             <IoIosArrowForward />
