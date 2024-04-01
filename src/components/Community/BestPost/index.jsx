@@ -32,7 +32,7 @@ export default function BestPost() {
               <Link href={`/content/community/${data.postId}`}>
                 <Image
                   alt='#'
-                  src={data.thumbnail}
+                  src={`${data.thumbnail === null || data.thumbnail.length === 0 ? '/Images/camera.png' : data.thumbnail}`}
                   width={270}
                   height={170}
                   className='h-[170px] w-[270px] rounded-lg object-cover'
@@ -46,7 +46,7 @@ export default function BestPost() {
                   <span className='text-center text-sm font-semibold'>[{data.commentCount}]</span>
                 </div>
               </Link>
-              <WriterView writer={data.nickname} date={data.createAt} />
+              <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
               <StatusView viewCount={data.viewCount} likeCount={data.likeCount} />
             </div>
           </>
