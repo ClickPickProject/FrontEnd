@@ -3,14 +3,17 @@ import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
+import Loading from '../Loading';
 export default function MyProfile() {
   const router = useRouter();
   const [name, setName] = useRecoilState(userNameState);
   const [nickName, setNickName] = useRecoilState(userNickNameState);
   const [userId, setUserId] = useRecoilState(userIdState);
+
   const [phone, setPhone] = useRecoilState(userPhoneState);
   const [nickNameDisabled, setNickNameDisabled] = useState(false);
   const [phoneDisabled, setPhoneDisabled] = useState(false);
@@ -20,48 +23,47 @@ export default function MyProfile() {
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
-  useEffect(() => {
-    const handleImg = async () => {
-      try {
-        const res = await axios.get(`/api/member/profile/image`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        if (res.status === 200) {
-          setImage(res.data.url);
-        }
-      } catch (err) {
-        console.log(err);
-        alert('이미지 업로드 오류발생!');
+  const {
+    data: userInFo,
+    isPending1,
+    isError1,
+  } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const res = await axios.get('/api/member/userinfo', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        setName(res.data.name);
+        setNickName(res.data.nickname);
+        setPhone(res.data.phone);
+        setUserId(res.data.id);
       }
-    };
-    const fetchData = async () => {
-      try {
-        const res = await axios.get('/api/member/userinfo', {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        if (res.status === 200) {
-          setName(res.data.name);
-          setNickName(res.data.nickname);
-          setPhone(res.data.phone);
-          setUserId(res.data.id);
-        }
-      } catch (error) {
-        console.error(error);
-        alert('Error: 데이터를 불러올 수 없습니다');
+      return res.data;
+    },
+  });
+  const {
+    data: proImg,
+    isPending2,
+    isError2,
+  } = useQuery({
+    queryKey: ['proImg'],
+    queryFn: async () => {
+      const res = await axios.get('/api/member/profile/image', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        setImage(res.data.url);
       }
-    };
-    // 데이터를 가져오는 함수 호출
-    fetchData();
-    handleImg();
-    // cleanup 함수 (optional)
-    return () => {};
-  }, []);
+      return res.data;
+    },
+  });
 
   //프로필사진 삭제
   const [imgDelete, setImgDelete] = useState(false); // 탈퇴 확인 상태를 저장하는 상태 변수
@@ -192,6 +194,10 @@ export default function MyProfile() {
       alert('이미지 업로드 오류발생!');
     }
   };
+
+  const isPending = isPending1 || isPending2;
+  const isError = isError1 || isError2;
+  if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
 
   return (
     <>
