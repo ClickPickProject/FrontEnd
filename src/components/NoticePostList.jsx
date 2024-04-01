@@ -8,8 +8,13 @@ import { useQuery } from '@tanstack/react-query';
 import Loading from './Loading';
 import WriterView from './Community/BestPost/WriterView';
 import StatusView from './Community/BestPost/StatusView';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 
 export default function NoticePostList() {
+  dayjs.extend(relativeTime);
+  dayjs.locale('ko');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
@@ -71,13 +76,9 @@ export default function NoticePostList() {
       <ul>
         {posts.content.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
-            <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex items-center gap-2 font-semibold'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
-              <span className='text-center font-semibold'>[{data.commentCount}]</span>
-              <div className='absolute right-0'>
-                <StatusView viewCount={data.viewCount} />
-              </div>
+              <div className='absolute right-0'>{data.createAt ? dayjs(data.createAt).fromNow() : null}</div>
             </div>
             {/* 경계선 */}
             <div className='mb-4 w-full border border-gray-200' />
