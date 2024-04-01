@@ -1,5 +1,5 @@
 'use client';
-import { editorContentState, editorTagState, editorTitleState } from '@/atoms/editorContentState';
+import { editorContentState, editorTagState, editorTitleState, postImagesState } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
@@ -19,6 +19,7 @@ function WritePage() {
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
   const token = useRecoilValue(tokenState);
+  const [postImages, setPostImages] = useRecoilState(postImagesState);
   useEffect(() => {
     setTitle('');
   }, [setTitle]);
@@ -35,6 +36,7 @@ function WritePage() {
         position,
         hashtags: tag,
         postCategory: category,
+        imageNames: postImages,
       };
       const res = await axios.post(`/api/member/post`, body, {
         withCredentials: true,

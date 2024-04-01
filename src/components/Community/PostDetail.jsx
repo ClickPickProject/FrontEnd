@@ -99,7 +99,7 @@ export default function PostDetail() {
     setPostCategoryName(category);
     setPostContent(content);
     setPostHashtag(hashtags);
-    router.push('/content/community/edit');
+    router.push(`/content/community/${params.id}/edit`);
   };
 
   const onClickPostDelete = async () => {};
