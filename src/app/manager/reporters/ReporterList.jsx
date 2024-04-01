@@ -1,16 +1,47 @@
 import { useState } from 'react';
+import dayjs from 'dayjs';
 
 export default function ReporterList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간 상태
-  const [openDropdownIndex, setOpenDropdownIndex] = useState(null); // 열린 드롭다운의 인덱스
+  const [openDropdown, setOpenDropdown] = useState(false);
 
   const handlePeriodSelect = (period) => {
     setSelectedPeriod(period);
-    setOpenDropdownIndex(null); // 드롭다운 선택 후 열린 드롭다운 인덱스 초기화
+    console.log(period);
+    setOpenDropdown(false);
   };
 
   const toggleDropdown = (index) => {
-    setOpenDropdownIndex(openDropdownIndex === index ? null : index); // 클릭한 드롭다운이 이미 열려있으면 닫고, 아니면 열기
+    setOpenDropdown(openDropdown !== index ? index : null);
+  };
+
+  const onClickAccept = () => {
+    const currentDate = dayjs();
+    const format = 'YYYY-MM-DDTHH:mm:ss';
+    console.log('승인');
+    switch (selectedPeriod) {
+      case '3일':
+        console.log(currentDate.add(3, 'd').format(format));
+        break;
+      case '5일':
+        console.log(currentDate.add(5, 'd').format(format));
+        break;
+      case '7일':
+        console.log(currentDate.add(7, 'd').format(format));
+        break;
+      case '30일':
+        console.log(currentDate.add(30, 'd').format(format));
+        break;
+      case '영구':
+        console.log(currentDate.add(999, 'y').format(format));
+        break;
+      default:
+        console.log('기간을 선택해주세요');
+    }
+  };
+
+  const onClickReject = () => {
+    console.log('거부');
   };
 
   return (
@@ -20,19 +51,24 @@ export default function ReporterList() {
       <div className=''>악질 유저2</div>
       <div className=''>도배</div>
       <div className=''>
-        {/* 드롭다운으로 표시된 기간 */}
         <div className='relative'>
-          <div className='cursor-pointer' onClick={() => toggleDropdown(0)}>
+          <div className='cursor-pointer' onClick={() => toggleDropdown(2)}>
             {selectedPeriod ? selectedPeriod : '기간 선택'}
-            <span className='ml-1'>{openDropdownIndex === 0 ? '▲' : '▼'}</span>
+            <span className='ml-1'>{openDropdown ? '▲' : '▼'}</span>
           </div>
-          {openDropdownIndex === 0 && (
-            <div className='absolute right-0 z-10 w-full rounded-md bg-white shadow-lg'>
+          {openDropdown && (
+            <div className='absolute right-0 z-50 w-full rounded-md bg-white shadow-lg'>
               <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('3일')}>
                 3일
               </span>
               <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('5일')}>
                 5일
+              </span>
+              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('7일')}>
+                7일
+              </span>
+              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('30일')}>
+                30일
               </span>
               <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('영구')}>
                 영구
@@ -42,8 +78,12 @@ export default function ReporterList() {
         </div>
       </div>
       <div className='mx-auto flex items-center gap-2'>
-        <button className='rounded bg-blue-500 px-2 font-bold text-white hover:bg-blue-700'>승인</button>
-        <button className='rounded bg-red-500 px-2 font-bold text-white hover:bg-red-700'>거부</button>
+        <button className='rounded bg-blue-500 px-2 font-bold text-white hover:bg-blue-700' onClick={onClickAccept}>
+          승인
+        </button>
+        <button className='rounded bg-red-500 px-2 font-bold text-white hover:bg-red-700' onClick={onClickReject}>
+          거부
+        </button>
       </div>
     </div>
   );
