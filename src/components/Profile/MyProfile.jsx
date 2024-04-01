@@ -163,9 +163,9 @@ export default function MyProfile() {
   };
 
   //style값
-  const btnStyle = 'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner';
+  const btnStyle = 'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2';
   const inputFont =
-    'mx-2 w-[300px] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
+    'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
   //API로 받아올 값
 
   //이미지변경
@@ -203,11 +203,11 @@ export default function MyProfile() {
     <>
       <section className='flex h-full w-[inherit] flex-col justify-center text-sm'>
         <div className='flex flex-col gap-2 p-2'>
-          <h2 className='text-2xl font-bold'>🙋‍♂️ 마이 프로필</h2>
-          <p className='mb-4 text-sm opacity-50'>나의 프로필을 자유롭게 꾸며보세요.</p>
+          <h2 className='mt-5 text-2xl font-bold sm:text-center'>🙋‍♂️ 마이 프로필</h2>
+          <p className='mb-4 text-sm opacity-50 sm:text-center'>나의 프로필을 자유롭게 꾸며보세요.</p>
         </div>
         <div className='mb-10 border border-pink-200' />
-        <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
+        <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200 px-5 md:m-8 md:mr-5 md:w-auto sm:flex-col'>
           <div className='mx-auto'>
             <form action='' className='mt-5'>
               <div>
@@ -251,52 +251,62 @@ export default function MyProfile() {
               </div>
             </div>
           </div>
-          <div className='mx-auto'>
+          <div
+            className='ml-5 mt-5
+          '
+          >
             {/* 이름 */}
             <form className='mt-5'>
-              <label htmlFor='name' className='m-5 font-semibold'>
+              <label htmlFor='name' className='mx-5 font-semibold'>
                 이름
               </label>
-              <input
-                type='text'
-                id='name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder='이름을 입력하세요'
-                className={inputFont}
-                disabled
-              />
+              <div className='inline md:block sm:block'>
+                <input
+                  type='text'
+                  id='name'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder='이름을 입력하세요'
+                  className={inputFont}
+                  disabled
+                />
+              </div>
             </form>
+
             {/* 아이디 */}
             <form className='mt-3'>
               <label htmlFor='id' className='mx-5 font-semibold'>
                 메일
               </label>
-              <input
-                id='id'
-                type='text'
-                value={userId}
-                className={inputFont}
-                onChange={(e) => setUserId(e.target.value)}
-                placeholder='메일을 입력하세요'
-                disabled
-              />
+              <div className='inline md:block sm:block'>
+                <input
+                  id='id'
+                  type='text'
+                  value={userId}
+                  className={inputFont}
+                  onChange={(e) => setUserId(e.target.value)}
+                  placeholder='메일을 입력하세요'
+                  disabled
+                />
+              </div>
             </form>
             {/* 별명 */}
             <form onSubmit={handleNickNameChange} className='mt-3'>
               <label htmlFor='nickname' className='mx-5 font-semibold'>
                 별명
               </label>
-              <input
-                id='nickname'
-                type='text'
-                value={nickName}
-                className={inputFont}
-                onChange={(e) => setNickName(e.target.value)}
-                placeholder='별명을 입력하세요'
-                disabled={!nickNameDisabled}
-              />
-              <button className={btnStyle}>변경</button>
+              <div className='inline md:block sm:block'>
+                <input
+                  id='nickname'
+                  type='text'
+                  value={nickName}
+                  className={inputFont}
+                  onChange={(e) => setNickName(e.target.value)}
+                  placeholder='별명을 입력하세요'
+                  disabled={!nickNameDisabled}
+                />
+                <button className={btnStyle}>변경</button>
+              </div>
             </form>
 
             {/* 폰번호 */}
@@ -304,16 +314,18 @@ export default function MyProfile() {
               <label htmlFor='phone' className='mx-5 font-semibold'>
                 번호
               </label>
-              <input
-                id='phone'
-                type='tel'
-                value={phone}
-                className={inputFont}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder='휴대폰 번호를 입력하세요'
-                disabled={!phoneDisabled}
-              />
-              <button className={btnStyle}>변경</button>
+              <div className='inline md:block sm:block'>
+                <input
+                  id='phone'
+                  type='tel'
+                  value={phone}
+                  className={inputFont}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder='휴대폰 번호를 입력하세요'
+                  disabled={!phoneDisabled}
+                />
+                <button className={btnStyle}>변경</button>
+              </div>
             </form>
             {/* 탈퇴 확인 */}
             {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
