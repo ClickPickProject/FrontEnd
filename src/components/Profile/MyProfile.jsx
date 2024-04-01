@@ -23,45 +23,45 @@ export default function MyProfile() {
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
-  const {
-    data: userInFo,
-    isPending1,
-    isError1,
-  } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ['userInfo'],
     queryFn: async () => {
-      const res = await axios.get('/api/member/userinfo1', {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        setName(res.data.name);
-        setNickName(res.data.nickname);
-        setPhone(res.data.phone);
-        setUserId(res.data.id);
+      try {
+        const res = await axios.get('/api/member/userinfo/', {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          setName(res.data.name);
+          setNickName(res.data.nickname);
+          setPhone(res.data.phone);
+          setUserId(res.data.id);
+        }
+        return res.data;
+      } catch (error) {
+        console.log(error);
       }
-      return res.data;
     },
   });
-  const {
-    data: proImg,
-    isPending2,
-    isError2,
-  } = useQuery({
+  const { data1, isPending1, isError1 } = useQuery({
     queryKey: ['proImg'],
     queryFn: async () => {
-      const res = await axios.get('/api/profile/image', {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        setImage(res.data.url);
+      try {
+        const res = await axios.get('/api/profile/image/', {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          setImage(res.data.url);
+        }
+        return res.data;
+      } catch (error) {
+        console.log(error);
       }
-      return res.data;
     },
   });
 
@@ -196,10 +196,8 @@ export default function MyProfile() {
     }
   };
 
-  const isPending = isPending1 || isPending2;
-  const isError = isError1 || isError2;
-  if (isPending1 || isError1) return <Loading isPending={isPending} isError={isError} />;
-  if (isPending2 || isError2) return <Loading isPending={isPending} isError={isError} />;
+  if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
+  if (isPending1 || isError1) return <Loading isPending={isPending1} isError={isError1} />;
 
   return (
     <>
