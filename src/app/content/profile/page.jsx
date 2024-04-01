@@ -4,10 +4,18 @@ import LikePost from '@/components/Profile/LikePost';
 import MyCommentList from '@/components/Profile/MyCommentList';
 import MyPostList from '@/components/Profile/MyPostList';
 import MyProfile from '@/components/Profile/MyProfile';
+import { FaAngleDown } from 'react-icons/fa6';
+import { FaAngleUp } from 'react-icons/fa6';
 import { useState } from 'react';
 export default function ProfilePage() {
+  const [showDis, setShowDis] = useState(false);
+  const handleClick = () => {
+    setShowDis((show) => !show);
+  };
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent t pb-1 transition-all';
+  const displayClass = showDis ? 'inline' : 'sm:hidden';
+  const disFlex = showDis ? 'flex-col' : 'flex-row';
   const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {
     setActiveSection(e);
@@ -15,22 +23,33 @@ export default function ProfilePage() {
 
   return (
     <>
-      <div className='flex w-full flex-col'>
-        <ul className='mx-auto my-5 flex h-12 space-x-8 font-semibold'>
-          <li className={hoverStyle} onClick={() => handleSectionChange(1)}>
-            🙋‍♂️ 마이 프로필
+      <div className={`flex w-full flex-col`}>
+        <div className='mx-auto'>
+          {showDis ? (
+            <div className='hidden p-1 sm:inline' onClick={handleClick}>
+              <FaAngleDown />
+            </div>
+          ) : (
+            <div className='hidden p-1 sm:inline' onClick={handleClick}>
+              <FaAngleUp />
+            </div>
+          )}
+        </div>
+        <ul className='sm:mb-30 col mx-auto my-5 flex h-12 items-center justify-center space-x-8 text-base font-semibold lg:space-x-4 lg:text-sm sm:my-4 sm:flex-col'>
+          <li className={`${hoverStyle} ${displayClass}`} onClick={() => handleSectionChange(1)}>
+            🙋‍♂️ 내프로필
           </li>
-          <li onClick={() => handleSectionChange(2)} className={hoverStyle}>
-            📋 나의 게시글
+          <li onClick={() => handleSectionChange(2)} className={`${hoverStyle} ${displayClass}`}>
+            📋 나의글
           </li>
-          <li onClick={() => handleSectionChange(3)} className={hoverStyle}>
-            💬 나의 댓글
+          <li onClick={() => handleSectionChange(3)} className={`${hoverStyle} ${displayClass}`}>
+            💬 나의댓글
           </li>
-          <li onClick={() => handleSectionChange(4)} className={hoverStyle}>
-            ❤️ 좋아요한 게시글
+          <li onClick={() => handleSectionChange(4)} className={`${hoverStyle} ${displayClass}`}>
+            ❤️ 좋아요글
           </li>
-          <li onClick={() => handleSectionChange(5)} className={hoverStyle}>
-            ❤️ 좋아요한 댓글
+          <li onClick={() => handleSectionChange(5)} className={`${hoverStyle} ${displayClass}`}>
+            ❤️ 좋아요댓글
           </li>
         </ul>
         {activeSection === 1 && <MyProfile />}

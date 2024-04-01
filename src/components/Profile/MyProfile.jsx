@@ -163,9 +163,9 @@ export default function MyProfile() {
   };
 
   //style값
-  const btnStyle = 'mx-4  w-[70px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner';
+  const btnStyle = 'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner';
   const inputFont =
-    'mx-2 w-[350px] bg-pink-100 text-gray-500 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
+    'mx-2 w-[300px] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
   //API로 받아올 값
 
   //이미지변경
@@ -201,7 +201,7 @@ export default function MyProfile() {
 
   return (
     <>
-      <section className='flex h-full w-[inherit] flex-col justify-center'>
+      <section className='flex h-full w-[inherit] flex-col justify-center text-sm'>
         <div className='flex flex-col gap-2 p-2'>
           <h2 className='text-2xl font-bold'>🙋‍♂️ 마이 프로필</h2>
           <p className='mb-4 text-sm opacity-50'>나의 프로필을 자유롭게 꾸며보세요.</p>
@@ -209,7 +209,7 @@ export default function MyProfile() {
         <div className='mb-10 border border-pink-200' />
         <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200'>
           <div className='mx-auto'>
-            <form action='' className='margin ml-8 mt-5'>
+            <form action='' className='mt-5'>
               <div>
                 <img
                   src={image}
@@ -219,7 +219,7 @@ export default function MyProfile() {
                 <br />
                 <label
                   htmlFor='file'
-                  className='mx-auto flex cursor-pointer justify-center rounded-lg border-black bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                  className=' flex cursor-pointer justify-center rounded-lg  bg-pink-100 p-3 font-semibold  hover:shadow-inner'
                 >
                   이미지 변경
                 </label>
@@ -234,18 +234,17 @@ export default function MyProfile() {
               </div>
             </form>
             <div className='mx-auto flex flex-col text-center'>
-              <div className='my-2'></div>
               <br />
-              <div className='ml-9'>
+              <div className='flx-row flex gap-4'>
                 <button
                   onClick={handleDelete}
-                  className=' w-[150px] rounded-lg bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                  className='m-1 rounded-lg  bg-pink-100  p-3 font-semibold hover:shadow-inner'
                 >
                   회원탈퇴
                 </button>
                 <button
                   onClick={handleImgDelete}
-                  className='mb-3 ml-5 w-[150px] rounded-lg bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                  className='m-1 rounded-lg bg-pink-100  p-3  font-semibold hover:shadow-inner'
                 >
                   사진삭제
                 </button>
