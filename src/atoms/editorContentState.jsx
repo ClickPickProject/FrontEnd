@@ -19,3 +19,8 @@ export const userPostState = atom({
   key: 'userPostState',
   default: {},
 });
+
+export const postImagesState = atom({
+  key: 'postImagesState',
+  default: [],
+});
