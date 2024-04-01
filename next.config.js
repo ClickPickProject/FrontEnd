@@ -1,6 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'clickpick.iptime.org',
+        port: '8080',
+        pathname: '/profile/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'clickpick.iptime.org',
+        port: '8080',
+        pathname: '/post/images/**',
+      },
+    ],
+  },
   async headers() {
     return [
       {
@@ -136,8 +152,18 @@ const nextConfig = {
       },
       // 프로필 사진 추가/변경/삭제
       {
-        source: '/api/member/profileimage/:path*',
+        source: '/api/member/profile/image/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/profileimage/:path*`,
+      },
+      // 프로필 사진 조회
+      {
+        source: '/api/profile/image/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/profile/image/:path*`,
+      },
+      // 게시글 사진 추가 / 조회
+      {
+        source: '/api/member/post/image/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/post/image/:path*`,
       },
     ];
   },
