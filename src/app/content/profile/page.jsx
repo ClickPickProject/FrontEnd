@@ -35,21 +35,21 @@ export default function ProfilePage() {
             </div>
           )}
         </div>
-        <ul className='mx-auto my-5 flex h-12 items-center justify-center space-x-8 text-base font-semibold lg:space-x-4 lg:text-sm sm:my-4 sm:flex-col'>
+        <ul className='mx-auto my-5 flex h-12 items-center justify-center space-x-8 whitespace-nowrap text-base font-semibold lg:space-x-4 lg:text-sm sm:my-4 sm:flex-col'>
           <li onClick={() => handleSectionChange(1)} className={`${hoverStyle} ${displayClass}`}>
             🙋‍♂️ 내프로필
           </li>
           <li onClick={() => handleSectionChange(2)} className={`${hoverStyle} ${displayClass}`}>
-            📋 나의게시
+            📋 내게시글
           </li>
           <li onClick={() => handleSectionChange(3)} className={`${hoverStyle} ${displayClass}`}>
             💬 나의댓글
           </li>
           <li onClick={() => handleSectionChange(4)} className={`${hoverStyle} ${displayClass}`}>
-            ❤️ 좋아요글
+            ❤️ 좋아한게시
           </li>
           <li onClick={() => handleSectionChange(5)} className={`${hoverStyle} ${displayClass}`}>
-            ❤️ 좋은댓글
+            ❤️ 좋아한댓글
           </li>
         </ul>
         {activeSection === 1 && <MyProfile />}

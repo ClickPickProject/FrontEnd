@@ -8,6 +8,10 @@ import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 import Loading from '../Loading';
+import { LogoutIcon } from '@/components/UI/Icons';
+
+import { IoImagesOutline } from 'react-icons/io5';
+
 export default function MyProfile() {
   const router = useRouter();
   const [name, setName] = useRecoilState(userNameState);
@@ -166,7 +170,7 @@ export default function MyProfile() {
   const btnStyle =
     'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2 sm:w-[80px] justify-center';
   const inputFont =
-    'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white sm:w-full';
+    'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white sm:w-full md:w-full lg:w-full';
   //API로 받아올 값
 
   //이미지변경
@@ -207,48 +211,90 @@ export default function MyProfile() {
           <p className='mb-4 text-sm opacity-50 sm:text-center'>나의 프로필을 자유롭게 꾸며보세요.</p>
         </div>
         <div className='mb-10 border border-pink-200' />
-        <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200 px-5 md:m-8 md:mr-5 md:w-auto sm:flex-col'>
+        <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200 px-5 lg:flex-col md:m-8 md:mr-5 md:w-auto md:flex-col'>
           <div className='mx-auto'>
-            <form action='' className='mt-5'>
-              <div>
-                <img
-                  src={image}
-                  alt='#'
-                  className='mx-auto mb-2 h-[150px] w-[150px] rounded-full border-4 border-white shadow-xl '
-                />
-                <br />
-                <label
-                  htmlFor='file'
-                  className=' flex cursor-pointer justify-center rounded-lg  bg-pink-100 p-3 font-semibold  hover:shadow-inner'
-                >
-                  이미지 변경
-                </label>
+            <div className='flex flex-col'>
+              <form action='' className='mt-5'>
+                <div>
+                  <img
+                    src={image}
+                    alt='#'
+                    className='mx-auto mb-2 h-[150px] w-[150px] rounded-full border-4 border-white shadow-xl '
+                  />
+                  <br />
+                  <label
+                    htmlFor='file'
+                    className=' flex cursor-pointer items-center justify-center gap-2 rounded-lg  bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                  >
+                    <IoImagesOutline size={18} />
+                    이미지 변경
+                  </label>
 
-                <input
-                  type='file'
-                  id='file'
-                  onChange={handleInputImg}
-                  accept='image/png, image/jpg'
-                  className='hidden'
-                />
+                  <input
+                    type='file'
+                    id='file'
+                    onChange={handleInputImg}
+                    accept='image/png, image/jpg'
+                    className='hidden'
+                  />
+                </div>
+              </form>
+              <div className='mx-auto flex flex-col text-center'>
+                <br />
+                <div className='flx-row flex gap-4'>
+                  <button
+                    onClick={handleDelete}
+                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap  rounded-lg  bg-pink-100 p-3 font-semibold hover:shadow-inner md:w-28 sm:w-28'
+                  >
+                    <LogoutIcon size={18} />
+                    회원탈퇴
+                  </button>
+                  <button
+                    onClick={handleImgDelete}
+                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-pink-100  p-3 font-semibold hover:shadow-inner md:w-28 sm:w-28'
+                  >
+                    <IoImagesOutline size={18} />
+                    사진삭제
+                  </button>
+                </div>
               </div>
-            </form>
-            <div className='mx-auto flex flex-col text-center'>
-              <br />
-              <div className='flx-row flex gap-4'>
-                <button
-                  onClick={handleDelete}
-                  className='m-1 w-32 rounded-lg  bg-pink-100  p-3 font-semibold hover:shadow-inner md:w-16 sm:w-20'
-                >
-                  회원탈퇴
-                </button>
-                <button
-                  onClick={handleImgDelete}
-                  className='m-1 w-32 rounded-lg bg-pink-100  p-3  font-semibold hover:shadow-inner md:w-16 sm:w-20'
-                >
-                  사진삭제
-                </button>
-              </div>
+            </div>
+            <div className='flex-col'>
+              {/* 탈퇴 확인 */}
+              {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+                <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
+                  <p>정말로 탈퇴하시겠습니까?</p>
+                  <button className='flex-end p-2 font-bold hover:shadow-inner ' onClick={handleDelete}>
+                    {' '}
+                    확인
+                  </button>
+                  <button
+                    className='flex-end p-2  font-bold hover:shadow-inner'
+                    onClick={() => setConfirmDelete(false)}
+                  >
+                    취소{' '}
+                  </button>
+                </div>
+              )}
+              {/* 이미지 삭제 확인 */}
+              {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+                <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
+                  <p>정말로 사진을 삭제하시겠습니까?</p>
+                  <button
+                    className=' whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
+                    onClick={handleImgDelete}
+                  >
+                    {' '}
+                    확인
+                  </button>
+                  <button
+                    className='whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
+                    onClick={() => setImgDelete(false)}
+                  >
+                    취소{' '}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div
@@ -327,32 +373,6 @@ export default function MyProfile() {
                 <button className={btnStyle}>변경</button>
               </div>
             </form>
-            {/* 탈퇴 확인 */}
-            {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-              <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
-                <p>정말로 탈퇴하시겠습니까?</p>
-                <button className='flex-end p-2 font-bold hover:shadow-inner ' onClick={handleDelete}>
-                  {' '}
-                  확인
-                </button>
-                <button className='flex-end p-2  font-bold hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
-                  취소{' '}
-                </button>
-              </div>
-            )}
-            {/* 이미지 삭제 확인 */}
-            {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-              <div className='mx-auto mb-2 flex rounded-md bg-pink-200 p-5 shadow-sm'>
-                <p>정말로 사진을 삭제하시겠습니까?</p>
-                <button className=' p-2 font-bold  hover:shadow-inner' onClick={handleImgDelete}>
-                  {' '}
-                  확인
-                </button>
-                <button className='p-2 font-bold  hover:shadow-inner' onClick={() => setImgDelete(false)}>
-                  취소{' '}
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </section>
