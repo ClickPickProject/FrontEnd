@@ -163,9 +163,10 @@ export default function MyProfile() {
   };
 
   //style값
-  const btnStyle = 'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2';
+  const btnStyle =
+    'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2 sm:w-[80px] justify-center';
   const inputFont =
-    'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
+    'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white sm:w-full';
   //API로 받아올 값
 
   //이미지변경
@@ -238,13 +239,13 @@ export default function MyProfile() {
               <div className='flx-row flex gap-4'>
                 <button
                   onClick={handleDelete}
-                  className='m-1 rounded-lg  bg-pink-100  p-3 font-semibold hover:shadow-inner'
+                  className='m-1 w-32 rounded-lg  bg-pink-100  p-3 font-semibold hover:shadow-inner md:w-16 sm:w-20'
                 >
                   회원탈퇴
                 </button>
                 <button
                   onClick={handleImgDelete}
-                  className='m-1 rounded-lg bg-pink-100  p-3  font-semibold hover:shadow-inner'
+                  className='m-1 w-32 rounded-lg bg-pink-100  p-3  font-semibold hover:shadow-inner md:w-16 sm:w-20'
                 >
                   사진삭제
                 </button>
@@ -260,7 +261,7 @@ export default function MyProfile() {
               <label htmlFor='name' className='mx-5 font-semibold'>
                 이름
               </label>
-              <div className='inline md:block sm:block'>
+              <div className='flex-end flex md:block sm:block'>
                 <input
                   type='text'
                   id='name'
@@ -278,7 +279,7 @@ export default function MyProfile() {
               <label htmlFor='id' className='mx-5 font-semibold'>
                 메일
               </label>
-              <div className='inline md:block sm:block'>
+              <div className='flex-end flex md:block sm:block'>
                 <input
                   id='id'
                   type='text'
@@ -295,7 +296,7 @@ export default function MyProfile() {
               <label htmlFor='nickname' className='mx-5 font-semibold'>
                 별명
               </label>
-              <div className='inline md:block sm:block'>
+              <div className='flex-end flex md:block sm:block'>
                 <input
                   id='nickname'
                   type='text'
@@ -314,7 +315,7 @@ export default function MyProfile() {
               <label htmlFor='phone' className='mx-5 font-semibold'>
                 번호
               </label>
-              <div className='inline md:block sm:block'>
+              <div className='flex-end flex md:block sm:block'>
                 <input
                   id='phone'
                   type='tel'

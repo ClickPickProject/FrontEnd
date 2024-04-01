@@ -10,7 +10,7 @@ export default function MyPostList() {
   const isLogin = useRecoilValue(loginState);
   return (
     <>
-      <section className=' flex h-full w-[inherit] flex-col justify-center'>
+      <section className=' flex h-full w-[inherit] flex-col justify-center sm:mt-10'>
         <motion.nav
           className='menu'
           initial={{ opacity: 0, y: 0 }}
@@ -18,13 +18,13 @@ export default function MyPostList() {
           transition={{ duration: 0.2 }}
         >
           <div className='mb-10 flex gap-4'>
-            <div className='text-2xl font-bold'>❤️ 좋아요한 댓글</div>
+            <div className='text-2xl font-bold sm:text-lg'>❤️ 좋아한 댓글</div>
             <div className='mb-10 border border-pink-200' />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300'
+              className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1'
             >
               <option value='모두'>모두</option>
               <option value='자유'>자유</option>

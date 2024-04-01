@@ -13,8 +13,8 @@ export default function ProfilePage() {
     setShowDis((show) => !show);
   };
   const hoverStyle =
-    'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent t pb-1 transition-all';
-  const displayClass = showDis ? 'inline' : 'sm:hidden';
+    'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all';
+  const displayClass = showDis ? 'inline-block' : 'sm:hidden';
   const disFlex = showDis ? 'flex-col' : 'flex-row';
   const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {
@@ -24,23 +24,23 @@ export default function ProfilePage() {
   return (
     <>
       <div className={`flex w-full flex-col`}>
-        <div className='mx-auto'>
+        <div className='mx-auto sm:mb-3'>
           {showDis ? (
             <div className='hidden p-1 sm:inline' onClick={handleClick}>
-              <FaAngleDown />
+              <FaAngleUp />
             </div>
           ) : (
             <div className='hidden p-1 sm:inline' onClick={handleClick}>
-              <FaAngleUp />
+              <FaAngleDown />
             </div>
           )}
         </div>
         <ul className='mx-auto my-5 flex h-12 items-center justify-center space-x-8 text-base font-semibold lg:space-x-4 lg:text-sm sm:my-4 sm:flex-col'>
-          <li className={`${hoverStyle} ${displayClass}`} onClick={() => handleSectionChange(1)}>
+          <li onClick={() => handleSectionChange(1)} className={`${hoverStyle} ${displayClass}`}>
             🙋‍♂️ 내프로필
           </li>
           <li onClick={() => handleSectionChange(2)} className={`${hoverStyle} ${displayClass}`}>
-            📋 나의글
+            📋 나의게시
           </li>
           <li onClick={() => handleSectionChange(3)} className={`${hoverStyle} ${displayClass}`}>
             💬 나의댓글
@@ -49,7 +49,7 @@ export default function ProfilePage() {
             ❤️ 좋아요글
           </li>
           <li onClick={() => handleSectionChange(5)} className={`${hoverStyle} ${displayClass}`}>
-            ❤️ 좋아요댓글
+            ❤️ 좋은댓글
           </li>
         </ul>
         {activeSection === 1 && <MyProfile />}

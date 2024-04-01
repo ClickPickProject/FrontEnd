@@ -66,7 +66,6 @@ export default function PostList({ category, url }) {
   });
   const displayPosts = filteredPosts;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
-
   return (
     <div>
       <ul>
@@ -91,7 +90,7 @@ export default function PostList({ category, url }) {
         ))}
       </ul>
 
-      <div className=''>
+      <div className='mx-auto flex justify-around'>
         <Pagination
           activePage={currentPage}
           itemsCountPerPage={postsPerPage}

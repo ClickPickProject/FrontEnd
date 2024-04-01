@@ -6,7 +6,9 @@ export default function layout({ children }) {
   return (
     <>
       <div className='mx-auto flex w-full max-w-6xl bg-white'>
-        <SideNavbar />
+        <div className='sm:hidden'>
+          <SideNavbar />
+        </div>
         {children}
       </div>
       <footer className='mt-12 flex h-72 w-full flex-col items-center justify-center bg-pink-100'>
