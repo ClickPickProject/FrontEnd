@@ -5,6 +5,7 @@ import {
   editorTitleState,
   mapAddressState,
   mapModalState,
+  mapPositionState,
   postImagesState,
 } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
@@ -29,6 +30,7 @@ function WritePage() {
   const token = useRecoilValue(tokenState);
   const [postImages, setPostImages] = useRecoilState(postImagesState);
   const [mapAddress, setMapAddress] = useRecoilState(mapAddressState);
+  const [mapPosition, setMapPosition] = useRecoilState(mapPositionState);
   useEffect(() => {
     setTitle('');
     setMapAddress('');
@@ -43,7 +45,9 @@ function WritePage() {
       const body = {
         title,
         content,
-        position,
+        position: mapAddress, // 장소명
+        xposition: mapPosition.lng, // 경도
+        yposition: mapPosition.lat, // 위도
         hashtags: tag,
         postCategory: category,
         imageNames: postImages,
