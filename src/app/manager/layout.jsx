@@ -1,5 +1,5 @@
 'use client';
-import { FillNoticeIcon } from '@/components/UI/Icons';
+import { DashboardIcon, FillNoticeIcon } from '@/components/UI/Icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -19,7 +19,7 @@ export default function layout({ children }) {
     {
       name: '홈',
       href: '/manager',
-      icon: <IoHome size={20} />,
+      icon: <DashboardIcon size={20} />,
     },
     {
       name: '공지사항',
