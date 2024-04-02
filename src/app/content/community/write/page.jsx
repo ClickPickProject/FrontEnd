@@ -1,11 +1,11 @@
 'use client';
-import { editorContentState, editorTagState, editorTitleState, postImagesState } from '@/atoms/editorContentState';
 import {
   editorContentState,
   editorTagState,
   editorTitleState,
   mapAddressState,
   mapModalState,
+  postImagesState,
 } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
