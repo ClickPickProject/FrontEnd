@@ -15,7 +15,6 @@ export default function ProfilePage() {
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all';
   const displayClass = showDis ? 'inline-block' : 'sm:hidden';
-  const disFlex = showDis ? 'flex-col' : 'flex-row';
   const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {
     setActiveSection(e);

@@ -1,14 +1,12 @@
 import SideNavbar from '@/components/Community/SideNavbar';
 import { CallIcon, LetterIcon } from '@/components/UI/Icons';
-
 export default function layout({ children }) {
   // h-[100dvh]
+
   return (
     <>
       <div className='mx-auto flex w-full max-w-6xl bg-white'>
-        <div className='sm:hidden'>
-          <SideNavbar />
-        </div>
+        <SideNavbar />
         {children}
       </div>
       <footer className='mt-12 flex h-72 w-full flex-col items-center justify-center bg-pink-100'>

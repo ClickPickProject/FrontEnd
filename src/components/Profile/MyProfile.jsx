@@ -168,7 +168,7 @@ export default function MyProfile() {
 
   //style값
   const btnStyle =
-    'w-[50px] rounded-lg  bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2 sm:w-[80px] justify-center';
+    'w-[50px] rounded-lg hover:bg-pink-300 bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2 sm:w-[80px] justify-center';
   const inputFont =
     'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white sm:w-full md:w-full lg:w-full';
   //API로 받아올 값
@@ -224,7 +224,7 @@ export default function MyProfile() {
                   <br />
                   <label
                     htmlFor='file'
-                    className=' flex cursor-pointer items-center justify-center gap-2 rounded-lg  bg-pink-100 p-3 font-semibold  hover:shadow-inner'
+                    className='flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-pink-100  p-3 font-semibold hover:bg-pink-300  hover:shadow-inner'
                   >
                     <IoImagesOutline size={18} />
                     이미지 변경
@@ -244,14 +244,14 @@ export default function MyProfile() {
                 <div className='flx-row flex gap-4'>
                   <button
                     onClick={handleDelete}
-                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap  rounded-lg  bg-pink-100 p-3 font-semibold hover:shadow-inner md:w-28 sm:w-28'
+                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap rounded-lg  bg-pink-100  p-3 font-semibold hover:bg-pink-300 hover:shadow-inner md:w-28 sm:w-28'
                   >
                     <LogoutIcon size={18} />
                     회원탈퇴
                   </button>
                   <button
                     onClick={handleImgDelete}
-                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-pink-100  p-3 font-semibold hover:shadow-inner md:w-28 sm:w-28'
+                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-pink-100 p-3  font-semibold hover:bg-pink-300 hover:shadow-inner md:w-28 sm:w-28'
                   >
                     <IoImagesOutline size={18} />
                     사진삭제
