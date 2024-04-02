@@ -22,8 +22,8 @@ export default function ProfilePage() {
 
   return (
     <>
-      <div className={`flex w-full flex-col`}>
-        <div className='mx-auto sm:mb-3'>
+      <div className={`flex w-full flex-col `}>
+        <div className='mx-auto sm:mb-3 '>
           {showDis ? (
             <div className='hidden p-1 sm:inline' onClick={handleClick}>
               <FaAngleUp />

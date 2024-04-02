@@ -1,7 +1,8 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AiOutlineMenuUnfold, AiOutlineMenuFold } from 'react-icons/ai';
+import { CgMenu, CgMenuLeft } from 'react-icons/cg';
+
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -72,15 +73,15 @@ export default function SideNavbar() {
     <>
       <div>
         {showDis ? (
-          <div className='z-50 hidden bg-pink-100 sm:inline' onClick={handleClick}>
-            <AiOutlineMenuUnfold size={40} />
+          <div className='hidden p-2 sm:inline' onClick={handleClick}>
+            <CgMenu size={40} />
           </div>
         ) : (
-          <div className='z-50 hidden bg-pink-100 sm:inline' onClick={handleClick}>
-            <AiOutlineMenuFold size={40} />
+          <div className='hidden p-2 sm:inline' onClick={handleClick}>
+            <CgMenuLeft size={40} />
           </div>
         )}
-        <div className={`${showDis ? 'sm:absolute sm:w-full sm:bg-white' : 'sm:hidden'}`}>
+        <div className={`${showDis ? 'z-50 sm:absolute sm:w-full sm:bg-white' : 'sm:hidden'}`}>
           <div className='mr-8'>
             <header className='mb-8 w-full'>
               <figure className='ml-4'>
@@ -105,7 +106,7 @@ export default function SideNavbar() {
               </ul>
             </nav>
           </div>
-          <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 sm:text-center [&>*]:rounded-xl [&>*]:text-xs'>
+          <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 pb-4 sm:text-center [&>*]:rounded-xl [&>*]:text-xs'>
             <Link
               href='/content/profile'
               className={`${
@@ -137,7 +138,6 @@ export default function SideNavbar() {
                 로그인
               </Link>
             )}
-            <br />
           </div>
         </div>
       </div>

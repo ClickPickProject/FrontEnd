@@ -18,13 +18,13 @@ export default function MyCommentList() {
           transition={{ duration: 0.2 }}
         >
           <div className='mb-10 flex gap-4'>
-            <div className='text-2xl font-bold'>💬나의 댓글</div>
+            <div className='whitespace-nowrap text-2xl font-bold sm:text-xl'>💬나의 댓글</div>
             <div className='mb-10 border border-pink-200' />
 
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300'
+              className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
             >
               <option value='모두'>모두</option>
               <option value='자유'>자유</option>
@@ -33,7 +33,7 @@ export default function MyCommentList() {
             </select>
             <Link
               href={`${isLogin ? '/content/community/write' : '/login'}`}
-              className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+              className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500 sm:w-[80px] sm:text-xs'
             >
               <PencilIcon color='white' size={18} />글 작성
             </Link>
