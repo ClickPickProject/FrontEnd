@@ -1,9 +1,17 @@
 'use client';
-import { editorContentState, editorTagState, editorTitleState } from '@/atoms/editorContentState';
+import {
+  editorContentState,
+  editorTagState,
+  editorTitleState,
+  mapAddressState,
+  mapModalState,
+  mapPositionState,
+  postImagesState,
+} from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
-import Postcode from '@/components/Postcode';
+import MapSearch from '@/components/Map/MapSearch';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
 import axios from 'axios';
@@ -15,12 +23,17 @@ function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const [category, setCategory] = useState('');
   const [position, setPosition] = useState('');
+  const [mapModal, setMapModal] = useRecoilState(mapModalState);
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
   const token = useRecoilValue(tokenState);
+  const [postImages, setPostImages] = useRecoilState(postImagesState);
+  const [mapAddress, setMapAddress] = useRecoilState(mapAddressState);
+  const [mapPosition, setMapPosition] = useRecoilState(mapPositionState);
   useEffect(() => {
     setTitle('');
+    setMapAddress('');
   }, [setTitle]);
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
@@ -32,9 +45,12 @@ function WritePage() {
       const body = {
         title,
         content,
-        position,
+        position: mapAddress, // 장소명
+        xposition: mapPosition.lng, // 경도
+        yposition: mapPosition.lat, // 위도
         hashtags: tag,
         postCategory: category,
+        imageNames: postImages,
       };
       const res = await axios.post(`/api/member/post`, body, {
         withCredentials: true,
@@ -65,7 +81,33 @@ function WritePage() {
         <div className='flex flex-col gap-4'>
           <div className='flex justify-around gap-3'>
             <DropDownMenu onChange={handleMenuClick} />
-            <Postcode onChange={handlePostCodeClick} />
+            {/* <Postcode onChange={handlePostCodeClick} /> */}
+            <div className='flex w-full flex-1 justify-center gap-2 rounded-lg transition-all'>
+              <input
+                disabled
+                className='h-full w-full rounded-lg border pl-2 text-sm outline-none'
+                placeholder='장소를 입력하세요'
+                value={mapAddress}
+              />
+              <button
+                onClick={() => setMapModal(true)}
+                className='flex w-16 items-center justify-center rounded-lg bg-pink-300 text-sm shadow-md transition-all hover:bg-pink-400 hover:text-white'
+              >
+                검색
+              </button>
+            </div>
+
+            {mapModal && (
+              <>
+                <div
+                  className={`fixed inset-0 z-50 flex items-center justify-center ${mapModal && 'bg-black bg-opacity-50'}`}
+                >
+                  <div className='rounded-lg border-2 border-pink-300 bg-white'>
+                    <MapSearch />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           <input

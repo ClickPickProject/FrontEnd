@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { atom, selectorFamily } from 'recoil';
+import { atom } from 'recoil';
 
 export const postState = atom({
   key: 'postState',

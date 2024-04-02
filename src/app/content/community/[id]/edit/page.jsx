@@ -1,6 +1,6 @@
 'use client';
 import { postCategoryNameState, postTitleState } from '@/atoms/PostState';
-import { editorContentState, editorTagState, editorTitleState } from '@/atoms/editorContentState';
+import { editorContentState, editorTagState, editorTitleState, postImagesState } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
@@ -23,8 +23,10 @@ function EditPage() {
   const token = useRecoilValue(tokenState);
   const postTitle = useRecoilValue(postTitleState);
   const postCategory = useRecoilValue(postCategoryNameState);
+  const [postImages, setPostImages] = useRecoilState(postImagesState);
   const queryClient = useQueryClient();
   const params = useParams();
+  console.log(params.id);
   useEffect(() => {
     setTitle(postTitle);
     setCategory(postCategory);
@@ -42,6 +44,7 @@ function EditPage() {
         position,
         hashtags: tag,
         postCategory: category,
+        imageNames: postImages,
       };
       const res = await axios.post(`/api/member/post/${params.id}`, body, {
         withCredentials: true,
