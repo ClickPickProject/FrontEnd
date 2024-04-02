@@ -105,10 +105,10 @@ const nextConfig = {
         source: '/api/member/recomment',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/recomment`,
       },
-      // 댓글 신고
+      // 게시글/댓글 신고
       {
-        source: '/api/member/report/comment',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/report/comment`,
+        source: '/api/member/report/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/report/:path*`,
       },
       // 유저정보 확인
       {
@@ -164,6 +164,11 @@ const nextConfig = {
       {
         source: '/api/member/post/image/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/post/image/:path*`,
+      },
+      // 지도 게시글 조회
+      {
+        source: '/api/map/marker',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/map/marker`,
       },
     ];
   },
