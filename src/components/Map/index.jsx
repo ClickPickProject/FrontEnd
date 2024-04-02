@@ -5,6 +5,9 @@ import { FaSearch } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 import { IoIosArrowForward } from 'react-icons/io';
+import { mapAreaState } from '@/atoms/mapState';
+import { useRecoilState } from 'recoil';
+import axios from 'axios';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -18,6 +21,7 @@ export default function KakaoMap() {
   const [searchPagination, setSearchPagination] = useState(null);
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
   const [searchResult, setSearchResult] = useState(null);
+  const [area, setArea] = useRecoilState(mapAreaState);
 
   useEffect(() => {
     if (!map) return;
@@ -49,12 +53,35 @@ export default function KakaoMap() {
         setTotalItemsCount(pagination.totalCount);
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
+        const swLatLng = bounds.getSouthWest();
+        const neLatLng = bounds.getNorthEast();
+        setArea({
+          s: swLatLng.getLat(),
+          w: swLatLng.getLng(),
+          n: neLatLng.getLat(),
+          e: neLatLng.getLng(),
+        });
       }
     });
   }, [map, query]);
 
+  useEffect(() => {
+    const fetchArea = async () => {
+      const body = {
+        south: area.s,
+        west: area.w,
+        north: area.n,
+        east: area.e,
+      };
+      const res = await axios.post('/api/map/marker', body, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+    };
+    fetchArea();
+  }, [area]);
+
   const handleInputChange = (e) => {
-    // setQuery(e.target.value);
     setInputSearch(e.target.value);
     console.log(e.target.value);
   };
