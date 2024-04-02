@@ -1,6 +1,8 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { CgMenu, CgMenuLeft } from 'react-icons/cg';
+
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -16,20 +18,30 @@ import {
 } from '@/components/UI/Icons';
 import { usePathname } from 'next/navigation';
 import { loginState, tokenState } from '@/atoms/tokenState';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+
 export default function SideNavbar() {
   const pathName = usePathname();
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useRecoilState(loginState);
+
   const onClickLogout = () => {
     localStorage.clear();
     setIsLogin(false);
     window.location.reload();
   };
+
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
+
+  const [showDis, setShowDis] = useState(false);
+  const [showMenu, setShowMenu] = useState();
+
+  const handleClick = () => {
+    setShowDis((show) => !show);
+  };
 
   const MENU = [
     {
@@ -57,63 +69,77 @@ export default function SideNavbar() {
       clickedIcon: <FillQuestionIcon size={28} color='#ec4899' />,
     },
   ];
+
   return (
     <>
-      <div className='mr-8'>
-        <header className='mb-8 w-full'>
-          <figure className='ml-4'>
-            <Link alt='logo' href='/'>
-              <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
-            </Link>
-          </figure>
-        </header>
-        <nav className='sticky top-0 mb-6 flex w-[220px] flex-col items-center'>
-          <ul className='flex w-full flex-col gap-[13px] text-sm [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold'>
-            {MENU.map(({ name, href, icon, clickedIcon }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
-              >
-                <li className='flex items-center gap-2'>
-                  {href === pathName ? clickedIcon : icon} {name}
-                </li>
-              </Link>
-            ))}
-          </ul>
-        </nav>
-        <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 [&>*]:rounded-xl [&>*]:text-xs'>
-          <Link
-            href='/content/profile'
-            className={`${
-              pathName === '/content/profile' ? 'bg-pink-300' : null
-            } flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300`}
-          >
-            {pathName === '/content/profile' ? (
-              <FillProfileIcon size={28} color='#ec4899' />
-            ) : (
-              <ProfileIcon size={28} />
-            )}
-            내 정보
-          </Link>
-
-          {isLogin ? (
-            <button
-              onClick={onClickLogout}
-              className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
-            >
-              <LogoutIcon size={24} />
-              로그아웃
-            </button>
-          ) : (
+      <div>
+        {showDis ? (
+          <div className='hidden w-full bg-white p-2 sm:inline' onClick={handleClick}>
+            <CgMenu size={40} />
+          </div>
+        ) : (
+          <div className='hidden w-full bg-white p-2 sm:inline' onClick={handleClick}>
+            <CgMenuLeft size={40} />
+          </div>
+        )}
+        <div className={`${showDis ? 'z-50 sm:absolute sm:w-full sm:bg-white' : 'sm:hidden'}`}>
+          <div className='mr-8'>
+            <header className='mb-8 w-full'>
+              <figure className='ml-4'>
+                <Link alt='logo' href='/'>
+                  <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
+                </Link>
+              </figure>
+            </header>
+            <nav className='sticky top-0 mb-6 flex w-[220px] flex-col items-center'>
+              <ul className='flex w-full flex-col gap-[13px] text-sm [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold'>
+                {MENU.map(({ name, href, icon, clickedIcon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
+                  >
+                    <li className='flex items-center gap-2'>
+                      {href === pathName ? clickedIcon : icon} {name}
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            </nav>
+          </div>
+          <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 pb-4 sm:text-center [&>*]:rounded-xl [&>*]:text-xs'>
             <Link
-              href='/login'
-              className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+              href='/content/profile'
+              className={`${
+                pathName === '/content/profile' ? 'bg-pink-300' : null
+              } flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300`}
             >
-              <LogoutIcon size={24} />
-              로그인
+              {pathName === '/content/profile' ? (
+                <FillProfileIcon size={28} color='#ec4899' />
+              ) : (
+                <ProfileIcon size={28} />
+              )}
+              내 정보
             </Link>
-          )}
+
+            {isLogin ? (
+              <button
+                onClick={onClickLogout}
+                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+              >
+                <LogoutIcon size={24} />
+                로그아웃
+              </button>
+            ) : (
+              <Link
+                href='/login'
+                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+              >
+                <LogoutIcon size={24} />
+                로그인
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </>
