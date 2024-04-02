@@ -31,7 +31,7 @@ export default function MyProfile() {
     queryKey: ['userInfo'],
     queryFn: async () => {
       try {
-        const res = await axios.get('/api/member/userinfo/', {
+        const res = await axios.get('/api/member/userinfo', {
           withCredentials: true,
           headers: {
             Authorization: token,
@@ -53,7 +53,7 @@ export default function MyProfile() {
     queryKey: ['proImg'],
     queryFn: async () => {
       try {
-        const res = await axios.get('/api/profile/image/', {
+        const res = await axios.get('/api/profile/image', {
           withCredentials: true,
           headers: {
             Authorization: token,
@@ -77,7 +77,7 @@ export default function MyProfile() {
       setImgDelete(true); // 확인 버튼을 누르기 전에 확인 메시지를 표시
     } else {
       try {
-        const res = await axios.delete('/api/profile/image', {
+        const res = await axios.delete('/api/member/profile/image', {
           withCredentials: true,
           headers: {
             Authorization: token,
@@ -183,7 +183,7 @@ export default function MyProfile() {
     console.log(e.target.files);
     // setImage(e)
     try {
-      const res = await axios.post(`/api/profile/image`, formData, {
+      const res = await axios.post(`/api/member/profile/image`, formData, {
         withCredentials: true,
         headers: {
           Authorization: token,

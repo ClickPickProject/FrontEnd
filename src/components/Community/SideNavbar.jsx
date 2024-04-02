@@ -73,11 +73,11 @@ export default function SideNavbar() {
     <>
       <div>
         {showDis ? (
-          <div className='hidden p-2 sm:inline' onClick={handleClick}>
+          <div className='hidden w-full bg-white p-2 sm:inline' onClick={handleClick}>
             <CgMenu size={40} />
           </div>
         ) : (
-          <div className='hidden p-2 sm:inline' onClick={handleClick}>
+          <div className='hidden w-full bg-white p-2 sm:inline' onClick={handleClick}>
             <CgMenuLeft size={40} />
           </div>
         )}
