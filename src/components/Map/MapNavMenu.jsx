@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FillHomeIcon } from '../UI/Icons';
+import { BoardIcon, FillHomeIcon } from '../UI/Icons';
 import { FaStar } from 'react-icons/fa6';
 
 export default function MapNavMenu() {
@@ -19,6 +19,12 @@ export default function MapNavMenu() {
       icon: <FaStar size={20} />,
       clickedIcon: '',
       content: '즐겨찾기',
+    },
+    {
+      href: '/place/board',
+      icon: <BoardIcon size={20} />,
+      clickedIcon: '',
+      content: '게시판',
     },
   ];
 
