@@ -2,7 +2,7 @@
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { mapAreaState, mapMenuState } from '@/atoms/mapState';
+import { mapAreaState, mapMenuState, placeDetailState } from '@/atoms/mapState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
@@ -21,6 +21,9 @@ export default function KakaoMap() {
   const [area, setArea] = useRecoilState(mapAreaState);
   const setMapMenu = useSetRecoilState(mapMenuState);
   const [clickToggle, setClickToggle] = useState(true);
+  const [mapPost, setMapPost] = useState([]);
+  const [mapDetailLength, setMapDetailLength] = useState(0);
+  const [placeDetail, setPlaceDetail] = useRecoilState(placeDetailState);
 
   useEffect(() => {
     if (!map) return;
@@ -76,10 +79,13 @@ export default function KakaoMap() {
         const res = await axios.post('/api/map/marker', body, {
           withCredentials: true,
         });
+        setMapPost(res.data);
+        console.log(res.data.length);
       } catch (err) {
         console.log(err);
       }
     };
+
     fetchArea();
   }, [area]);
 
@@ -103,12 +109,21 @@ export default function KakaoMap() {
 
   const handleMarkerClick = (marker) => {
     setInfo(marker);
+    const places = mapPost.filter((post) => post.position === marker.content);
+    setPlaceDetail(places);
+    setMapDetailLength(places.length);
+
     const moveLatLng = new kakao.maps.LatLng(marker.position.lat, marker.position.lng);
     map.panTo(moveLatLng, {
       animate: {
         duration: 500,
       },
     });
+  };
+
+  const onClickPlaceDetail = () => {
+    setMapMenu('게시판');
+    console.log(placeDetail);
   };
   return (
     <>
@@ -130,7 +145,7 @@ export default function KakaoMap() {
       <div className=''>
         <motion.button
           initial={{ x: '-100%' }}
-          animate={{ x: clickToggle ? 400 : 0 }} // clickToggle 상태에 따라 위치를 변경
+          animate={{ x: clickToggle ? 400 : 0 }}
           exit={{ x: '-100%' }}
           transition={{ duration: 0.3 }}
           className='absolute top-1/2 z-50 items-center rounded-br-sm rounded-tr-sm bg-white px-1 py-4 font-bold text-pink-500 outline-none hover:bg-pink-50 hover:text-pink-600'
@@ -164,14 +179,20 @@ export default function KakaoMap() {
               <CustomOverlayMap position={marker.position} yAnchor={0.5} xAnchor={0.5} zIndex={999}>
                 {info && info.content === marker.content && (
                   <>
-                    <div className='flex w-48 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
-                      <div className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'>
-                        <span className='mx-auto'>{marker.content}</span>
+                    <div className='flex w-64 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
+                      <div
+                        className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'
+                        onClick={onClickPlaceDetail}
+                      >
+                        <span className='mx-auto text-sm'>
+                          {marker.content} ({mapDetailLength})
+                        </span>
                         <span className='flex items-center'>
                           <IoIosArrowForward />
                         </span>
                       </div>
                       <div className='cursor-text whitespace-pre-wrap text-sm'>{marker.placeAddressName}</div>
+                      <div className='cursor-text whitespace-pre-wrap text-sm'>관련 게시물</div>
                     </div>
                   </>
                 )}

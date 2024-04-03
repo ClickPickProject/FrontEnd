@@ -19,3 +19,8 @@ export const mapMenuState = atom({
   key: 'mapMenuState',
   default: '지도 홈',
 });
+
+export const placeDetailState = atom({
+  key: 'placeDetailState',
+  default: [],
+});

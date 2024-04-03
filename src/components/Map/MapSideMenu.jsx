@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { FaSearch } from 'react-icons/fa';
 import MapHeader from './MapHeader';
 import Pagination from 'react-js-pagination';
-import { useRecoilValue } from 'recoil';
-import { mapMenuState } from '@/atoms/mapState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { mapMenuState, placeDetailState } from '@/atoms/mapState';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 export default function MapSideMenu({
@@ -18,6 +18,7 @@ export default function MapSideMenu({
   handlePageChange,
 }) {
   const mapMenu = useRecoilValue(mapMenuState);
+  const [placeDetail, setPlaceDetail] = useRecoilState(placeDetailState);
 
   return (
     <motion.div
@@ -65,7 +66,7 @@ export default function MapSideMenu({
               <h2 className='text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
               {markers.map((marker) => (
                 <li key={marker.content.placeUrl}>
-                  <div className={`flex h-[110px] w-full flex-col p-2 hover:bg-pink-100`}>
+                  <div className={`flex h-[110px] w-full flex-col p-2 transition-all hover:bg-pink-100`}>
                     <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
                       {marker.content}
                     </span>
@@ -98,7 +99,31 @@ export default function MapSideMenu({
       )}
 
       {mapMenu === '즐겨찾기' && <>즐겨찾기</>}
-      {mapMenu === '게시판' && <>게시판</>}
+      {mapMenu === '게시판' && (
+        <>
+          {placeDetail.length === 0 ? (
+            <h1 className='mb-4 text-lg font-bold'>게시글이 존재하지 않습니다.</h1>
+          ) : (
+            <div className='mx-auto w-full py-8'>
+              <h1 className='mb-4 text-xl font-bold'>게시글 목록</h1>
+              <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2'>
+                {placeDetail.map((post) => (
+                  <div className='rounded-lg bg-white p-4 shadow-md'>
+                    <h2 className='mb-2 text-xl font-semibold'>{post.position}</h2>
+                    <p className='text-gray-600'>dd</p>
+                    <div className='mt-4 flex items-center justify-between'>
+                      <span className='text-sm text-gray-500'>asd</span>
+                      <button className='rounded-xl bg-pink-500 px-4 py-2 text-white transition-all hover:bg-pink-600'>
+                        자세히 보기
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </motion.div>
   );
 }
