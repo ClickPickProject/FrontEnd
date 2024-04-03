@@ -9,3 +9,13 @@ export const mapAreaState = atom({
     e: '',
   },
 });
+
+export const mapMarkerState = atom({
+  key: 'mapMarkerState',
+  default: [],
+});
+
+export const mapMenuState = atom({
+  key: 'mapMenuState',
+  default: '지도 홈',
+});

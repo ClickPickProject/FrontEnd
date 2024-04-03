@@ -1,13 +1,11 @@
 'use client';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
-import MapNavMenu from './MapNavMenu';
-import { FaSearch } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import Pagination from 'react-js-pagination';
 import { IoIosArrowForward } from 'react-icons/io';
-import { mapAreaState } from '@/atoms/mapState';
-import { useRecoilState } from 'recoil';
+import { mapAreaState, mapMenuState } from '@/atoms/mapState';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
+import MapSideMenu from '@/components/Map/MapSideMenu';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -16,12 +14,11 @@ export default function KakaoMap() {
   const [query, setQuery] = useState('');
   const [inputSearch, setInputSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
-  const [postsPerPage, setPostsPerPage] = useState(15); // 페이지당 게시글 개수
+  const [postsPerPage] = useState(15); // 페이지당 게시글 개수
   const [searchPagination, setSearchPagination] = useState(null);
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
-  const [searchResult, setSearchResult] = useState(null);
   const [area, setArea] = useRecoilState(mapAreaState);
+  const setMapMenu = useSetRecoilState(mapMenuState);
 
   useEffect(() => {
     if (!map) return;
@@ -73,10 +70,13 @@ export default function KakaoMap() {
         north: area.n,
         east: area.e,
       };
-      const res = await axios.post('/api/map/marker', body, {
-        withCredentials: true,
-      });
-      console.log(res.data);
+      try {
+        const res = await axios.post('/api/map/marker', body, {
+          withCredentials: true,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchArea();
   }, [area]);
@@ -87,14 +87,15 @@ export default function KakaoMap() {
   };
 
   const handlePageChange = (pageNumber) => {
+    if (pageNumber === currentPage) return;
     setCurrentPage(pageNumber);
     setSearchPagination(searchPagination.gotoPage(pageNumber));
-    console.log(searchPagination);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
     setCurrentPage(1);
+    setMapMenu('지도 홈');
     setQuery(inputSearch);
   };
 
@@ -109,64 +110,16 @@ export default function KakaoMap() {
   };
   return (
     <>
-      <MapNavMenu />
-      <div className='flex w-[500px] flex-col'>
-        <div className='h-[10vh] p-4 '>
-          <form onSubmit={handleSearch} className='relative flex h-[45px] w-full gap-4'>
-            <input
-              className='w-full rounded-lg border-2 border-pink-400 pl-2 outline-none'
-              type='text'
-              placeholder='장소, 주소, 검색'
-              onChange={handleInputChange}
-            />
-            <div className='absolute bottom-0 right-2 top-0 flex items-center'>
-              <button type='submit'>
-                <FaSearch color='hotpink' size={25} />
-              </button>
-            </div>
-          </form>
-        </div>
-        {/* 지도 검색 결과 */}
-        <section className='h-[90vh] overflow-y-auto'>
-          <ul className=''>
-            {markers.length === 0 && null}
-            <h2 className='text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
-            {markers.map((marker) => (
-              <li key={marker.content.placeUrl}>
-                <div
-                  className={`flex h-[110px] w-[360px] flex-col p-2 hover:bg-pink-100`}
-                  // onMouseOver={() => {
-                  //   setInfo(marker);
-                  // }}
-                >
-                  <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
-                    {marker.content}
-                  </span>
-                  <span className='text-sm opacity-80'>{marker.placeCategory}</span>
-                  <span className='text-sm opacity-80'>{marker.placeAddressName}</span>
-                  <span className='text-xs opacity-60'>
-                    {marker.placeCategory.length === 0 ? '카테고리 없음' : marker.placeCategory}
-                  </span>
-                </div>
-              </li>
-            ))}
-            <Pagination
-              activePage={currentPage}
-              itemsCountPerPage={postsPerPage}
-              totalItemsCount={totalItemsCount}
-              onChange={handlePageChange}
-              itemClass='px-3 py-1 rounded-md mr-2 cursor-pointer'
-              activeClass='bg-pink-400 text-white'
-              itemClassFirst='px-3 py-1 rounded-md mr-2 cursor-pointer'
-              itemClassPrev='px-3 py-1 rounded-md mr-2 cursor-pointer'
-              itemClassNext='px-3 py-1 rounded-md mr-2 cursor-pointer'
-              itemClassLast='px-3 py-1 rounded-md mr-2 cursor-pointer'
-              innerClass='flex'
-            />
-          </ul>
-        </section>
-      </div>
-
+      <MapSideMenu
+        markers={markers}
+        handleSearch={handleSearch}
+        handleMarkerClick={handleMarkerClick}
+        handleInputChange={handleInputChange}
+        totalItemsCount={totalItemsCount}
+        currentPage={currentPage}
+        postsPerPage={postsPerPage}
+        handlePageChange={handlePageChange}
+      />
       <div className='h-screen w-full'>
         <Map // 지도를 표시할 Container
           className='h-[inherit] w-[inherit]'

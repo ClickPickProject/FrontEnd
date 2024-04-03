@@ -1,5 +1,9 @@
-import KakaoMap from '@/components/Map';
+import KakaoMap from '@/components/Map/KakaoMap';
 
-export default function page() {
-  return <KakaoMap />;
+export default function PlacePage() {
+  return (
+    <>
+      <KakaoMap />
+    </>
+  );
 }

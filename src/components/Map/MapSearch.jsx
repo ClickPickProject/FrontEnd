@@ -1,11 +1,10 @@
 import { mapAddressState, mapModalState, mapPositionState } from '@/atoms/editorContentState';
-import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { FaSearch, FaTimes, FaTimesCircle } from 'react-icons/fa';
+import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 import { IoIosArrowForward } from 'react-icons/io';
 import Pagination from 'react-js-pagination';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 export default function MapSearch() {
   const [info, setInfo] = useState();
@@ -14,14 +13,12 @@ export default function MapSearch() {
   const [query, setQuery] = useState('');
   const [inputSearch, setInputSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
-  const [postsPerPage, setPostsPerPage] = useState(5); // 페이지당 게시글 개수
+  const [postsPerPage] = useState(5); // 페이지당 게시글 개수
   const [searchPagination, setSearchPagination] = useState(null);
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
-  const [searchResult, setSearchResult] = useState(null);
-  const [mapModal, setMapModal] = useRecoilState(mapModalState);
-  const [mapPosition, setMapPosition] = useRecoilState(mapPositionState);
-  const [mapAddress, setMapAddress] = useRecoilState(mapAddressState);
+  const setMapModal = useSetRecoilState(mapModalState);
+  const setMapPosition = useSetRecoilState(mapPositionState);
+  const setMapAddress = useSetRecoilState(mapAddressState);
 
   useEffect(() => {
     const options = {
@@ -83,7 +80,6 @@ export default function MapSearch() {
 
   const handleMarkerClick = (marker) => {
     setMapPosition({ lng: marker.position.lng, lat: marker.position.lat });
-    console.log(mapPosition);
     setInfo(marker);
     const moveLatLng = new kakao.maps.LatLng(marker.position.lat, marker.position.lng);
     map.panTo(moveLatLng, {
