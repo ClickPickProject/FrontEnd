@@ -26,7 +26,6 @@ function EditPage() {
   const [postImages, setPostImages] = useRecoilState(postImagesState);
   const queryClient = useQueryClient();
   const params = useParams();
-  console.log(params.id);
   useEffect(() => {
     setTitle(postTitle);
     setCategory(postCategory);

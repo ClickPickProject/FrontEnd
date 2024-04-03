@@ -12,8 +12,6 @@ export default function UserList() {
     },
   });
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
-  console.log(data);
-
   return (
     <div className='grid w-full grid-cols-4 gap-2 bg-white py-2 text-center'>
       {data.content.map((user) => (

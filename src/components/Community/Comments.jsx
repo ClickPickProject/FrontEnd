@@ -39,7 +39,6 @@ export default function Comments({ comments }) {
   };
 
   const onClickCommentDelete = async (commentId) => {
-    console.log('delete');
     try {
       const res = await axios.delete(`/api/member/comment/${commentId}`, {
         withCredentials: true,
@@ -73,7 +72,6 @@ export default function Comments({ comments }) {
         },
       });
       if (res.status === 200) {
-        console.log('저장');
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (err) {
