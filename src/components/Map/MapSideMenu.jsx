@@ -6,7 +6,7 @@ import Pagination from 'react-js-pagination';
 import { useRecoilValue } from 'recoil';
 import { mapMenuState } from '@/atoms/mapState';
 import Link from 'next/link';
-
+import { motion } from 'framer-motion';
 export default function MapSideMenu({
   markers,
   handleMarkerClick,
@@ -20,16 +20,22 @@ export default function MapSideMenu({
   const mapMenu = useRecoilValue(mapMenuState);
 
   return (
-    <div className='flex h-screen w-[500px] flex-col'>
-      <div className='flex flex-col items-center gap-4 bg-pink-200 p-2'>
+    <motion.div
+      className='absolute left-0 z-50 flex h-screen w-[400px] flex-col bg-white shadow-lg'
+      initial={{ opacity: 0, x: '-100%' }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 1, x: '-100%' }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className='flex flex-col items-center gap-4 bg-pink-200 px-4 py-2'>
         <Link href='/' className='mr-auto flex items-center'>
           <figure className='p-2'>
             <Image src='/Images/clickpick_icon.png' width={32} height={32} alt='logo' />
           </figure>
-          <span className='text-xl font-bold'>ClickPick</span>
+          <span className='text-2xl font-bold'>ClickPick</span>
         </Link>
         {/* 검색창 */}
-        <form onSubmit={handleSearch} className='relative flex h-[45px] w-full gap-4'>
+        <form onSubmit={handleSearch} className='relative flex h-[42px] w-full'>
           <input
             className='w-full rounded-md pl-2 outline-none'
             type='text'
@@ -93,6 +99,6 @@ export default function MapSideMenu({
 
       {mapMenu === '즐겨찾기' && <>즐겨찾기</>}
       {mapMenu === '게시판' && <>게시판</>}
-    </div>
+    </motion.div>
   );
 }

@@ -25,13 +25,13 @@ export default function MapHeader() {
   ];
 
   const defaultClass =
-    'flex w-full justify-center py-3 px-2 text-sm rounded-xl font-semibold transition-all cursor-pointer';
+    'flex w-full justify-center py-2 px-4 text-sm rounded-xl font-semibold transition-all cursor-pointer';
 
   const onClickMapMenu = (menu) => {
     setMapMenu(menu);
   };
   return (
-    <nav className='flex w-full justify-around'>
+    <nav className='flex w-full justify-center gap-4 '>
       {menu.map(({ content, icon }) => (
         <ul key={content}>
           <div

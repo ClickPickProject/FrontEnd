@@ -1,11 +1,12 @@
 'use client';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
-import { IoIosArrowForward } from 'react-icons/io';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { mapAreaState, mapMenuState } from '@/atoms/mapState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -19,6 +20,7 @@ export default function KakaoMap() {
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
   const [area, setArea] = useRecoilState(mapAreaState);
   const setMapMenu = useSetRecoilState(mapMenuState);
+  const [clickToggle, setClickToggle] = useState(true);
 
   useEffect(() => {
     if (!map) return;
@@ -110,16 +112,34 @@ export default function KakaoMap() {
   };
   return (
     <>
-      <MapSideMenu
-        markers={markers}
-        handleSearch={handleSearch}
-        handleMarkerClick={handleMarkerClick}
-        handleInputChange={handleInputChange}
-        totalItemsCount={totalItemsCount}
-        currentPage={currentPage}
-        postsPerPage={postsPerPage}
-        handlePageChange={handlePageChange}
-      />
+      <AnimatePresence>
+        {clickToggle && (
+          <MapSideMenu
+            markers={markers}
+            handleSearch={handleSearch}
+            handleMarkerClick={handleMarkerClick}
+            handleInputChange={handleInputChange}
+            totalItemsCount={totalItemsCount}
+            currentPage={currentPage}
+            postsPerPage={postsPerPage}
+            handlePageChange={handlePageChange}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className=''>
+        <motion.button
+          initial={{ x: '-100%' }}
+          animate={{ x: clickToggle ? 400 : 0 }} // clickToggle 상태에 따라 위치를 변경
+          exit={{ x: '-100%' }}
+          transition={{ duration: 0.3 }}
+          className='absolute top-1/2 z-50 items-center rounded-br-sm rounded-tr-sm bg-white px-1 py-4 font-bold text-pink-500 outline-none hover:bg-pink-50 hover:text-pink-600'
+          onClick={() => setClickToggle(!clickToggle)}
+        >
+          <IoIosArrowBack size={18} />
+        </motion.button>
+      </div>
+
       <div className='h-screen w-full'>
         <Map // 지도를 표시할 Container
           className='h-[inherit] w-[inherit]'
@@ -134,7 +154,7 @@ export default function KakaoMap() {
                 position={marker.position}
                 onClick={() => handleMarkerClick(marker)}
                 image={{
-                  src: 'favorite.png',
+                  src: `favorite.png`,
                   size: {
                     width: 48,
                     height: 48,
