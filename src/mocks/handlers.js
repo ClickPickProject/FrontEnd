@@ -80,6 +80,19 @@ export const handlers = [
     return HttpResponse.json(`${postId} 삭제가 완료되었습니다.`);
   }),
 
+  // 게시글 이미지 추가
+  http.post('/api/member/post/image', async ({ request }) => {
+    const data = await request.formData();
+    const image = data.get('image');
+    if (!image) {
+      return new HttpResponse('Missing image', { status: 400 });
+    }
+    return HttpResponse.json({
+      url: `/Images/black.jpg`,
+      capacity: 123456,
+    });
+  }),
+
   // 게시글 수정
   http.post('/api/member/post/:postId', () => {
     return HttpResponse.json({
@@ -526,6 +539,17 @@ export const handlers = [
           phone: '01012345679',
         },
       ],
+    });
+  }),
+
+  /* Places */
+  // 영역 내 게시글 조회
+  http.post('/api/map/marker', () => {
+    return HttpResponse.json({
+      postId: 90,
+      xposition: 127.04859034788,
+      yposition: 37.5038956552172,
+      position: '강남 스타벅스',
     });
   }),
 ];
