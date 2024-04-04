@@ -4,6 +4,7 @@ import LikePost from '@/components/Profile/LikePost';
 import MyCommentList from '@/components/Profile/MyCommentList';
 import MyPostList from '@/components/Profile/MyPostList';
 import MyProfile from '@/components/Profile/MyProfile';
+import CenterPost from '@/components/Profile/CenterPost';
 import { FaAngleDown } from 'react-icons/fa6';
 import { FaAngleUp } from 'react-icons/fa6';
 import { useState } from 'react';
@@ -50,12 +51,16 @@ export default function ProfilePage() {
           <li onClick={() => handleSectionChange(5)} className={`${hoverStyle} ${displayClass}`}>
             ❤️ 좋아한댓글
           </li>
+          <li onClick={() => handleSectionChange(6)} className={`${hoverStyle} ${displayClass}`}>
+            🙋🏻‍♀️ 나의소통
+          </li>
         </ul>
         {activeSection === 1 && <MyProfile />}
         {activeSection === 2 && <MyPostList />}
         {activeSection === 3 && <MyCommentList />}
         {activeSection === 4 && <LikePost />}
         {activeSection === 5 && <LikeComment />}
+        {activeSection === 6 && <CenterPost />}
       </div>
     </>
   );
