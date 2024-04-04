@@ -545,11 +545,192 @@ export const handlers = [
   /* Places */
   // 영역 내 게시글 조회
   http.post('/api/map/marker', () => {
-    return HttpResponse.json({
-      postId: 90,
-      xposition: 127.04859034788,
-      yposition: 37.5038956552172,
-      position: '강남 스타벅스',
-    });
+    return HttpResponse.json([
+      {
+        postId: 90,
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
+        position: '스타벅스 선릉역점',
+      },
+      {
+        postId: 91,
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
+        position: '스타벅스 선릉역점',
+      },
+      {
+        postId: 92,
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
+        position: '스타벅스 선릉역점',
+      },
+      {
+        postId: 93,
+        xposition: 127.028443419181,
+        yposition: 37.4976744709989,
+        position: '스타벅스 강남R점',
+      },
+      {
+        postId: 4901,
+        xposition: 127.10297988971773,
+        yposition: 37.48800665367514,
+        position: '스타벅스 수서역R점',
+      },
+      {
+        postId: 81493,
+        xposition: 127.10297988971773,
+        yposition: 37.48800665367514,
+        position: '스타벅스 수서역R점',
+      },
+      {
+        postId: 96593,
+        xposition: 127.10297988971773,
+        yposition: 37.48800665367514,
+        position: '스타벅스 수서역R점',
+      },
+      {
+        postId: 1993,
+        xposition: 127.10297988971773,
+        yposition: 37.48800665367514,
+        position: '스타벅스 수서역R점',
+      },
+      {
+        postId: 72293,
+        xposition: 127.10297988971773,
+        yposition: 37.48800665367514,
+        position: '스타벅스 수서역R점',
+      },
+      {
+        postId: 4421,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 5671,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 1641,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 3211,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 6021,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 9311,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 3781,
+        xposition: 127.046872393057,
+        yposition: 37.523735555011335,
+        position: '스타벅스 청담사거리점',
+      },
+      {
+        postId: 1541,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1191,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1541,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1191,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1541,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1191,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1541,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1191,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1541,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 1191,
+        xposition: 127.0207677490634,
+        yposition: 37.51622596162784,
+        position: '스타벅스 신사역점',
+      },
+      {
+        postId: 30,
+        xposition: 127.06167034346593,
+        yposition: 37.5100064732589,
+        position: '스타벅스 스타필드코엑스몰 R점',
+      },
+      {
+        postId: 40,
+        xposition: 127.06167034346593,
+        yposition: 37.5100064732589,
+        position: '스타벅스 스타필드코엑스몰 R점',
+      },
+    ]);
+  }),
+  http.get('/api/map/post/:xPosition/:yPosition', ({ request }) => {
+    const { xPosition, yPosition } = request.params;
+    return HttpResponse.json([
+      {
+        postId: 1,
+        nickname: '닉네임',
+        title: '제목',
+        createAt: '2024-04-03T16:00:48.884Z',
+        viewCount: 10,
+        likeCount: 10,
+        hashtags: '여행',
+        postCategory: '자유',
+        CommentCount: '30',
+        profileUrl: '/Images/forest.jpg',
+      },
+    ]);
   }),
 ];
