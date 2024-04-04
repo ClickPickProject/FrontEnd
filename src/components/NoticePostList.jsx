@@ -98,7 +98,7 @@ export default function NoticePostList() {
 
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div>
+    <div className='sm:mr-[40px]'>
       <div className='flex flex-row'>
         <CenterSearch
           searchOption={searchOption}
@@ -109,7 +109,7 @@ export default function NoticePostList() {
         />
         <Link
           href={`${isLogin ? '/content/center/write' : '/login'}`}
-          className='ml-auto flex h-[44px] w-[80px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+          className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
         >
           <PencilIcon color='white' size={18} />
           Q&A
@@ -132,7 +132,7 @@ export default function NoticePostList() {
         ))}
       </ul>
 
-      <div className=''>
+      <div className='flex justify-around'>
         <Pagination
           activePage={currentPage}
           itemsCountPerPage={postsPerPage}

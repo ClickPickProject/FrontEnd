@@ -170,8 +170,9 @@ export default function MyProfile() {
   const btnStyle =
     'w-[50px] rounded-lg hover:bg-pink-300 bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2 sm:w-[80px] justify-center';
   const inputFont =
-    'mx-2 w-[15rem] bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white sm:w-full md:w-full lg:w-full';
+    'w-full bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
   //API로 받아올 값
+  const labelStyle = 'mx-5 flex font-semibold sm:justify-center sm:font-bold sm:text-base';
 
   //이미지변경
 
@@ -204,109 +205,101 @@ export default function MyProfile() {
   if (isPending1 || isError1) return <Loading isPending={isPending1} isError={isError1} />;
 
   return (
-    <>
+    <div className=' mr-[40px]'>
       <section className='flex h-full w-[inherit] flex-col justify-center text-sm'>
         <div className='flex flex-col gap-2 p-2'>
           <h2 className='mt-5 text-2xl font-bold sm:text-center'>🙋‍♂️ 마이 프로필</h2>
           <p className='mb-4 text-sm opacity-50 sm:text-center'>나의 프로필을 자유롭게 꾸며보세요.</p>
         </div>
         <div className='mb-10 border border-pink-200' />
-        <div className='mx-auto flex h-full w-full rounded-2xl border border-pink-200 px-5 lg:flex-col md:m-8 md:mr-5 md:w-auto md:flex-col'>
-          <div className='mx-auto'>
-            <div className='flex flex-col'>
-              <form action='' className='mt-5'>
-                <div>
-                  <img
-                    src={image}
-                    alt='#'
-                    className='mx-auto mb-2 h-[150px] w-[150px] rounded-full border-4 border-white shadow-xl '
-                  />
-                  <br />
-                  <label
-                    htmlFor='file'
-                    className='flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-pink-100  p-3 font-semibold hover:bg-pink-300  hover:shadow-inner'
-                  >
-                    <IoImagesOutline size={18} />
-                    이미지 변경
-                  </label>
-
-                  <input
-                    type='file'
-                    id='file'
-                    onChange={handleInputImg}
-                    accept='image/png, image/jpg'
-                    className='hidden'
-                  />
-                </div>
-              </form>
-              <div className='mx-auto flex flex-col text-center'>
+        <div className='mx-auto flex h-full w-full justify-around rounded-2xl border border-pink-200 px-5 lg:flex-col md:flex-col'>
+          <div className='mx-auto flex w-full flex-col items-center justify-center'>
+            <form action=''>
+              <div>
+                <img
+                  src={image}
+                  alt='#'
+                  className='mx-auto mb-2 h-[150px] w-[150px] rounded-full border-4 border-white shadow-xl '
+                />
                 <br />
-                <div className='flx-row flex gap-4'>
-                  <button
-                    onClick={handleDelete}
-                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap rounded-lg  bg-pink-100  p-3 font-semibold hover:bg-pink-300 hover:shadow-inner md:w-28 sm:w-28'
-                  >
-                    <LogoutIcon size={18} />
-                    회원탈퇴
-                  </button>
-                  <button
-                    onClick={handleImgDelete}
-                    className='m-1 flex w-32 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-pink-100 p-3  font-semibold hover:bg-pink-300 hover:shadow-inner md:w-28 sm:w-28'
-                  >
-                    <IoImagesOutline size={18} />
-                    사진삭제
-                  </button>
-                </div>
+                <label
+                  htmlFor='file'
+                  className='mb-5 flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-pink-100  p-3 font-semibold hover:bg-pink-300  hover:shadow-inner'
+                >
+                  <IoImagesOutline size={18} />
+                  이미지 변경
+                </label>
+
+                <input
+                  type='file'
+                  id='file'
+                  onChange={handleInputImg}
+                  accept='image/png, image/jpg'
+                  className='hidden'
+                />
+              </div>
+            </form>
+            <div className='mx-auto flex flex-col text-center'>
+              <div className='flx-row flex gap-6'>
+                <button
+                  onClick={handleDelete}
+                  className='flex items-center justify-center gap-2 whitespace-nowrap rounded-lg  bg-pink-100  p-3 font-semibold hover:bg-pink-300 hover:shadow-inner md:w-28 sm:w-28'
+                >
+                  <LogoutIcon size={18} />
+                  회원탈퇴
+                </button>
+                <button
+                  onClick={handleImgDelete}
+                  className='flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-pink-100 p-3  font-semibold hover:bg-pink-300 hover:shadow-inner md:w-28 sm:w-28'
+                >
+                  <IoImagesOutline size={18} />
+                  사진삭제
+                </button>
               </div>
             </div>
-            <div className='flex-col'>
-              {/* 탈퇴 확인 */}
-              {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-                <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
-                  <p>정말로 탈퇴하시겠습니까?</p>
-                  <button className='flex-end p-2 font-bold hover:shadow-inner ' onClick={handleDelete}>
-                    {' '}
-                    확인
-                  </button>
-                  <button
-                    className='flex-end p-2  font-bold hover:shadow-inner'
-                    onClick={() => setConfirmDelete(false)}
-                  >
-                    취소{' '}
-                  </button>
-                </div>
-              )}
-              {/* 이미지 삭제 확인 */}
-              {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-                <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
-                  <p>정말로 사진을 삭제하시겠습니까?</p>
-                  <button
-                    className=' whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
-                    onClick={handleImgDelete}
-                  >
-                    {' '}
-                    확인
-                  </button>
-                  <button
-                    className='whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
-                    onClick={() => setImgDelete(false)}
-                  >
-                    취소{' '}
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
-          <div
-            className='ml-5 mt-5
-          '
-          >
+          <div className='flex-col'>
+            {/* 탈퇴 확인 */}
+            {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+              <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
+                <p>정말로 탈퇴하시겠습니까?</p>
+                <button className='flex-end p-2 font-bold hover:shadow-inner ' onClick={handleDelete}>
+                  {' '}
+                  확인
+                </button>
+                <button className='flex-end p-2  font-bold hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
+                  취소{' '}
+                </button>
+              </div>
+            )}
+            {/* 이미지 삭제 확인 */}
+            {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
+              <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
+                <p>정말로 사진을 삭제하시겠습니까?</p>
+                <button
+                  className=' whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
+                  onClick={handleImgDelete}
+                >
+                  {' '}
+                  확인
+                </button>
+                <button
+                  className='whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
+                  onClick={() => setImgDelete(false)}
+                >
+                  취소{' '}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className='mt-5 w-full'>
             {/* 이름 */}
             <form className='mt-5'>
-              <label htmlFor='name' className='mx-5 font-semibold'>
+              <label htmlFor='name' className={labelStyle}>
                 이름
               </label>
-              <div className='flex-end flex md:block sm:block'>
+              <div>
                 <input
                   type='text'
                   id='name'
@@ -321,10 +314,10 @@ export default function MyProfile() {
 
             {/* 아이디 */}
             <form className='mt-3'>
-              <label htmlFor='id' className='mx-5 font-semibold'>
+              <label htmlFor='id' className={labelStyle}>
                 메일
               </label>
-              <div className='flex-end flex md:block sm:block'>
+              <div>
                 <input
                   id='id'
                   type='text'
@@ -338,10 +331,10 @@ export default function MyProfile() {
             </form>
             {/* 별명 */}
             <form onSubmit={handleNickNameChange} className='mt-3'>
-              <label htmlFor='nickname' className='mx-5 font-semibold'>
+              <label htmlFor='nickname' className={labelStyle}>
                 별명
               </label>
-              <div className='flex-end flex md:block sm:block'>
+              <div>
                 <input
                   id='nickname'
                   type='text'
@@ -357,10 +350,10 @@ export default function MyProfile() {
 
             {/* 폰번호 */}
             <form onSubmit={handlePhoneChange} className='mt-3'>
-              <label htmlFor='phone' className='mx-5 font-semibold'>
+              <label htmlFor='phone' className={labelStyle}>
                 번호
               </label>
-              <div className='flex-end flex md:block sm:block'>
+              <div>
                 <input
                   id='phone'
                   type='tel'
@@ -370,12 +363,12 @@ export default function MyProfile() {
                   placeholder='휴대폰 번호를 입력하세요'
                   disabled={!phoneDisabled}
                 />
-                <button className={btnStyle}>변경</button>
+                <button className={`mb-4 ${btnStyle}`}>변경</button>
               </div>
             </form>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
