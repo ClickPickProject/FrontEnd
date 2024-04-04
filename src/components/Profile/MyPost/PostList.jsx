@@ -67,7 +67,7 @@ export default function PostList({ category, url }) {
   const displayPosts = filteredPosts;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div>
+    <div className='sm:mr[40px]'>
       <ul>
         {displayPosts?.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>

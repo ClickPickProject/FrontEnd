@@ -10,14 +10,14 @@ export default function MyPostList() {
   const isLogin = useRecoilValue(loginState);
   return (
     <>
-      <section className=' flex h-full w-[inherit] flex-col justify-center sm:mt-10'>
+      <section className='flex h-full w-[inherit] flex-col justify-center'>
         <motion.nav
           className='menu'
           initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className='mb-10 flex gap-4 sm:gap-2'>
+          <div className='mb-10 flex gap-4 sm:mr-[40px] sm:gap-2'>
             <div className='whitespace-nowrap text-2xl font-bold sm:text-xl'>📋나의 게시글</div>
             <div className='mb-10 border border-pink-200' />
 

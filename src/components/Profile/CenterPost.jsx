@@ -10,7 +10,7 @@ export default function CenterPost() {
   const isLogin = useRecoilValue(loginState);
   return (
     <>
-      <section className=' flex h-full w-[inherit] flex-col justify-center sm:mt-10'>
+      <section className=' flex h-full w-[inherit] flex-col justify-center'>
         <motion.nav
           className='menu'
           initial={{ opacity: 0, y: 0 }}
