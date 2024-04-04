@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { TbMessageCircleQuestion } from 'react-icons/tb';
 // import WriterView from './BestPost/WriterView';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -22,6 +23,7 @@ export default function NoticePostList() {
   const [searchOption, setSearchOption] = useState('title'); // 검색 옵션 (기본값: 제목검색)
   const [search, setSearch] = useState(''); // 검색어
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
+  const [answer, setAnswer] = useState('false');
   const {
     data: posts,
     isPending,
@@ -119,14 +121,18 @@ export default function NoticePostList() {
         {posts.content.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
-            <div className='relative flex items-center gap-2 font-semibold'>
+            <div className='relative flex flex-row items-center gap-2 font-semibold'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
-              <span className='text-center font-semibold'>[{data.commentCount}]</span>
-              <div className='absolute right-0'>
-                <StatusView viewCount={data.viewCount} />
-              </div>
+              {answer ? (
+                <div className='absolute right-0 flex cursor-pointer items-center gap-2 rounded-lg bg-pink-400 p-1 text-white'>
+                  <TbMessageCircleQuestion size={20} /> 답변완료
+                </div>
+              ) : (
+                <div className='absolute right-0 flex cursor-pointer items-center gap-2 rounded-lg bg-pink-400 p-1 text-white'>
+                  <TbMessageCircleQuestion size={20} /> 답변대기
+                </div>
+              )}
             </div>
-            {/* 경계선 */}
             <div className='mb-4 w-full border border-gray-200' />
           </li>
         ))}

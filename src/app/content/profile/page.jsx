@@ -14,7 +14,7 @@ export default function ProfilePage() {
     setShowDis((show) => !show);
   };
   const hoverStyle =
-    'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all bg-white z-50 w-full';
+    'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all bg-white z-50 w-full cursor-pointer';
   const displayClass = showDis ? 'inline-block' : 'sm:hidden';
   const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {
@@ -47,7 +47,7 @@ export default function ProfilePage() {
               💬 나의댓글
             </li>
             <li onClick={() => handleSectionChange(4)} className={`${hoverStyle} ${displayClass}`}>
-              ❤️ 좋아한게시
+              ❤️ 좋아한게시글
             </li>
             <li onClick={() => handleSectionChange(5)} className={`${hoverStyle} ${displayClass}`}>
               ❤️ 좋아한댓글

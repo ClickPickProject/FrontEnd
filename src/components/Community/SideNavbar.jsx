@@ -107,7 +107,7 @@ export default function SideNavbar() {
               </ul>
             </nav>
           </div>
-          <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 pb-4 sm:text-center [&>*]:rounded-xl [&>*]:text-xs'>
+          <div className='sticky top-[calc(239px+24px)] flex w-full gap-5 pb-4 sm:justify-center [&>*]:rounded-xl [&>*]:text-xs'>
             <Link
               href='/content/profile'
               className={`${
