@@ -25,6 +25,17 @@ export default function KakaoMap() {
   const [mapDetailLength, setMapDetailLength] = useState(0);
   const [placeDetail, setPlaceDetail] = useRecoilState(placeDetailState);
 
+  const SPRITE_MARKER_URL = '/Images/sprite.png'; // 스프라이트 마커 이미지 URL
+  const SPRITE_WIDTH = 48; // 스프라이트 이미지 너비
+  const SPRITE_HEIGHT = 250; // 스프라이트 이미지 높이
+  const SPRITE_GAP = 60; // 스프라이트 이미지에서 마커간 간격
+  const SPRITE_COORDINATES = [
+    { x: 0, y: 10 }, // 0개
+    { x: 0, y: 70 }, // 1개
+    { x: 0, y: 130 }, // 3개
+    { x: 0, y: 190 }, // 5개 이상
+  ];
+
   useEffect(() => {
     if (!map) return;
     const ps = new kakao.maps.services.Places();
@@ -80,18 +91,15 @@ export default function KakaoMap() {
           withCredentials: true,
         });
         setMapPost(res.data);
-        console.log(res.data.length);
       } catch (err) {
         console.log(err);
       }
     };
-
     fetchArea();
-  }, [area]);
+  }, []);
 
   const handleInputChange = (e) => {
     setInputSearch(e.target.value);
-    console.log(e.target.value);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -103,13 +111,16 @@ export default function KakaoMap() {
   const handleSearch = (e) => {
     e.preventDefault();
     setCurrentPage(1);
+    // console.log('검색');
     setMapMenu('지도 홈');
     setQuery(inputSearch);
   };
 
   const handleMarkerClick = (marker) => {
     setInfo(marker);
+    console.log(marker);
     const places = mapPost.filter((post) => post.position === marker.content);
+    console.log(places);
     setPlaceDetail(places);
     setMapDetailLength(places.length);
 
@@ -123,7 +134,25 @@ export default function KakaoMap() {
 
   const onClickPlaceDetail = () => {
     setMapMenu('게시판');
-    console.log(placeDetail);
+    // console.log(placeDetail);
+  };
+
+  const spriteCalculation = (marker) => {
+    const places = mapPost.filter((post) => post.position === marker.content);
+    const placeCount = places.length;
+    let coordinates = {};
+    // 게시글 수에 따라 좌표 계산
+    if (placeCount >= 5) {
+      coordinates = SPRITE_COORDINATES[3];
+    } else if (placeCount >= 3) {
+      coordinates = SPRITE_COORDINATES[2];
+    } else if (placeCount >= 1) {
+      coordinates = SPRITE_COORDINATES[1];
+    } else {
+      coordinates = SPRITE_COORDINATES[0];
+    }
+
+    return coordinates;
   };
   return (
     <>
@@ -169,14 +198,22 @@ export default function KakaoMap() {
                 position={marker.position}
                 onClick={() => handleMarkerClick(marker)}
                 image={{
-                  src: `favorite.png`,
-                  size: {
-                    width: 48,
-                    height: 48,
+                  src: SPRITE_MARKER_URL,
+                  size: { width: 48, height: 48 },
+                  options: {
+                    offset: {
+                      x: 25,
+                      y: 40,
+                    },
+                    spriteSize: {
+                      width: SPRITE_WIDTH,
+                      height: SPRITE_HEIGHT,
+                    },
+                    spriteOrigin: spriteCalculation(marker),
                   },
                 }}
               />
-              <CustomOverlayMap position={marker.position} yAnchor={0.5} xAnchor={0.5} zIndex={999}>
+              <CustomOverlayMap position={marker.position} yAnchor={0} xAnchor={1} zIndex={999}>
                 {info && info.content === marker.content && (
                   <>
                     <div className='flex w-64 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
