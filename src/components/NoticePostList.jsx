@@ -10,14 +10,18 @@ import WriterView from './Community/BestPost/WriterView';
 import StatusView from './Community/BestPost/StatusView';
 import { loginState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
+import Search from './Search';
 import { PencilIcon } from './UI/Icons';
+import CenterSearch from './CenterSearch';
 export default function NoticePostList() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
   const [totalItems, setTotalItems] = useState(0);
   const isLogin = useRecoilValue(loginState);
-
+  const [searchOption, setSearchOption] = useState('title'); // 검색 옵션 (기본값: 제목검색)
+  const [search, setSearch] = useState(''); // 검색어
+  const [searchResults, setSearchResults] = useState(null); // 검색 결과
   const {
     data: posts,
     isPending,
@@ -40,44 +44,75 @@ export default function NoticePostList() {
     refetch();
   };
 
-  const [search, setSearch] = useState('');
-  const [searchResults, setSearchResults] = useState(null);
-  const onClickSearch = async (e) => {
+  // 검색 결과 처리
+  const handleSearchResults = (res) => {
+    if (res.status === 200) {
+      setSearchResults(res.data.content);
+      setTotalPages(res.data.totalPages);
+      setTotalItems(res.data.totalElements);
+      setCurrentPage(1);
+    }
+  };
+
+  // 검색 함수 정의 (제목, 내용, 해시태그)
+  const searchByTitle = async () => {
     try {
       const res = await axios.get('/api/post/title', {
         params: {
           title: search,
         },
       });
-      if (res.status === 200) {
-        setSearchResults(res.data.content);
-      }
+      handleSearchResults(res);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const searchByContent = async () => {
+    try {
+      const res = await axios.get('/api/post/content', {
+        params: {
+          content: search,
+        },
+      });
+      handleSearchResults(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // 검색 버튼 클릭 핸들러
+  const onClickSearch = async (e) => {
+    e.preventDefault();
+    switch (searchOption) {
+      case 'title':
+        await searchByTitle();
+        break;
+      case 'content':
+        await searchByContent();
+        break;
+      default:
+        break;
+    }
+  };
+
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div className=''>
-      <div className='flex w-full flex-row'>
-        <div className='relative mb-4 w-1/3'>
-          <input
-            type='text'
-            placeholder='검색어를 입력하세요.'
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className='w-full rounded-lg border-2 border-pink-300 px-3 py-2 outline-none'
-          />
-          <button className='absolute right-0 mr-2 h-full items-center' onClick={onClickSearch}>
-            검색
-          </button>
-        </div>
+    <div>
+      <div className='flex flex-row'>
+        <CenterSearch
+          searchOption={searchOption}
+          setSearchOption={setSearchOption}
+          search={search}
+          setSearch={setSearch}
+          onClickSearch={onClickSearch}
+        />
         <Link
           href={`${isLogin ? '/content/center/write' : '/login'}`}
-          className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+          className='ml-auto flex h-[44px] w-[80px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
         >
           <PencilIcon color='white' size={18} />
-          Q&A 작성
+          Q&A
         </Link>
       </div>
       <ul>

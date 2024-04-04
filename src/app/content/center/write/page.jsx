@@ -3,7 +3,6 @@ import { editorContentState, editorTagState, editorTitleState, postImagesState }
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
-import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -12,7 +11,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
-  const [category, setCategory] = useState('');
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
