@@ -1,11 +1,12 @@
 'use client';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
-import { IoIosArrowForward } from 'react-icons/io';
-import { mapAreaState, mapMenuState } from '@/atoms/mapState';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { mapAreaState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -18,7 +19,23 @@ export default function KakaoMap() {
   const [searchPagination, setSearchPagination] = useState(null);
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
   const [area, setArea] = useRecoilState(mapAreaState);
+  const [clickToggle, setClickToggle] = useState(true);
+  const [mapPost, setMapPost] = useState([]);
+  const [mapDetailLength, setMapDetailLength] = useState(0);
   const setMapMenu = useSetRecoilState(mapMenuState);
+  const setPlaceDetail = useSetRecoilState(placeDetailState);
+  const setPlaceList = useSetRecoilState(placeListState);
+
+  const SPRITE_MARKER_URL = '/Images/sprite.png'; // 스프라이트 마커 이미지 URL
+  const SPRITE_WIDTH = 48; // 스프라이트 이미지 너비
+  const SPRITE_HEIGHT = 250; // 스프라이트 이미지 높이
+  const SPRITE_GAP = 60; // 스프라이트 이미지에서 마커간 간격
+  const SPRITE_COORDINATES = [
+    { x: 0, y: 10 }, // 0개
+    { x: 0, y: 70 }, // 1개
+    { x: 0, y: 130 }, // 3개
+    { x: 0, y: 190 }, // 5개 이상
+  ];
 
   useEffect(() => {
     if (!map) return;
@@ -74,16 +91,16 @@ export default function KakaoMap() {
         const res = await axios.post('/api/map/marker', body, {
           withCredentials: true,
         });
+        setMapPost(res.data);
       } catch (err) {
         console.log(err);
       }
     };
     fetchArea();
-  }, [area]);
+  }, [query]);
 
   const handleInputChange = (e) => {
     setInputSearch(e.target.value);
-    console.log(e.target.value);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -101,6 +118,10 @@ export default function KakaoMap() {
 
   const handleMarkerClick = (marker) => {
     setInfo(marker);
+    const places = mapPost.filter((post) => post.position === marker.content);
+    setPlaceDetail(places);
+    setMapDetailLength(places.length);
+
     const moveLatLng = new kakao.maps.LatLng(marker.position.lat, marker.position.lng);
     map.panTo(moveLatLng, {
       animate: {
@@ -108,18 +129,68 @@ export default function KakaoMap() {
       },
     });
   };
+
+  const onClickPlaceDetail = async (marker) => {
+    setMapMenu('게시판');
+    const xPosition = marker.position.lng;
+    const yPosition = marker.position.lat;
+    try {
+      const res = await axios.get(`/api/map/post/${xPosition}/${yPosition}`);
+      if (res.status === 200) {
+        setPlaceList(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const spriteCalculation = (marker) => {
+    const places = mapPost.filter((post) => post.position === marker.content);
+    const placeCount = places.length;
+    let coordinates = {};
+    // 게시글 수에 따라 좌표 계산
+    if (placeCount >= 5) {
+      coordinates = SPRITE_COORDINATES[3];
+    } else if (placeCount >= 3) {
+      coordinates = SPRITE_COORDINATES[2];
+    } else if (placeCount >= 1) {
+      coordinates = SPRITE_COORDINATES[1];
+    } else {
+      coordinates = SPRITE_COORDINATES[0];
+    }
+
+    return coordinates;
+  };
   return (
     <>
-      <MapSideMenu
-        markers={markers}
-        handleSearch={handleSearch}
-        handleMarkerClick={handleMarkerClick}
-        handleInputChange={handleInputChange}
-        totalItemsCount={totalItemsCount}
-        currentPage={currentPage}
-        postsPerPage={postsPerPage}
-        handlePageChange={handlePageChange}
-      />
+      <AnimatePresence>
+        {clickToggle && (
+          <MapSideMenu
+            markers={markers}
+            handleSearch={handleSearch}
+            handleMarkerClick={handleMarkerClick}
+            handleInputChange={handleInputChange}
+            totalItemsCount={totalItemsCount}
+            currentPage={currentPage}
+            postsPerPage={postsPerPage}
+            handlePageChange={handlePageChange}
+          />
+        )}
+      </AnimatePresence>
+
+      <div className=''>
+        <motion.button
+          initial={{ x: '-100%' }}
+          animate={{ x: clickToggle ? 400 : 0 }}
+          exit={{ x: '-100%' }}
+          transition={{ duration: 0.3 }}
+          className='absolute top-1/2 z-50 items-center rounded-br-sm rounded-tr-sm bg-white px-1 py-4 font-bold text-pink-500 outline-none hover:bg-pink-50 hover:text-pink-600'
+          onClick={() => setClickToggle(!clickToggle)}
+        >
+          <IoIosArrowBack size={18} />
+        </motion.button>
+      </div>
+
       <div className='h-screen w-full'>
         <Map // 지도를 표시할 Container
           className='h-[inherit] w-[inherit]'
@@ -134,24 +205,38 @@ export default function KakaoMap() {
                 position={marker.position}
                 onClick={() => handleMarkerClick(marker)}
                 image={{
-                  src: 'favorite.png',
-                  size: {
-                    width: 48,
-                    height: 48,
+                  src: SPRITE_MARKER_URL,
+                  size: { width: 48, height: 48 },
+                  options: {
+                    offset: {
+                      x: 25,
+                      y: 40,
+                    },
+                    spriteSize: {
+                      width: SPRITE_WIDTH,
+                      height: SPRITE_HEIGHT,
+                    },
+                    spriteOrigin: spriteCalculation(marker),
                   },
                 }}
               />
-              <CustomOverlayMap position={marker.position} yAnchor={0.5} xAnchor={0.5} zIndex={999}>
+              <CustomOverlayMap position={marker.position} yAnchor={0} xAnchor={1} zIndex={999}>
                 {info && info.content === marker.content && (
                   <>
-                    <div className='flex w-48 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
-                      <div className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'>
-                        <span className='mx-auto'>{marker.content}</span>
+                    <div className='flex w-64 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
+                      <div
+                        className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'
+                        onClick={() => onClickPlaceDetail(marker)}
+                      >
+                        <span className='mx-auto text-sm'>
+                          {marker.content} ({mapDetailLength})
+                        </span>
                         <span className='flex items-center'>
                           <IoIosArrowForward />
                         </span>
                       </div>
                       <div className='cursor-text whitespace-pre-wrap text-sm'>{marker.placeAddressName}</div>
+                      <div className='cursor-text whitespace-pre-wrap text-sm'>관련 게시물</div>
                     </div>
                   </>
                 )}
