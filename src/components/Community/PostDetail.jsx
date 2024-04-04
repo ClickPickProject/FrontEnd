@@ -7,9 +7,9 @@ import HashtagView from './HashtagView';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { CommentIcon, EmptyHeartIcon, FillHeartIcon } from '../UI/Icons';
+import { CommentIcon, EmptyHeartIcon, FillHeartIcon, ReportIcon } from '../UI/Icons';
 import Loading from '../Loading';
 import {
   postCategoryNameState,
@@ -18,6 +18,9 @@ import {
   postHashtagState,
   postTitleState,
 } from '@/atoms/PostState';
+import { reportModalState } from '@/atoms/commentState';
+import PostReportModal from './PostReportModal';
+
 export default function PostDetail() {
   const params = useParams();
   const queryClient = useQueryClient();
@@ -29,6 +32,7 @@ export default function PostDetail() {
   const setPostCategoryName = useSetRecoilState(postCategoryNameState);
   const setPostContent = useSetRecoilState(postContentState);
   const setPostHashtag = useSetRecoilState(postHashtagState);
+  const [reportModal, setReportModal] = useRecoilState(reportModalState);
   const {
     data: userPost,
     isPending,
@@ -56,16 +60,19 @@ export default function PostDetail() {
 
   const {
     title,
+    postId,
     nickname,
     date,
     viewCount,
     postCategory,
+    position,
     content,
     hashtags,
     likePostCheck,
     likeCount,
     commentCount,
     comments,
+    profileUrl,
   } = userPost;
   const onClickLike = async () => {
     try {
@@ -98,7 +105,7 @@ export default function PostDetail() {
     setPostCategoryName(category);
     setPostContent(content);
     setPostHashtag(hashtags);
-    router.push('/content/community/edit');
+    router.push(`/content/community/${params.id}/edit`);
   };
 
   const onClickPostDelete = async () => {};
@@ -110,9 +117,30 @@ export default function PostDetail() {
           <h2 className='text-2xl font-semibold'>{title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>
-            <WriterView writer={nickname} date={date} />
+            <WriterView writer={nickname} date={date} profile={profileUrl} />
             <StatusView viewCount={viewCount} likeCount={likeCount} />
           </div>
+
+          {/* 게시글 신고 */}
+          <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
+            <ReportIcon color='red' opacity='70%' />
+            <div className='text-xs font-semibold' onClick={() => setReportModal(true)}>
+              신고
+            </div>
+          </div>
+          {reportModal && (
+            <div
+              className='fixed inset-0 z-10 overflow-y-auto'
+              onKeyDown={(e) => {
+                if (e.code === 'Escape') setReportModal(false);
+              }}
+            >
+              <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
+                {/* <PostReportModal nickname={nickname} /> */}
+                <PostReportModal nickname={nickname} postId={postId} />
+              </div>
+            </div>
+          )}
           {nickname === myNickname ? (
             <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
               <button
@@ -129,6 +157,7 @@ export default function PostDetail() {
         </div>
         {/* 내용 */}
         <div className='mb-4'>
+          {position && <div className='mb-4'>장소: {position}</div>}
           <div dangerouslySetInnerHTML={{ __html: content }} />
         </div>
         {/* 해쉬태그 */}

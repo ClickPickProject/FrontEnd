@@ -10,7 +10,6 @@ export default function Hashtag({ editMode }) {
   const postHashtag = useRecoilValue(postHashtagState);
 
   useEffect(() => {
-    console.log(postHashtag);
     if (editMode) {
       setTag(postHashtag);
     } else {

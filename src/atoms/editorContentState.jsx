@@ -19,3 +19,26 @@ export const userPostState = atom({
   key: 'userPostState',
   default: {},
 });
+
+export const postImagesState = atom({
+  key: 'postImagesState',
+  default: [],
+});
+
+export const mapModalState = atom({
+  key: 'mapModalState',
+  default: false,
+});
+
+export const mapPositionState = atom({
+  key: 'mapPositionState',
+  default: {
+    lat: 0,
+    lng: 0,
+  },
+});
+
+export const mapAddressState = atom({
+  key: 'mapAddressState',
+  default: '',
+});

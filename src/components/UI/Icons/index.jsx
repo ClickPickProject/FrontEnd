@@ -29,3 +29,5 @@ export { default as ReportIcon } from './ReportIcon';
 export { default as FillHomeIcon } from './FillHomeIcon';
 export { default as FillUserIcon } from './FillUserIcon';
 export { default as FillSirenIcon } from './FillSirenIcon';
+export { default as DashboardIcon } from './DashboardIcon';
+export { default as BoardIcon } from './BoardIcon';

@@ -45,11 +45,12 @@ export default function CommentWrite() {
     <div className='mt-5 h-auto'>
       <div className='grid h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
         <div className='mt-2'>
-          <WriterView writer={myNickname} />
+          <WriterView writer={myNickname} profile={''} />
         </div>
         <textarea
-          placeholder='댓글을 입력하세요'
-          className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none'
+          placeholder={token ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}
+          disabled={token ? false : true}
+          className='overlfow-hidden flex w-full resize-none flex-wrap rounded-lg py-2 outline-none disabled:bg-white'
           value={comment}
           onChange={handleTextareaChange}
         />

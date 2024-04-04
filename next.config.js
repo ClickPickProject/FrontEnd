@@ -1,6 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'clickpick.iptime.org',
+        port: '8080',
+        pathname: '/profile/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'clickpick.iptime.org',
+        port: '8080',
+        pathname: '/post/images/**',
+      },
+    ],
+  },
   async headers() {
     return [
       {
@@ -47,10 +63,16 @@ const nextConfig = {
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/post/list`,
       },
 
-      // 글 작성
+      // 게시글 작성
       {
         source: '/api/member/post',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/post`,
+      },
+
+      // 게시글 수정
+      {
+        source: '/api/member/post/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/post/:path*`,
       },
 
       // 게시글 상세페이지
@@ -58,20 +80,40 @@ const nextConfig = {
         source: '/api/post/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/post/:path*`,
       },
-      // 좋아요(like)
+      // 게시글 좋아요(like)
       {
         source: '/api/member/likedpost/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/likedpost/:path*`,
+      },
+      // 댓글 좋아요(like)
+      {
+        source: '/api/member/likedcomment/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/likedcomment/:path*`,
       },
       // 댓글 작성/수정/삭제
       {
         source: '/api/member/comment/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/comment/:path*`,
       },
+      // 유저 정보
+      {
+        source: '/api/member/userinfo',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/userinfo`,
+      },
+      // 답글 작성
+      {
+        source: '/api/member/recomment',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/recomment`,
+      },
+      // 게시글/댓글 신고
+      {
+        source: '/api/member/report/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/report/:path*`,
+      },
       // 유저정보 확인
       {
-        source: '/api/member/userinfo/:path*',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/userinfo/:path*`,
+        source: '/api/member/userinfo',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/userinfo`,
       },
       // 회원 탈퇴
       {
@@ -116,6 +158,16 @@ const nextConfig = {
       {
         source: '/api/member/profile/image/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/profile/image/:path*`,
+      },
+      // 게시글 사진 추가 / 조회
+      {
+        source: '/api/member/post/image/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/post/image/:path*`,
+      },
+      // 지도 게시글 조회
+      {
+        source: '/api/map/marker',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/map/marker`,
       },
     ];
   },

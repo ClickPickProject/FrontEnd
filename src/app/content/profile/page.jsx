@@ -13,7 +13,7 @@ export default function ProfilePage() {
     setShowDis((show) => !show);
   };
   const hoverStyle =
-    'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all';
+    'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all bg-white z-50 w-full';
   const displayClass = showDis ? 'inline-block' : 'sm:hidden';
   const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {

@@ -29,6 +29,7 @@ export default function SideNavbar() {
   const onClickLogout = () => {
     localStorage.clear();
     setIsLogin(false);
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function SideNavbar() {
   const MENU = [
     {
       name: '장소찾기',
-      href: '/content/place',
+      href: '/place',
       icon: <MapIcon size={28} />,
       clickedIcon: <FillMapIcon size={28} color='#ec4899' />,
     },

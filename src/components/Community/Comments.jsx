@@ -5,12 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  parentCommentIdState,
-  parentCommentNickState,
-  replyCommentCheckState,
-  reportModalState,
-} from '@/atoms/commentState';
+import { parentCommentIdState, parentCommentNickState, reportModalState } from '@/atoms/commentState';
 import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
 import axios from 'axios';
@@ -44,7 +39,6 @@ export default function Comments({ comments }) {
   };
 
   const onClickCommentDelete = async (commentId) => {
-    console.log('delete');
     try {
       const res = await axios.delete(`/api/member/comment/${commentId}`, {
         withCredentials: true,
@@ -78,7 +72,6 @@ export default function Comments({ comments }) {
         },
       });
       if (res.status === 200) {
-        console.log('저장');
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (err) {
@@ -156,7 +149,7 @@ export default function Comments({ comments }) {
         {/* 댓글 목록 */}
         {comments.map((comment) => (
           <li key={comment.commentId} className='flex flex-col gap-2'>
-            <WriterView writer={comment.nickname} date={comment.createAt} />
+            <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             {editMode === comment.commentId ? ( // 수정 모드인 경우
               <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
                 <textarea
