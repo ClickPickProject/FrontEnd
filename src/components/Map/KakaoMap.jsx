@@ -2,7 +2,7 @@
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { mapAreaState, mapMenuState, placeDetailState } from '@/atoms/mapState';
+import { mapAreaState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
@@ -19,11 +19,12 @@ export default function KakaoMap() {
   const [searchPagination, setSearchPagination] = useState(null);
   const [totalItemsCount, setTotalItemsCount] = useState(0); // 모든 목록 개수
   const [area, setArea] = useRecoilState(mapAreaState);
-  const setMapMenu = useSetRecoilState(mapMenuState);
   const [clickToggle, setClickToggle] = useState(true);
   const [mapPost, setMapPost] = useState([]);
   const [mapDetailLength, setMapDetailLength] = useState(0);
-  const [placeDetail, setPlaceDetail] = useRecoilState(placeDetailState);
+  const setMapMenu = useSetRecoilState(mapMenuState);
+  const setPlaceDetail = useSetRecoilState(placeDetailState);
+  const setPlaceList = useSetRecoilState(placeListState);
 
   const SPRITE_MARKER_URL = '/Images/sprite.png'; // 스프라이트 마커 이미지 URL
   const SPRITE_WIDTH = 48; // 스프라이트 이미지 너비
@@ -96,7 +97,7 @@ export default function KakaoMap() {
       }
     };
     fetchArea();
-  }, []);
+  }, [query]);
 
   const handleInputChange = (e) => {
     setInputSearch(e.target.value);
@@ -111,16 +112,13 @@ export default function KakaoMap() {
   const handleSearch = (e) => {
     e.preventDefault();
     setCurrentPage(1);
-    // console.log('검색');
     setMapMenu('지도 홈');
     setQuery(inputSearch);
   };
 
   const handleMarkerClick = (marker) => {
     setInfo(marker);
-    console.log(marker);
     const places = mapPost.filter((post) => post.position === marker.content);
-    console.log(places);
     setPlaceDetail(places);
     setMapDetailLength(places.length);
 
@@ -132,9 +130,18 @@ export default function KakaoMap() {
     });
   };
 
-  const onClickPlaceDetail = () => {
+  const onClickPlaceDetail = async (marker) => {
     setMapMenu('게시판');
-    // console.log(placeDetail);
+    const xPosition = marker.position.lng;
+    const yPosition = marker.position.lat;
+    try {
+      const res = await axios.get(`/api/map/post/${xPosition}/${yPosition}`);
+      if (res.status === 200) {
+        setPlaceList(res.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const spriteCalculation = (marker) => {
@@ -219,7 +226,7 @@ export default function KakaoMap() {
                     <div className='flex w-64 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
                       <div
                         className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'
-                        onClick={onClickPlaceDetail}
+                        onClick={() => onClickPlaceDetail(marker)}
                       >
                         <span className='mx-auto text-sm'>
                           {marker.content} ({mapDetailLength})

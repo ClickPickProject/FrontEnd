@@ -24,3 +24,7 @@ export const placeDetailState = atom({
   key: 'placeDetailState',
   default: [],
 });
+export const placeListState = atom({
+  key: 'placeListState',
+  default: [],
+});
