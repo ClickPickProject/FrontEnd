@@ -2,16 +2,14 @@
 import Link from 'next/link';
 import { TbMessageCircleQuestion } from 'react-icons/tb';
 // import WriterView from './BestPost/WriterView';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { useQuery } from '@tanstack/react-query';
 import Loading from './Loading';
 import WriterView from './Community/BestPost/WriterView';
-import StatusView from './Community/BestPost/StatusView';
 import { loginState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
-import Search from './Search';
 import { PencilIcon } from './UI/Icons';
 import CenterSearch from './CenterSearch';
 export default function NoticePostList() {
@@ -123,15 +121,18 @@ export default function NoticePostList() {
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
-              {answer ? (
-                <div className='absolute right-0 flex cursor-pointer items-center gap-2 rounded-lg bg-pink-400 p-1 text-white'>
-                  <TbMessageCircleQuestion size={20} /> 답변완료
-                </div>
-              ) : (
-                <div className='absolute right-0 flex cursor-pointer items-center gap-2 rounded-lg bg-pink-400 p-1 text-white'>
+              <div className='absolute right-0 flex gap-4'>
+                <div
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${!answer ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                >
                   <TbMessageCircleQuestion size={20} /> 답변대기
                 </div>
-              )}
+                <div
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${answer ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                >
+                  <TbMessageCircleQuestion size={20} /> 답변완료
+                </div>
+              </div>
             </div>
             <div className='mb-4 w-full border border-gray-200' />
           </li>

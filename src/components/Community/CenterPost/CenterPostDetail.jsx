@@ -1,15 +1,15 @@
 'use client';
 import WriterView from '../BestPost/WriterView';
-import CommentWrite from '../CommentWrite';
-import Comments from '../Comments';
+import CenterComments from './CenterComments';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { CommentIcon, EmptyHeartIcon, FillHeartIcon, ReportIcon } from '../../UI/Icons';
-import { TbQuestionMark } from 'react-icons/tb';
+import { CommentIcon, ReportIcon, PencilIcon } from '../../UI/Icons';
+import { loginState } from '@/atoms/tokenState';
 import Loading from '../../Loading';
+import Link from 'next/link';
 import {
   postCategoryNameState,
   postContentState,
@@ -22,16 +22,17 @@ import PostReportModal from '../PostReportModal';
 
 export default function CenterPostDetail() {
   const params = useParams();
-  const queryClient = useQueryClient();
   const token = useRecoilValue(tokenState);
   const myNickname = useRecoilValue(MyNicknameState);
   const router = useRouter();
+  const isLogin = useRecoilValue(loginState);
   const setPostEditMode = useSetRecoilState(postEditModeState);
   const setPostTitle = useSetRecoilState(postTitleState);
   const setPostCategoryName = useSetRecoilState(postCategoryNameState);
   const setPostContent = useSetRecoilState(postContentState);
   const setPostHashtag = useSetRecoilState(postHashtagState);
   const [reportModal, setReportModal] = useRecoilState(reportModalState);
+
   const {
     data: userPost,
     isPending,
@@ -57,46 +58,8 @@ export default function CenterPostDetail() {
   if (isPending) return <Loading isPending={isPending} />;
   if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
-  const {
-    title,
-    postId,
-    nickname,
-    date,
-    viewCount,
-    postCategory,
-    position,
-    content,
-    hashtags,
-    likePostCheck,
-    likeCount,
-    commentCount,
-    comments,
-    profileUrl,
-  } = userPost;
-  const onClickLike = async () => {
-    try {
-      if (likePostCheck === true) {
-        await axios.get(`/api/member/likedpost/${params.id}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        queryClient.invalidateQueries(['post', params.id]);
-      }
-      if (likePostCheck === false) {
-        await axios.get(`/api/member/likedpost/${params.id}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        queryClient.invalidateQueries(['post', params.id]);
-      }
-    } catch (err) {
-      console.error('좋아요 오류', err);
-    }
-  };
+  const { title, postId, nickname, date, postCategory, content, hashtags, commentCount, comments, profileUrl } =
+    userPost;
 
   const onClickPostEdit = async (title, category, content, hashtags) => {
     setPostEditMode(true);
@@ -113,7 +76,7 @@ export default function CenterPostDetail() {
     <>
       <div className='w-full max-w-[830px]'>
         <div className='my-4 flex flex-col gap-2'>
-          <h2 className='text-2xl font-semibold'>{title}</h2>
+          <h2 className='text-2xl font-semibold'>[Q&A] {title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>
             <WriterView writer={nickname} date={date} profile={profileUrl} />
@@ -154,20 +117,27 @@ export default function CenterPostDetail() {
           ) : null}
         </div>
         {/* 내용 */}
-        <div className='mb-4 flex flex-row'>
-          <TbQuestionMark size={50} />
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+        <div className='flex flex-col gap-2'>
+          <div className='font-semibold opacity-50'>사용자가 질문한 내용입니다.</div>
+          <div className='mb-4 flex flex-row'>
+            <div dangerouslySetInnerHTML={{ __html: content }} />
+          </div>
         </div>
-
         <div className='flex items-center gap-1 text-base '>
           <CommentIcon size={18} />
           답변 {commentCount}
+          <Link
+            href={`${isLogin ? '/content/center/write' : '/login'}`}
+            className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+          >
+            <PencilIcon color='white' size={18} />
+            답변하기
+          </Link>
         </div>
         {/* 경계선 */}
         <div className='my-4 border-b-2' />
         {/* 차후 수정할 댓글 내용들 */}
-        <Comments comments={comments} />
-        <CommentWrite />
+        <CenterComments comments={comments} />
       </div>
     </>
   );
