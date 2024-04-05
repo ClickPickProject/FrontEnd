@@ -1,8 +1,8 @@
-import CenterPostDetail from '@/components/Community/CenterPost/CenterPostDetail';
+import PostDetail from '@/components/Community/PostDetail';
 export default function PostIdPage() {
   return (
     <>
-      <CenterPostDetail />
+      <PostDetail />
     </>
   );
 }

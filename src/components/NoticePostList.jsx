@@ -120,7 +120,7 @@ export default function NoticePostList() {
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
-              <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
+              <Link href={`/content/center/${data.postId}`}>{data.title}</Link>
               <div className='absolute right-0 flex gap-4'>
                 <div
                   className={`flex cursor-pointer items-center gap-2 rounded-lg ${!answer ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
