@@ -31,7 +31,7 @@ export default function MapHeader() {
     setMapMenu(menu);
   };
   return (
-    <nav className='flex w-full justify-center gap-4 '>
+    <nav className='flex w-full justify-between gap-4'>
       {menu.map(({ content, icon }) => (
         <ul key={content}>
           <div

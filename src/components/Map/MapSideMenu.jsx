@@ -31,7 +31,7 @@ export default function MapSideMenu({
       exit={{ opacity: 1, x: '-100%' }}
       transition={{ duration: 0.3 }}
     >
-      <div className='flex flex-col items-center gap-4 bg-pink-200 px-4 py-2'>
+      <div className='flex flex-col items-center gap-4 bg-pink-200 px-8 py-2'>
         <Link href='/' className='mr-auto flex items-center'>
           <figure className='p-2'>
             <Image src='/Images/clickpick_icon.png' width={32} height={32} alt='logo' />
@@ -39,14 +39,14 @@ export default function MapSideMenu({
           <span className='text-2xl font-bold'>ClickPick</span>
         </Link>
         {/* 검색창 */}
-        <form onSubmit={handleSearch} className='relative flex h-[42px] w-full'>
+        <form onSubmit={handleSearch} className='relative flex h-[auto] w-full'>
           <input
-            className='w-full rounded-md pl-2 outline-none'
+            className='w-full rounded-[4px] py-3 pl-3 outline-none'
             type='text'
             placeholder='장소, 주소, 검색'
             onChange={handleInputChange}
           />
-          <div className='absolute bottom-0 right-2 top-0 flex items-center'>
+          <div className='absolute bottom-0 right-4 top-0 flex items-center'>
             <button type='submit'>
               <FaSearch color='hotpink' size={20} />
             </button>
@@ -66,16 +66,20 @@ export default function MapSideMenu({
           <section className='overflow-y-auto'>
             <ul>
               {markers.length === 0 && null}
-              <h2 className='text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
+              <h2 className='pl-4 text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
               {markers.map((marker) => (
                 <li key={marker.content.placeUrl}>
-                  <div className={`flex h-[110px] w-full flex-col p-2 transition-all hover:bg-pink-100`}>
-                    <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
-                      {marker.content}
-                    </span>
+                  <div
+                    className={`flex h-[150px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
+                  >
+                    <div className='flex items-center gap-1'>
+                      <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
+                        {marker.content}
+                      </span>
+                      <span className='text-sm font-normal opacity-80'>{marker.placeCategoryGroupName}</span>
+                    </div>
                     <span className='text-sm opacity-80'>{marker.placeCategory}</span>
                     <span className='text-sm opacity-80'>{marker.placeAddressName}</span>
-                    <span className='text-sm opacity-80'>{marker.placeCategoryGroupName}</span>
                     <span className='text-xs opacity-60'>
                       {marker.placeCategory.length === 0 ? '카테고리 없음' : marker.placeCategory}
                     </span>
