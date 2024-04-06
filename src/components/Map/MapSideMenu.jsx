@@ -70,19 +70,37 @@ export default function MapSideMenu({
               {markers.map((marker) => (
                 <li key={marker.content.placeUrl}>
                   <div
-                    className={`flex h-[150px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
+                    className={`flex h-[120px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
                   >
                     <div className='flex items-center gap-1'>
                       <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
                         {marker.content}
                       </span>
-                      <span className='text-sm font-normal opacity-80'>{marker.placeCategoryGroupName}</span>
+                      <span className='text-md font-normal opacity-80'>
+                        {marker.placeCategoryGroupName === '편의점' && '🏪' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '카페' && '☕️' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '음식점' && '🍽' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '병원' && '🏥' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '학교' && '🏫' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '문화시설' && '🏛' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '숙박' && '🏨' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '관광명소' && '🏞' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '지하철역' && '🚇' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '은행' && '💳' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '주유소,충전소' && '⛽️' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '백화점' && '🛍' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '약국' && '💊' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '주차장' && '🅿️' + marker.placeCategoryGroupName}
+                        {/* {marker.placeCategoryGroupName} */}
+                      </span>
                     </div>
-                    <span className='text-sm opacity-80'>{marker.placeCategory}</span>
                     <span className='text-sm opacity-80'>{marker.placeAddressName}</span>
-                    <span className='text-xs opacity-60'>
-                      {marker.placeCategory.length === 0 ? '카테고리 없음' : marker.placeCategory}
+                    <span className='text-md mr-auto opacity-60 hover:opacity-100'>
+                      <Link href={marker.placeUrl} target='_blank' rel='noopener noreferrer'>
+                        홈페이지
+                      </Link>
                     </span>
+                    <span className='text-sm opacity-80'>관련 게시물 {placeList.length}개</span>
                   </div>
                 </li>
               ))}
