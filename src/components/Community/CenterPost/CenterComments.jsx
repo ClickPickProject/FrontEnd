@@ -160,7 +160,7 @@ export default function CenterComments({ comments }) {
               </div>
             ) : (
               <div className='flex flex-col gap-2 rounded-md  p-2 py-4'>
-                <p className='font-semibold opacity-50'>관리자의 답글입니다.</p>
+                <p className='font-semibold text-pink-600 opacity-50'>관리자의 답글입니다.</p>
                 <p>{comment.content}</p>
               </div>
             )}

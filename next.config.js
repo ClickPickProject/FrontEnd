@@ -169,6 +169,11 @@
 //         source: '/api/map/marker',
 //         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/map/marker`,
 //       },
+//       // Q&A 질문 작성
+//       {
+//         source: '/api/member/question',
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/question/:path*`,
+//       },
 //     ];
 //   },
 // };

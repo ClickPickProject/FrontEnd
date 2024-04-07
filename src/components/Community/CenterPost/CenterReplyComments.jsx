@@ -78,7 +78,7 @@ export default function CenterReplyComments({
         ) : (
           <div>
             <div className='flex flex-col gap-2 p-2 py-4'>
-              <p className='font-semibold opacity-50'>질문자의 답글입니다.</p>
+              <p className='font-semibold text-pink-600 opacity-50'>질문자의 답글입니다.</p>
               <p className='flex items-center gap-2'>
                 <span className='text-sm opacity-50'>{mention}</span>
                 <span>{commentContent}</span>

@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CommentIcon, ReportIcon, PencilIcon } from '../../UI/Icons';
 import { loginState } from '@/atoms/tokenState';
 import Loading from '../../Loading';
+import CenterCommentWrite from './CommentWrite';
 import Link from 'next/link';
 import {
   postCategoryNameState,
@@ -118,7 +119,7 @@ export default function CenterPostDetail() {
         </div>
         {/* 내용 */}
         <div className='flex flex-col gap-2'>
-          <div className='font-semibold opacity-50'>사용자가 질문한 내용입니다.</div>
+          <div className='font-semibold text-pink-600 opacity-50'>사용자가 질문한 내용입니다.</div>
           <div className='mb-4 flex flex-row'>
             <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>
@@ -138,6 +139,7 @@ export default function CenterPostDetail() {
         <div className='my-4 border-b-2' />
         {/* 차후 수정할 댓글 내용들 */}
         <CenterComments comments={comments} />
+        <CenterCommentWrite />
       </div>
     </>
   );

@@ -32,14 +32,14 @@ function WritePage() {
         hashtags: tag,
         imageNames: postImages,
       };
-      const res = await axios.post(`/api/member/post`, body, {
+      const res = await axios.post(`/api/member/question`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
         },
       });
       if (res.status === 200 || 201) {
-        alert('게시글이 등록되었습니다.');
+        alert('질문을 등록 하였습니다.');
         router.back();
       }
     } catch (err) {
