@@ -14,10 +14,10 @@ export const questionState = atom({
   },
 });
 
-export const commentsState = atom({
-  key: 'commentsState',
-  default: [],
-});
+// export const commentsState = atom({
+//   key: 'commentsState',
+//   default: [],
+// });
 
 export const questionEditModeState = atom({
   key: 'questionEditModeState',

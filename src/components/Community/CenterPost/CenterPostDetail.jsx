@@ -59,7 +59,7 @@ export default function CenterPostDetail() {
   if (isPending) return <Loading isPending={isPending} />;
   if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
-  const { title, postId, nickname, date, postCategory, content, hashtags, commentCount, comments, profileUrl } =
+  const { title, questionId, nickname, date, postCategory, content, hashtags, commentCount, answer, profileUrl } =
     userPost;
 
   const onClickPostEdit = async (title, category, content, hashtags) => {
@@ -99,7 +99,7 @@ export default function CenterPostDetail() {
             >
               <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
                 {/* <PostReportModal nickname={nickname} /> */}
-                <PostReportModal nickname={nickname} postId={postId} />
+                <PostReportModal nickname={nickname} postId={questionId} />
               </div>
             </div>
           )}
@@ -128,8 +128,7 @@ export default function CenterPostDetail() {
           <CommentIcon size={18} />
           답변 {commentCount}
           <Link
-            href={`${isLogin ? '/content/center/write' : '/login'}`}
-            url={`/api/admin/${params.id}/answer`}
+            href={`${isLogin ? '/content/center/AdminWrite' : '/login'}`}
             className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
           >
             <PencilIcon color='white' size={18} />
@@ -139,8 +138,8 @@ export default function CenterPostDetail() {
         {/* 경계선 */}
         <div className='my-4 border-b-2' />
         {/* 차후 수정할 댓글 내용들 */}
-        <CenterComments comments={comments} />
-        <CenterCommentWrite />
+        <CenterComments answer={answer} />
+        {/* <CenterCommentWrite /> */}
       </div>
     </>
   );

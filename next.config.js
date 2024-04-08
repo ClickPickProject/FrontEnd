@@ -181,18 +181,18 @@ const nextConfig = {
       },
       // Q&A 답변 작성
       {
-        source: /api/admin/answer,
+        source: '/api/admin/answer',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/answer`,
       },
       // Q&A 답변 삭제 / 수정
       {
-        source: '/api/answer/path*',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/answer/path*`,
+        source: '/api/answer/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/answer/:path*`,
       },
       // Q&A 질문 상세 조회
       {
-        source: '/api/question/path*',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/path*`,
+        source: '/api/question/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/:path*`,
       },
       // Q&A 질문 리스트 조회
       {
@@ -201,10 +201,9 @@ const nextConfig = {
       },
       // Q&A 상태별 질문 리스트 조회
       {
-        source: '/api/question/list/path*',
-        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/list/path*`,
+        source: '/api/question/list/:path*',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/list/:path*`,
       },
-
     ];
   },
 };

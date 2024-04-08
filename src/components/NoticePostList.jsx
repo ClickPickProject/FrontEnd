@@ -24,7 +24,7 @@ export default function NoticePostList() {
   const [selectedStatus, setSelectedStatus] = useState('모두');
   const [answer, setAnswer] = useState('false');
   const [statusValue, setStatusValue] = useState('');
-
+  // /api/member/question
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedStatus]);
@@ -108,17 +108,15 @@ export default function NoticePostList() {
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
-              <Link href={`/content/center/${data.questionId}`} url={`/api/member/question`}>
-                {data.title}
-              </Link>
+              <Link href={`/content/center/${data.questionId}`}>{data.title}</Link>
               <div className='absolute right-0 flex gap-4'>
                 <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status === 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status !== 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
                 >
                   <TbMessageCircleQuestion size={20} /> 답변대기
                 </div>
                 <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status !== 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status === 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
                 >
                   <TbMessageCircleQuestion size={20} /> 답변완료
                 </div>

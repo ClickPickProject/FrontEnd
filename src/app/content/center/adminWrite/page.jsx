@@ -8,8 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-function WritePage() {
-  const router = useRouter();
+function AdminWritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
@@ -32,7 +31,7 @@ function WritePage() {
         hashtags: tag,
         imageNames: postImages,
       };
-      const res = await axios.post(`/api/member/question`, body, {
+      const res = await axios.post(`/api/admin/${questionId}/answer`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -73,4 +72,4 @@ function WritePage() {
   );
 }
 
-export default AuthContext(WritePage, { adminRequired: false });
+export default AuthContext(AdminWritePage, { adminRequired: false });

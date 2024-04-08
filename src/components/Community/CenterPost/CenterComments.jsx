@@ -10,8 +10,8 @@ import CenterReplyComments from './CenterReplyComments';
 import ReplyToggle from '../ReplyToggle';
 import axios from 'axios';
 
-export default function CenterComments({ comments }) {
-  const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
+export default function CenterComments({ answer }) {
+  // const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
   const params = useParams();
   const token = useRecoilValue(tokenState);
   const [editMode, setEditMode] = useState(null); // 추가: 수정 모드를 저장하는 상태
@@ -137,7 +137,7 @@ export default function CenterComments({ comments }) {
     <div>
       <ul>
         {/* 댓글 목록 */}
-        {comments.map((comment) => (
+        {answer.map((comment) => (
           <li key={comment.commentId} className='flex flex-col gap-4'>
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             {editMode === comment.commentId ? ( // 수정 모드인 경우
@@ -166,7 +166,7 @@ export default function CenterComments({ comments }) {
             )}
             {/* 답글 버튼 */}
             <div className='flex items-center gap-1'>
-              {/* 댓글 좋아요(like) */}
+              {/* 댓글 좋아요(like)
               <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
                 {comment.likeCommentCheck ? (
                   <div
@@ -185,16 +185,16 @@ export default function CenterComments({ comments }) {
                     <div className='text-sm font-semibold'>{comment.likeCount}</div>
                   </div>
                 )}
-              </div>
+              </div> */}
 
-              <div
+              {/* <div
                 className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
                 onClick={() => onClickReply(comment.commentId, comment.nickname)}
               >
                 <ReplyIcon color='#ec4899' />
 
                 <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
-              </div>
+              </div> */}
 
               {/* 댓글 수정 및 삭제 */}
               {comment.nickname === myNickname ? (
@@ -214,7 +214,7 @@ export default function CenterComments({ comments }) {
                 </button>
               ) : null}
             </div>
-            <div className='my-2 border' />
+            {/* <div className='my-2 border' />
             {replyToggle[comment.commentId] && (
               <ReplyToggle
                 commentId={comment.commentId}
@@ -222,9 +222,9 @@ export default function CenterComments({ comments }) {
                 parentNickname={comment.nickname}
                 onSubmitReply={onSubmitReply}
               />
-            )}
+            )} */}
             {/* 답글 목록 */}
-            <div className='ml-4'>
+            {/* <div className='ml-4'>
               {comment.recommentList.map((reply) => (
                 <CenterReplyComments
                   key={reply.commentId}
@@ -239,7 +239,7 @@ export default function CenterComments({ comments }) {
                   onClickCommentLike={onClickCommentLike}
                 />
               ))}
-            </div>
+            </div> */}
           </li>
         ))}
       </ul>

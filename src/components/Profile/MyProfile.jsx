@@ -53,7 +53,7 @@ export default function MyProfile() {
     queryKey: ['proImg'],
     queryFn: async () => {
       try {
-        const res = await axios.get('/api/profile/image', {
+        const res = await axios.get('/api/member/profile/image/', {
           withCredentials: true,
           headers: {
             Authorization: token,
@@ -61,10 +61,12 @@ export default function MyProfile() {
         });
         if (res.status === 200) {
           setImage(res.data.url);
+          console.log(res.data);
         }
         return res.data;
       } catch (error) {
         console.log(error);
+        console.log(res.data);
       }
     },
   });
