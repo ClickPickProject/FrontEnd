@@ -34,7 +34,7 @@ export default function CenterComments({ comments }) {
 
   const onClickCommentDelete = async (commentId) => {
     try {
-      const res = await axios.delete(`/api/member/comment/${commentId}`, {
+      const res = await axios.delete(`/api/admin/${commentId}/answer`, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -59,7 +59,7 @@ export default function CenterComments({ comments }) {
         postId: commentId,
         content: replyCommentCheck ? `${nickname}  ${newContent}` : newContent,
       };
-      const res = await axios.post(`/api/member/comment/${commentId}`, body, {
+      const res = await axios.post(`/api/admin/${commentId}/answer`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,

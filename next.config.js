@@ -169,11 +169,42 @@
 //         source: '/api/map/marker',
 //         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/map/marker`,
 //       },
-//       // Q&A 질문 작성
+//       // Q&A 질문 작성/리스트조회
 //       {
 //         source: '/api/member/question',
-//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/question/:path*`,
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/question`,
 //       },
+//       // Q&A 질문 삭제 / 수정
+//       {
+//         source: '/api/question/list/:path*',
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/list/:path*`,
+//       },
+//       // Q&A 답변 작성
+//       {
+//         source: /api/admin/answer,
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/answer`,
+//       },
+//       // Q&A 답변 삭제 / 수정
+//       {
+//         source: '/api/answer/path*',
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/answer/path*`,
+//       },
+//       // Q&A 질문 상세 조회
+//       {
+//         source: '/api/question/path*',
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/path*`,
+//       },
+//       // Q&A 질문 리스트 조회
+//       {
+//         source: '/api/member/question/list',
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/question/list`,
+//       },
+//       // Q&A 상태별 질문 리스트 조회
+//       {
+//         source: '/api/question/list/path*',
+//         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/list/path*`,
+//       },
+
 //     ];
 //   },
 // };

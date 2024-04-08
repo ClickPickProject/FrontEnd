@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { TbMessageCircleQuestion } from 'react-icons/tb';
 // import WriterView from './BestPost/WriterView';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { useQuery } from '@tanstack/react-query';
@@ -22,15 +22,16 @@ export default function NoticePostList() {
   const [search, setSearch] = useState(''); // 검색어
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
   const [answer, setAnswer] = useState('false');
+  const [statusValue, setStatusValue] = useState('');
   const {
-    data: posts,
+    data: question,
     isPending,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ['posts', currentPage],
+    queryKey: ['question', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/list`, {
+      const res = await axios.get(`/api/question/list${statusValue}`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
@@ -38,12 +39,12 @@ export default function NoticePostList() {
       return res.data;
     },
   });
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     refetch();
   };
 
+  useEffect();
   // 검색 결과 처리
   const handleSearchResults = (res) => {
     if (res.status === 200) {
@@ -96,6 +97,7 @@ export default function NoticePostList() {
     }
   };
 
+  const displayPosts = filteredQuestion;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className='sm:mr-[40px]'>
@@ -115,20 +117,32 @@ export default function NoticePostList() {
           Q&A
         </Link>
       </div>
+      <div className='float-right'>
+        {' '}
+        <select
+          value={statusValue}
+          onChange={(e) => setStatusValue(e.target.value)}
+          className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
+        >
+          <option value='모두'>모두</option>
+          <option value='COMPLETE'>답변대기</option>
+          <option value='AWAITING'>답변완료</option>
+        </select>
+      </div>
       <ul>
-        {posts.content.map((data) => (
-          <li key={data.postId} className='flex w-full flex-col gap-4'>
+        {question.content.map((data) => (
+          <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
-              <Link href={`/content/center/${data.postId}`}>{data.title}</Link>
+              <Link href={`/content/center/${data.questionId}`}>{data.title}</Link>
               <div className='absolute right-0 flex gap-4'>
                 <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${!answer ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status === 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
                 >
                   <TbMessageCircleQuestion size={20} /> 답변대기
                 </div>
                 <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${answer ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status === 'AWAITING' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
                 >
                   <TbMessageCircleQuestion size={20} /> 답변완료
                 </div>

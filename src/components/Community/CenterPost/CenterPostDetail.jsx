@@ -12,12 +12,12 @@ import Loading from '../../Loading';
 import CenterCommentWrite from './CommentWrite';
 import Link from 'next/link';
 import {
-  postCategoryNameState,
-  postContentState,
-  postEditModeState,
-  postHashtagState,
-  postTitleState,
-} from '@/atoms/PostState';
+  questionCategoryNameState,
+  questionContentState,
+  questionEditModeState,
+  questionHashtagState,
+  questionTitleState,
+} from '@/atoms/questionState';
 import { reportModalState } from '@/atoms/commentState';
 import PostReportModal from '../PostReportModal';
 
@@ -27,11 +27,11 @@ export default function CenterPostDetail() {
   const myNickname = useRecoilValue(MyNicknameState);
   const router = useRouter();
   const isLogin = useRecoilValue(loginState);
-  const setPostEditMode = useSetRecoilState(postEditModeState);
-  const setPostTitle = useSetRecoilState(postTitleState);
-  const setPostCategoryName = useSetRecoilState(postCategoryNameState);
-  const setPostContent = useSetRecoilState(postContentState);
-  const setPostHashtag = useSetRecoilState(postHashtagState);
+  const setQuestionEditMode = useSetRecoilState(questionEditModeState);
+  const setQuestionTitle = useSetRecoilState(questionTitleState);
+  const setQuestionCategoryName = useSetRecoilState(questionCategoryNameState);
+  const setQuestionContent = useSetRecoilState(questionContentState);
+  const setQuestionHashtag = useSetRecoilState(questionHashtagState);
   const [reportModal, setReportModal] = useRecoilState(reportModalState);
 
   const {
@@ -41,7 +41,7 @@ export default function CenterPostDetail() {
   } = useQuery({
     queryKey: ['post', params.id],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/${params.id}`, {
+      const res = await axios.get(`/api/question/${params.id}`, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -63,11 +63,11 @@ export default function CenterPostDetail() {
     userPost;
 
   const onClickPostEdit = async (title, category, content, hashtags) => {
-    setPostEditMode(true);
-    setPostTitle(title);
-    setPostCategoryName(category);
-    setPostContent(content);
-    setPostHashtag(hashtags);
+    setQuestionEditMode(true);
+    setQuestionTitle(title);
+    setQuestionCategoryName(category);
+    setQuestionContent(content);
+    setQuestionHashtag(hashtags);
     router.push(`/content/community/${params.id}/edit`);
   };
 

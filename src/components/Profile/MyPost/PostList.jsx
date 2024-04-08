@@ -21,6 +21,7 @@ export default function PostList({ category, url }) {
     setSelectedCategory(category);
     setCurrentPage(1);
   }, [category]);
+
   const {
     data: posts,
     isPending,

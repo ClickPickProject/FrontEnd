@@ -45,7 +45,7 @@ function CenterEditPage() {
         postCategory: category,
         imageNames: postImages,
       };
-      const res = await axios.post(`/api/member/post/${params.id}`, body, {
+      const res = await axios.post(`/api/member/question/${params.id}`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
