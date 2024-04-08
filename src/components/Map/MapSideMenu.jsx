@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import MapHeader from './MapHeader';
 import Pagination from 'react-js-pagination';
 import { useRecoilValue } from 'recoil';
-import { mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
+import { mapMenuState, placeBookmarkListState, placeDetailState, placeListState } from '@/atoms/mapState';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import WriterView from '../Community/BestPost/WriterView';
@@ -22,6 +22,7 @@ export default function MapSideMenu({
   const mapMenu = useRecoilValue(mapMenuState);
   const placeDetail = useRecoilValue(placeDetailState);
   const placeList = useRecoilValue(placeListState);
+  const placeBookmarkList = useRecoilValue(placeBookmarkListState);
 
   return (
     <motion.div
@@ -124,7 +125,26 @@ export default function MapSideMenu({
         </>
       )}
 
-      {mapMenu === '즐겨찾기' && <>즐겨찾기</>}
+      {mapMenu === '즐겨찾기' && (
+        <>
+          <div className='mx-auto w-full overflow-y-auto py-8'>
+            <h1 className='mb-4 pl-4 text-xl font-bold'>게시글 목록</h1>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2'>
+              {placeBookmarkList.map((post) => (
+                <div className='rounded-lg bg-white p-4 shadow-md'>
+                  <div className='flex justify-between'>
+                    {/* <WriterView writer={post.nickname} date={post.createAt} profile={post.profileUrl} /> */}
+                    {/* <StatusView viewCount={post.viewCount} likeCount={post.likeCount} /> */}
+                  </div>
+                  <h2 className='my-4 text-xl font-semibold'>{post.status}</h2>
+                  <h2 className='my-4 text-xl font-semibold'>{post.xposition}</h2>
+                  <h2 className='my-4 text-xl font-semibold'>{post.yposition}</h2>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
       {mapMenu === '게시판' && (
         <>
           {placeList.length === 0 ? (

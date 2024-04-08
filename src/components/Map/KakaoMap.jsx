@@ -163,6 +163,25 @@ export default function KakaoMap() {
 
     return coordinates;
   };
+
+  const placeBookmark = async (info) => {
+    const body = {
+      xposition: 1,
+      yposition: 1,
+      status: 'LIKE',
+    };
+    try {
+      const res = await axios.post('/api/member/map/bookmark', body, {
+        withCredentials: true,
+      });
+      if (res.status === 200) {
+        console.log('placebookmark', res.data);
+        setBookmark(!bookmark);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <AnimatePresence>
@@ -241,7 +260,7 @@ export default function KakaoMap() {
                       <div className='flex w-full cursor-text items-center gap-1 whitespace-pre-wrap text-sm '>
                         <button
                           className='flex flex-1 justify-center border border-pink-200 text-pink-500 transition-all hover:opacity-50'
-                          onClick={() => setBookmark(!bookmark)}
+                          onClick={() => placeBookmark(marker)}
                         >
                           {bookmark ? <FillStarIcon size={20} /> : <EmptyStarIcon size={20} />}
                         </button>
