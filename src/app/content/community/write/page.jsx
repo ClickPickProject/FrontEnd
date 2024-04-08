@@ -10,6 +10,7 @@ import {
 } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
+import PostImageList from '@/components/Community/PostImageList';
 import CustomEditor from '@/components/CustomEditor';
 import MapWriteSearch from '@/components/Map/MapWriteSearch';
 import DropDownMenu from '@/components/UI/DropDownMenu';
@@ -28,7 +29,7 @@ function WritePage() {
   const tag = useRecoilValue(editorTagState);
   const router = useRouter();
   const token = useRecoilValue(tokenState);
-  const [postImages, setPostImages] = useRecoilState(postImagesState);
+  const postImages = useRecoilValue(postImagesState);
   const [mapAddress, setMapAddress] = useRecoilState(mapAddressState);
   const [mapPosition, setMapPosition] = useRecoilState(mapPositionState);
   useEffect(() => {
@@ -74,6 +75,7 @@ function WritePage() {
   const handlePostCodeClick = (address) => {
     setPosition(address);
   };
+  console.log(postImages);
   return (
     <>
       <div>
@@ -120,6 +122,8 @@ function WritePage() {
           <div className='h-[full] w-[full]'>
             <CustomEditor />
           </div>
+          <PostImageList postImages={postImages} />
+
           {/* 해시태그 */}
           <Hashtag />
           <div className='mx-auto mt-4 flex h-10 w-1/6 cursor-pointer items-center justify-center rounded-lg bg-pink-300 font-semibold shadow-md transition-all hover:bg-pink-400'>
