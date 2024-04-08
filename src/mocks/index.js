@@ -4,6 +4,6 @@ export async function initMsw() {
     server.listen();
   } else {
     const { worker } = await import('../mocks/browser');
-    await worker.start();
+    // await worker.start();
   }
 }

@@ -602,11 +602,100 @@ export const handlers = [
       ],
     });
   }),
-  // Q&A 작성
+  // Q&A 작성 /api/question/${params.id}
   http.post('/api/member/question', () => {
     return HttpResponse.json({
       title: '제목',
       content: '내용',
     });
+  }),
+  // // Q&A 작성 /api/question/${params.id}
+  // http.post(`/api/admin/:questionId/answer`, ({ params }) => {
+  //   const { questionId } = params;
+  //   return HttpResponse.json({
+  //     title: '제목',
+  //     content: '내용',
+  //   });
+  // }),
+  // 게시글 상세 조회
+  http.get('/api/question/:questionId', ({ params }) => {
+    const { questionId } = params;
+    return HttpResponse.json(
+      {
+        questionId: questionId,
+        nickname: 'testAccount',
+        title: 'title',
+        content: '내용 테스트 중입니다.',
+        likeCount: 1,
+        viewCount: 1,
+        position: '',
+        photoDate: '2024-03-05T18:55:48.884Z',
+        hashtags: ['#해쉬태그', '#테스트'],
+        postCategory: '자유',
+        commentCount: 3,
+        likePostCheck: false,
+        profileUrl: '/Images/iphone.png',
+        comments: [
+          {
+            commentId: 1,
+            nickname: '야놀자',
+            content: '이게 맞나요',
+            createAt: '2024-03-06T18:55:48.884Z',
+            likeCount: 1,
+            likeCommentCheck: false,
+            commentStatus: 'LIVE',
+            profileUrl: '/Images/barn.jpg',
+            recommentList: [
+              {
+                commentId: 2,
+                nickname: '기사일세',
+                content: '@야놀자 탑승',
+                createAt: '2024-03-086T10:55:48.884Z',
+                likeCount: 13,
+                likeCommentCheck: false,
+                profileUrl: '/Images/barn.jpg',
+                parentId: 1,
+              },
+            ],
+          },
+          {
+            commentId: 3,
+            nickname: '응맞음',
+            content: '네네',
+            createAt: '2024-03-07T18:55:48.884Z',
+            likeCount: 3,
+            likeCommentCheck: true,
+            commentStatus: 'LIVE',
+            recommentList: [
+              {
+                commentId: 4,
+                nickname: '대대대댓',
+                content: '@응맞음 대래대래댓댓 댓걸',
+                createAt: '2024-03-166T10:55:48.884Z',
+                likeCount: 123,
+                likeCommentCheck: false,
+                profileUrl: '/Images/cloud.jpg',
+                parentId: 3,
+              },
+              {
+                commentId: 5,
+                nickname: '아아악',
+                content: '@대대대댓 2빠',
+                createAt: '2024-03-166T11:55:48.884Z',
+                likeCount: 123,
+                likeCommentCheck: false,
+                profileUrl: '/Images/black.jpg',
+                parentId: 3,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+        },
+      },
+    );
   }),
 ];

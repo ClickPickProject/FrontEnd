@@ -26,7 +26,7 @@ export default function CenterCommentWrite() {
       content: comment,
     };
     try {
-      const res = await axios.post('/api/member/comment', body, {
+      const res = await axios.post(`/api/question/${question_id}`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,

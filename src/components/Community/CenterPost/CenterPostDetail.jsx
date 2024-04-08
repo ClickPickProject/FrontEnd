@@ -129,6 +129,7 @@ export default function CenterPostDetail() {
           답변 {commentCount}
           <Link
             href={`${isLogin ? '/content/center/write' : '/login'}`}
+            url={`/api/admin/${params.id}/answer`}
             className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
           >
             <PencilIcon color='white' size={18} />
