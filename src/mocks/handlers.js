@@ -552,4 +552,54 @@ export const handlers = [
       position: '강남 스타벅스',
     });
   }),
+  // 게시글 작성
+  http.post('api/member/question', () => {
+    return HttpResponse.json({
+      title: '제목',
+      content: '내용',
+    });
+  }),
+
+  // 게시글 조회
+  http.get('api/question/list', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          questionId: 1,
+          nickname: '김추천',
+          userId: 'chlwjd022@gmail.com',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+        },
+        {
+          questionId: 2,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: COMPLETE,
+        },
+        {
+          questionId: 3,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: COMPLETE,
+        },
+        {
+          questionId: 4,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: COMPLETE,
+        },
+      ],
+    });
+  }),
+  // Q&A 작성
+  http.post('/api/member/question', () => {
+    return HttpResponse.json({
+      title: '제목',
+      content: '내용',
+    });
+  }),
 ];

@@ -24,18 +24,23 @@ export default function NoticePostList() {
   const [answer, setAnswer] = useState('false');
   const [statusValue, setStatusValue] = useState('');
   const {
-    data: question,
+    data: posts,
     isPending,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ['question', currentPage],
+    queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/question/list${statusValue}`, {
+      const res = await axios.get(`/api/question/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
       });
+      if (res.status === 200) {
+        setTotalPages(res.data.totalPages);
+        setTotalItems(res.data.totalElements);
+        setPostsPerPage(res.data.size);
+      }
       return res.data;
     },
   });
@@ -44,7 +49,6 @@ export default function NoticePostList() {
     refetch();
   };
 
-  useEffect();
   // 검색 결과 처리
   const handleSearchResults = (res) => {
     if (res.status === 200) {
@@ -54,50 +58,6 @@ export default function NoticePostList() {
       setCurrentPage(1);
     }
   };
-
-  // 검색 함수 정의 (제목, 내용, 해시태그)
-  const searchByTitle = async () => {
-    try {
-      const res = await axios.get('/api/post/title', {
-        params: {
-          title: search,
-        },
-      });
-      handleSearchResults(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const searchByContent = async () => {
-    try {
-      const res = await axios.get('/api/post/content', {
-        params: {
-          content: search,
-        },
-      });
-      handleSearchResults(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // 검색 버튼 클릭 핸들러
-  const onClickSearch = async (e) => {
-    e.preventDefault();
-    switch (searchOption) {
-      case 'title':
-        await searchByTitle();
-        break;
-      case 'content':
-        await searchByContent();
-        break;
-      default:
-        break;
-    }
-  };
-
-  const displayPosts = filteredQuestion;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className='sm:mr-[40px]'>
@@ -118,7 +78,6 @@ export default function NoticePostList() {
         </Link>
       </div>
       <div className='float-right'>
-        {' '}
         <select
           value={statusValue}
           onChange={(e) => setStatusValue(e.target.value)}
@@ -130,7 +89,7 @@ export default function NoticePostList() {
         </select>
       </div>
       <ul>
-        {question.content.map((data) => (
+        {posts?.content?.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
