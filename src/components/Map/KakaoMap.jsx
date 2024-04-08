@@ -1,12 +1,13 @@
 'use client';
+import { EmptyStarIcon, FillStarIcon, LeftArrowIcon, LinkIcon, RightArrowIcon } from '../UI/Icons';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { mapAreaState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -25,6 +26,7 @@ export default function KakaoMap() {
   const setMapMenu = useSetRecoilState(mapMenuState);
   const setPlaceDetail = useSetRecoilState(placeDetailState);
   const setPlaceList = useSetRecoilState(placeListState);
+  const [bookmark, setBookmark] = useState(false);
 
   const SPRITE_MARKER_URL = '/Images/sprite.png'; // 스프라이트 마커 이미지 URL
   const SPRITE_WIDTH = 48; // 스프라이트 이미지 너비
@@ -187,7 +189,7 @@ export default function KakaoMap() {
           className='absolute top-1/2 z-50 items-center rounded-br-sm rounded-tr-sm bg-white px-1 py-4 font-bold text-pink-500 outline-none hover:bg-pink-50 hover:text-pink-600'
           onClick={() => setClickToggle(!clickToggle)}
         >
-          <IoIosArrowBack size={18} />
+          <LeftArrowIcon size={18} />
         </motion.button>
       </div>
 
@@ -223,20 +225,35 @@ export default function KakaoMap() {
               <CustomOverlayMap position={marker.position} yAnchor={0} xAnchor={1} zIndex={999}>
                 {info && info.content === marker.content && (
                   <>
-                    <div className='flex w-64 flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
+                    <div className='flex w-64 cursor-text flex-col items-center justify-center bg-white text-sm transition [&>div]:p-2'>
                       <div
-                        className='flex w-full overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'
+                        className='flex w-full cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap bg-pink-300 text-base font-semibold transition-all hover:bg-pink-400'
                         onClick={() => onClickPlaceDetail(marker)}
                       >
                         <span className='mx-auto text-sm'>
                           {marker.content} ({mapDetailLength})
                         </span>
                         <span className='flex items-center'>
-                          <IoIosArrowForward />
+                          <RightArrowIcon />
                         </span>
                       </div>
                       <div className='cursor-text whitespace-pre-wrap text-sm'>{marker.placeAddressName}</div>
-                      <div className='cursor-text whitespace-pre-wrap text-sm'>관련 게시물</div>
+                      <div className='flex w-full cursor-text items-center gap-1 whitespace-pre-wrap text-sm '>
+                        <button
+                          className='flex flex-1 justify-center border border-pink-200 text-pink-500 transition-all hover:opacity-50'
+                          onClick={() => setBookmark(!bookmark)}
+                        >
+                          {bookmark ? <FillStarIcon size={20} /> : <EmptyStarIcon size={20} />}
+                        </button>
+                        <Link
+                          href={marker.placeUrl}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='flex flex-1 items-center justify-center gap-1 border border-pink-200 text-pink-500 transition-all hover:opacity-50'
+                        >
+                          <LinkIcon size={20} />
+                        </Link>
+                      </div>
                     </div>
                   </>
                 )}
