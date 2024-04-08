@@ -592,6 +592,13 @@ export const handlers = [
           createAt: '2024-03-10T18:55:48.884Z',
           status: 'COMPLETE',
         },
+        {
+          questionId: 5,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: 'AWAITING',
+        },
       ],
     });
   }),

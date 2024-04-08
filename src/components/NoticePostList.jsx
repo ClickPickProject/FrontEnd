@@ -21,8 +21,13 @@ export default function NoticePostList() {
   const [searchOption, setSearchOption] = useState('title'); // 검색 옵션 (기본값: 제목검색)
   const [search, setSearch] = useState(''); // 검색어
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
+  const [selectedStatus, setSelectedStatus] = useState('모두');
   const [answer, setAnswer] = useState('false');
   const [statusValue, setStatusValue] = useState('');
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedStatus]);
   const {
     data: posts,
     isPending,
@@ -59,6 +64,15 @@ export default function NoticePostList() {
     }
   };
   // 카테고리 필터링
+  const filteredPosts = posts?.content?.filter((post) => {
+    if (selectedStatus === '모두') {
+      return true; // 모든 포스트를 반환
+    } else {
+      return post.status === selectedStatus; // 선택된 상태와 일치하는 포스트만 반환
+    }
+  });
+
+  const displayPosts = filteredPosts;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className='sm:mr-[40px]'>
@@ -80,8 +94,8 @@ export default function NoticePostList() {
       </div>
       <div className='float-right'>
         <select
-          value={statusValue}
-          onChange={(e) => setStatusValue(e.target.value)}
+          value={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
           className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
         >
           <option value='모두'>모두</option>
@@ -90,7 +104,7 @@ export default function NoticePostList() {
         </select>
       </div>
       <ul>
-        {posts.content.map((data) => (
+        {displayPosts?.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
