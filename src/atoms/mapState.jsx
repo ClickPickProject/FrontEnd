@@ -24,7 +24,13 @@ export const placeDetailState = atom({
   key: 'placeDetailState',
   default: [],
 });
+
 export const placeListState = atom({
   key: 'placeListState',
+  default: [],
+});
+
+export const placeBookmarkListState = atom({
+  key: 'placeBookmarkListState',
   default: [],
 });

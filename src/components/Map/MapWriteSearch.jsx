@@ -6,7 +6,7 @@ import Pagination from 'react-js-pagination';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useSetRecoilState } from 'recoil';
 
-export default function MapSearch() {
+export default function MapWriteSearch() {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useState([]);
   const [map, setMap] = useState();

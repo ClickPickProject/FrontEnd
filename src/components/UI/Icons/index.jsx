@@ -31,3 +31,8 @@ export { default as FillUserIcon } from './FillUserIcon';
 export { default as FillSirenIcon } from './FillSirenIcon';
 export { default as DashboardIcon } from './DashboardIcon';
 export { default as BoardIcon } from './BoardIcon';
+export { default as EmptyStarIcon } from './EmptyStarIcon';
+export { default as FillStarIcon } from './FillStarIcon';
+export { default as LinkIcon } from './LinkIcon';
+export { default as RightArrowIcon } from './RightArrowIcon';
+export { default as LeftArrowIcon } from './LeftArrowIcon';

@@ -759,4 +759,30 @@ export const handlers = [
       },
     ]);
   }),
+  http.post('/api/member/map/bookmark', () => {
+    return HttpResponse.json({
+      xposition: 1,
+      yposition: 1,
+      status: 'LIKE',
+    });
+  }),
+  http.post('/api/member/map/bookmark/list', () => {
+    return HttpResponse.json([
+      {
+        xposition: 167858,
+        yposition: 185975,
+        status: 'LIKE',
+      },
+      {
+        xposition: 116853,
+        yposition: 197744,
+        status: 'LIKE',
+      },
+      {
+        xposition: 146829,
+        yposition: 16945,
+        status: 'LIKE',
+      },
+    ]);
+  }),
 ];

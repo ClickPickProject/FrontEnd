@@ -1,11 +1,12 @@
 'use client';
-import { BoardIcon, FillHomeIcon } from '../UI/Icons';
-import { FaStar } from 'react-icons/fa6';
-import { mapMenuState } from '@/atoms/mapState';
-import { useRecoilState } from 'recoil';
+import { BoardIcon, FillHomeIcon, FillStarIcon } from '../UI/Icons';
+import { mapMenuState, placeBookmarkListState } from '@/atoms/mapState';
+import axios from 'axios';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 export default function MapHeader() {
   const [mapMenu, setMapMenu] = useRecoilState(mapMenuState);
+  const setPlaceBookmarkList = useSetRecoilState(placeBookmarkListState);
   const menu = [
     {
       icon: <FillHomeIcon size={15} />,
@@ -13,7 +14,7 @@ export default function MapHeader() {
       content: '지도 홈',
     },
     {
-      icon: <FaStar size={15} />,
+      icon: <FillStarIcon size={15} />,
       clickedIcon: '',
       content: '즐겨찾기',
     },
@@ -27,11 +28,28 @@ export default function MapHeader() {
   const defaultClass =
     'flex w-full justify-center py-2 px-4 text-sm rounded-xl font-semibold transition-all cursor-pointer';
 
-  const onClickMapMenu = (menu) => {
+  const onClickMapMenu = async (menu) => {
+    const body = {
+      xposition: 1,
+      yposition: 1,
+      status: 'LIKE',
+    };
+    if (menu === '즐겨찾기') {
+      try {
+        const res = await axios.post('/api/member/map/bookmark/list', body, {
+          withCredentials: true,
+        });
+        if (res.status === 200) {
+          setPlaceBookmarkList(res.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
     setMapMenu(menu);
   };
   return (
-    <nav className='flex w-full justify-center gap-4 '>
+    <nav className='flex w-full justify-between gap-4'>
       {menu.map(({ content, icon }) => (
         <ul key={content}>
           <div

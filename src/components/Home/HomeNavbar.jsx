@@ -29,7 +29,7 @@ export default function HomeNavbar() {
           </figure>
           <ul className='relative flex w-full justify-center gap-4 text-[20px] font-bold'>
             <div className='flex flex-1 items-center justify-center gap-4'>
-              <Link href='/content/place'>
+              <Link href='/place'>
                 <li className={`${hoverStyle} `}>장소찾기</li>
               </Link>
               <Link href='/content/community'>

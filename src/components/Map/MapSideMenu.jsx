@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import MapHeader from './MapHeader';
 import Pagination from 'react-js-pagination';
 import { useRecoilValue } from 'recoil';
-import { mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
+import { mapMenuState, placeBookmarkListState, placeDetailState, placeListState } from '@/atoms/mapState';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import WriterView from '../Community/BestPost/WriterView';
@@ -22,6 +22,7 @@ export default function MapSideMenu({
   const mapMenu = useRecoilValue(mapMenuState);
   const placeDetail = useRecoilValue(placeDetailState);
   const placeList = useRecoilValue(placeListState);
+  const placeBookmarkList = useRecoilValue(placeBookmarkListState);
 
   return (
     <motion.div
@@ -31,7 +32,7 @@ export default function MapSideMenu({
       exit={{ opacity: 1, x: '-100%' }}
       transition={{ duration: 0.3 }}
     >
-      <div className='flex flex-col items-center gap-4 bg-pink-200 px-4 py-2'>
+      <div className='flex flex-col items-center gap-4 bg-pink-200 px-8 py-2'>
         <Link href='/' className='mr-auto flex items-center'>
           <figure className='p-2'>
             <Image src='/Images/clickpick_icon.png' width={32} height={32} alt='logo' />
@@ -39,14 +40,14 @@ export default function MapSideMenu({
           <span className='text-2xl font-bold'>ClickPick</span>
         </Link>
         {/* 검색창 */}
-        <form onSubmit={handleSearch} className='relative flex h-[42px] w-full'>
+        <form onSubmit={handleSearch} className='relative flex h-[auto] w-full'>
           <input
-            className='w-full rounded-md pl-2 outline-none'
+            className='w-full rounded-[4px] py-3 pl-3 outline-none'
             type='text'
             placeholder='장소, 주소, 검색'
             onChange={handleInputChange}
           />
-          <div className='absolute bottom-0 right-2 top-0 flex items-center'>
+          <div className='absolute bottom-0 right-4 top-0 flex items-center'>
             <button type='submit'>
               <FaSearch color='hotpink' size={20} />
             </button>
@@ -66,19 +67,41 @@ export default function MapSideMenu({
           <section className='overflow-y-auto'>
             <ul>
               {markers.length === 0 && null}
-              <h2 className='text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
+              <h2 className='pl-4 text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
               {markers.map((marker) => (
                 <li key={marker.content.placeUrl}>
-                  <div className={`flex h-[110px] w-full flex-col p-2 transition-all hover:bg-pink-100`}>
-                    <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
-                      {marker.content}
-                    </span>
-                    <span className='text-sm opacity-80'>{marker.placeCategory}</span>
+                  <div
+                    className={`flex h-[120px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
+                  >
+                    <div className='flex items-center gap-1'>
+                      <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
+                        {marker.content}
+                      </span>
+                      <span className='text-md font-normal opacity-80'>
+                        {marker.placeCategoryGroupName === '편의점' && '🏪' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '카페' && '☕️' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '음식점' && '🍽' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '병원' && '🏥' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '학교' && '🏫' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '문화시설' && '🏛' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '숙박' && '🏨' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '관광명소' && '🏞' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '지하철역' && '🚇' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '은행' && '💳' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '주유소,충전소' && '⛽️' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '백화점' && '🛍' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '약국' && '💊' + marker.placeCategoryGroupName}
+                        {marker.placeCategoryGroupName === '주차장' && '🅿️' + marker.placeCategoryGroupName}
+                        {/* {marker.placeCategoryGroupName} */}
+                      </span>
+                    </div>
                     <span className='text-sm opacity-80'>{marker.placeAddressName}</span>
-                    <span className='text-sm opacity-80'>{marker.placeCategoryGroupName}</span>
-                    <span className='text-xs opacity-60'>
-                      {marker.placeCategory.length === 0 ? '카테고리 없음' : marker.placeCategory}
+                    <span className='text-md mr-auto opacity-60 hover:opacity-100'>
+                      <Link href={marker.placeUrl} target='_blank' rel='noopener noreferrer'>
+                        홈페이지
+                      </Link>
                     </span>
+                    <span className='text-sm opacity-80'>관련 게시물 {placeList.length}개</span>
                   </div>
                 </li>
               ))}
@@ -102,7 +125,26 @@ export default function MapSideMenu({
         </>
       )}
 
-      {mapMenu === '즐겨찾기' && <>즐겨찾기</>}
+      {mapMenu === '즐겨찾기' && (
+        <>
+          <div className='mx-auto w-full overflow-y-auto py-8'>
+            <h1 className='mb-4 pl-4 text-xl font-bold'>게시글 목록</h1>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2'>
+              {placeBookmarkList.map((post) => (
+                <div className='rounded-lg bg-white p-4 shadow-md'>
+                  <div className='flex justify-between'>
+                    {/* <WriterView writer={post.nickname} date={post.createAt} profile={post.profileUrl} /> */}
+                    {/* <StatusView viewCount={post.viewCount} likeCount={post.likeCount} /> */}
+                  </div>
+                  <h2 className='my-4 text-xl font-semibold'>{post.status}</h2>
+                  <h2 className='my-4 text-xl font-semibold'>{post.xposition}</h2>
+                  <h2 className='my-4 text-xl font-semibold'>{post.yposition}</h2>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
       {mapMenu === '게시판' && (
         <>
           {placeList.length === 0 ? (
