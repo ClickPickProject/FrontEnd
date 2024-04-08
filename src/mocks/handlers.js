@@ -561,7 +561,7 @@ export const handlers = [
   }),
 
   // 게시글 조회
-  http.get('api/question/list', () => {
+  http.get('/api/question/list', () => {
     return HttpResponse.json({
       content: [
         {
@@ -576,21 +576,21 @@ export const handlers = [
           nickname: '김추천',
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
-          status: COMPLETE,
+          status: 'COMPLETE',
         },
         {
           questionId: 3,
           nickname: '김추천',
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
-          status: COMPLETE,
+          status: 'COMPLETE',
         },
         {
           questionId: 4,
           nickname: '김추천',
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
-          status: COMPLETE,
+          status: 'COMPLETE',
         },
       ],
     });

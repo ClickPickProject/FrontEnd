@@ -58,17 +58,18 @@ export default function NoticePostList() {
       setCurrentPage(1);
     }
   };
+  // 카테고리 필터링
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className='sm:mr-[40px]'>
       <div className='flex flex-row'>
-        <CenterSearch
+        {/* <CenterSearch
           searchOption={searchOption}
           setSearchOption={setSearchOption}
           search={search}
           setSearch={setSearch}
           onClickSearch={onClickSearch}
-        />
+        /> */}
         <Link
           href={`${isLogin ? '/content/center/write' : '/login'}`}
           className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
@@ -89,7 +90,7 @@ export default function NoticePostList() {
         </select>
       </div>
       <ul>
-        {posts?.content?.map((data) => (
+        {posts.content.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
@@ -101,7 +102,7 @@ export default function NoticePostList() {
                   <TbMessageCircleQuestion size={20} /> 답변대기
                 </div>
                 <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status === 'AWAITING' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
+                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status !== 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
                 >
                   <TbMessageCircleQuestion size={20} /> 답변완료
                 </div>
