@@ -11,7 +11,7 @@ import {
 import { tokenState } from '@/atoms/tokenState';
 import Hashtag from '@/components/Community/Hashtag';
 import CustomEditor from '@/components/CustomEditor';
-import MapSearch from '@/components/Map/MapSearch';
+import MapWriteSearch from '@/components/Map/MapWriteSearch';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
 import axios from 'axios';
@@ -103,7 +103,7 @@ function WritePage() {
                   className={`fixed inset-0 z-50 flex items-center justify-center ${mapModal && 'bg-black bg-opacity-50'}`}
                 >
                   <div className='rounded-lg border-2 border-pink-300 bg-white'>
-                    <MapSearch />
+                    <MapWriteSearch />
                   </div>
                 </div>
               </>
