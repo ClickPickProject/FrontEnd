@@ -30,7 +30,12 @@ export default function PostImageList() {
       {postImages?.map((image) => (
         <li className='relative flex h-[64px]'>
           <div className='flex h-[inherit] w-[64px]'>
-            <img src={`/Images/${image}`} className='h-full w-full' />
+            <img
+              src={`http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/post/images/${image}`}
+              alt='이미지'
+              className='h-full w-full'
+            />
+            {/* <img src={`/Images/${image}`} className='h-full w-full' /> */}
             <div className='absolute right-0 top-0 flex cursor-pointer items-center justify-center bg-black bg-opacity-30 text-white transition-all hover:bg-pink-400'>
               <button onClick={() => onClickImage(image)}>
                 <IoClose size={20} />
