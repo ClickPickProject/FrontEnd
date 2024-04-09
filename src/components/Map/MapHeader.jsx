@@ -1,12 +1,14 @@
 'use client';
 import { BoardIcon, FillHomeIcon, FillStarIcon } from '../UI/Icons';
 import { mapMenuState, placeBookmarkListState } from '@/atoms/mapState';
+import { tokenState } from '@/atoms/tokenState';
 import axios from 'axios';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 export default function MapHeader() {
   const [mapMenu, setMapMenu] = useRecoilState(mapMenuState);
   const setPlaceBookmarkList = useSetRecoilState(placeBookmarkListState);
+  const token = useRecoilValue(tokenState);
   const menu = [
     {
       icon: <FillHomeIcon size={15} />,
@@ -38,6 +40,9 @@ export default function MapHeader() {
       try {
         const res = await axios.post('/api/member/map/bookmark/list', body, {
           withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
         });
         if (res.status === 200) {
           setPlaceBookmarkList(res.data);
