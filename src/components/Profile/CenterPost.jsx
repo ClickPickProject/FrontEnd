@@ -21,8 +21,7 @@ export default function CenterPost() {
             <div className='whitespace-nowrap text-2xl font-bold sm:text-xl'>🙋🏻‍♀️ 나의소통</div>
             <div className='mb-10 border border-pink-200' />
           </div>
-
-          <NoticePostList url={'/api/member/question/list'} />
+          <NoticePostList url={`/api/member/question/list`} />
         </motion.nav>
       </section>
     </>

@@ -12,7 +12,8 @@ import { loginState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
 import { PencilIcon } from './UI/Icons';
 import CenterSearch from './CenterSearch';
-export default function NoticePostList() {
+import { tokenState } from '@/atoms/tokenState';
+export default function NoticePostList({ url }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
@@ -24,6 +25,8 @@ export default function NoticePostList() {
   const [selectedStatus, setSelectedStatus] = useState('모두');
   const [answer, setAnswer] = useState('false');
   const [statusValue, setStatusValue] = useState('');
+
+  const token = useRecoilValue(tokenState);
   // /api/member/question
   useEffect(() => {
     setCurrentPage(1);
@@ -36,7 +39,11 @@ export default function NoticePostList() {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/question/list`, {
+      const res = await axios.get(url, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
@@ -73,6 +80,7 @@ export default function NoticePostList() {
   });
 
   const displayPosts = filteredPosts;
+  //NoticePostList
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className='sm:mr-[40px]'>
@@ -85,7 +93,11 @@ export default function NoticePostList() {
           onClickSearch={onClickSearch}
         /> */}
         <Link
-          href={`${isLogin ? '/content/center/write' : '/login'}`}
+          href={{
+            pathname: isLogin ? '/content/center/write' : '/login',
+            query: { urlProp: '/api/member/question' },
+          }}
+          passHref
           className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
         >
           <PencilIcon color='white' size={18} />

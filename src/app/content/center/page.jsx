@@ -23,7 +23,7 @@ export default function CenterPage() {
             <div className='mb-10 border border-pink-200' />
           </div>
 
-          <NoticePostList />
+          <NoticePostList url={`/api/question/list`} />
         </motion.nav>
       </section>
     </>

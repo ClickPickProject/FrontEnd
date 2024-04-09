@@ -128,8 +128,9 @@ export default function CenterPostDetail() {
           <CommentIcon size={18} />
           답변 {commentCount}
           <Link
-            href={`${isLogin ? '/content/center/AdminWrite' : '/login'}`}
+            href={`${isLogin ? '/content/center/write' : '/login'}`}
             className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+            //넘겨줄 값 /api/admin/{question_id}/answer
           >
             <PencilIcon color='white' size={18} />
             답변하기

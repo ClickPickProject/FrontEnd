@@ -1,3 +1,4 @@
+//write
 'use client';
 import { editorContentState, editorTagState, editorTitleState, postImagesState } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
@@ -10,6 +11,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 function WritePage() {
   const router = useRouter();
+  const { query } = router;
   const [title, setTitle] = useRecoilState(editorTitleState);
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
@@ -32,7 +34,7 @@ function WritePage() {
         hashtags: tag,
         imageNames: postImages,
       };
-      const res = await axios.post(`/api/member/question`, body, {
+      const res = await axios.post(query.urlProp, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
