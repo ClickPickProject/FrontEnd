@@ -165,14 +165,18 @@ export default function KakaoMap() {
   };
 
   const placeBookmark = async (info) => {
+    console.log(info);
     const body = {
-      xposition: 1,
-      yposition: 1,
+      xposition: info.position.lng,
+      yposition: info.position.lat,
       status: 'LIKE',
     };
     try {
       const res = await axios.post('/api/member/map/bookmark', body, {
         withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
       });
       if (res.status === 200) {
         console.log('placebookmark', res.data);
