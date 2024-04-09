@@ -147,13 +147,13 @@ export default function MapSideMenu({
       )}
       {mapMenu === '게시판' && (
         <>
-          {placeList.length === 0 ? (
+          {placeList.content.length === 0 ? (
             <h1 className='mb-4 text-lg font-bold'>게시글이 존재하지 않습니다.</h1>
           ) : (
             <div className='mx-auto w-full overflow-y-auto py-8'>
               <h1 className='mb-4 pl-4 text-xl font-bold'>게시글 목록</h1>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2'>
-                {placeList.map((post) => (
+                {placeList.content.map((post) => (
                   <div className='rounded-lg bg-white p-4 shadow-md'>
                     <div className='flex justify-between'>
                       <WriterView writer={post.nickname} date={post.createAt} profile={post.profileUrl} />
