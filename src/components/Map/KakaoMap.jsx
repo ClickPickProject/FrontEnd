@@ -1,12 +1,13 @@
 'use client';
 import { EmptyStarIcon, FillStarIcon, LeftArrowIcon, LinkIcon, RightArrowIcon } from '../UI/Icons';
-import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
 import { mapAreaState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function KakaoMap() {
@@ -27,7 +28,7 @@ export default function KakaoMap() {
   const setPlaceDetail = useSetRecoilState(placeDetailState);
   const setPlaceList = useSetRecoilState(placeListState);
   const [bookmark, setBookmark] = useState(false);
-
+  const [markerGuideModal, setMarkerGuideModal] = useState(false);
   const SPRITE_MARKER_URL = '/Images/sprite.png'; // 스프라이트 마커 이미지 URL
   const SPRITE_WIDTH = 48; // 스프라이트 이미지 너비
   const SPRITE_HEIGHT = 250; // 스프라이트 이미지 높이
@@ -186,6 +187,28 @@ export default function KakaoMap() {
       console.log(err);
     }
   };
+  const popupVariants = {
+    hidden: {
+      x: 0,
+      y: 0,
+      opacity: 0,
+      translateX: '-50%',
+      translateY: '-100%',
+    },
+    visible: {
+      y: 0,
+      x: 0,
+      zIndex: 999,
+      opacity: 1,
+      translateX: '-50%',
+      translateY: '-50%',
+      transition: {
+        type: 'spring',
+        damping: 15,
+        stiffness: 400,
+      },
+    },
+  };
   return (
     <>
       <AnimatePresence>
@@ -202,7 +225,6 @@ export default function KakaoMap() {
           />
         )}
       </AnimatePresence>
-
       <div className=''>
         <motion.button
           initial={{ x: '-100%' }}
@@ -215,7 +237,53 @@ export default function KakaoMap() {
           <LeftArrowIcon size={18} />
         </motion.button>
       </div>
-
+      <div className=''>
+        <motion.button
+          initial={{ x: '-100%' }}
+          animate={{ x: clickToggle ? 400 : 0 }}
+          exit={{ x: '-100%' }}
+          transition={{ duration: 0.3 }}
+          className='absolute left-4 top-4 z-50 items-center rounded-sm bg-white bg-opacity-70 py-2 font-bold outline-none transition-opacity hover:bg-opacity-90'
+          onClick={() => setMarkerGuideModal(!markerGuideModal)}
+        >
+          {/* <div className='pb-1 pl-2 text-left text-black'>장소 활성화 지표</div> */}
+          <Image src='/Images/markerGuide.png' width={256} height={256} />
+        </motion.button>
+      </div>
+      <div className=''>
+        <motion.button
+          initial={{ x: '-100%' }}
+          animate={{ x: clickToggle ? 400 : 0 }}
+          exit={{ x: '-100%' }}
+          transition={{ duration: 0.3 }}
+          className='absolute top-1/2 z-50 items-center rounded-br-sm rounded-tr-sm bg-white px-1 py-4 font-bold text-pink-500 outline-none hover:bg-pink-50 hover:text-pink-600'
+          onClick={() => setClickToggle(!clickToggle)}
+        >
+          <LeftArrowIcon size={18} />
+        </motion.button>
+      </div>
+      {markerGuideModal && (
+        <>
+          <div className='absolute inset-0 z-50 bg-gray-500 opacity-20' />
+          <motion.div
+            className='absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-white p-4 shadow-lg'
+            variants={popupVariants}
+            initial='hidden'
+            animate={markerGuideModal ? 'visible' : 'hidden'}
+          >
+            <Image src='/Images/markerGuide2.png' width={800} height={800} />
+            <p className='mt-4 text-xl font-bold'>
+              장소의 게시글 수에 따라 마커의 색상을 통해 활성화 정도를 반영합니다.
+            </p>
+            <button
+              className='mx-auto mt-2 flex w-1/12 justify-center rounded-md bg-pink-300 p-2 transition-all hover:bg-pink-400'
+              onClick={() => setMarkerGuideModal(!markerGuideModal)}
+            >
+              닫기
+            </button>
+          </motion.div>
+        </>
+      )}
       <div className='h-screen w-full'>
         <Map // 지도를 표시할 Container
           className='h-[inherit] w-[inherit]'

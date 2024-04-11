@@ -92,11 +92,10 @@ export default function MapSideMenu({
                         {marker.placeCategoryGroupName === '백화점' && '🛍' + marker.placeCategoryGroupName}
                         {marker.placeCategoryGroupName === '약국' && '💊' + marker.placeCategoryGroupName}
                         {marker.placeCategoryGroupName === '주차장' && '🅿️' + marker.placeCategoryGroupName}
-                        {/* {marker.placeCategoryGroupName} */}
                       </span>
                     </div>
                     <span className='text-sm opacity-80'>{marker.placeAddressName}</span>
-                    <span className='text-md mr-auto opacity-60 hover:opacity-100'>
+                    <span className='mr-auto text-sm opacity-60 hover:opacity-100'>
                       <Link href={marker.placeUrl} target='_blank' rel='noopener noreferrer'>
                         홈페이지
                       </Link>
@@ -128,47 +127,46 @@ export default function MapSideMenu({
       {mapMenu === '즐겨찾기' && (
         <>
           <div className='mx-auto w-full overflow-y-auto py-8'>
-            <h1 className='mb-4 pl-4 text-xl font-bold'>게시글 목록</h1>
-            <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2'>
-              {placeBookmarkList.map((post) => (
-                <div className='rounded-lg bg-white p-4 shadow-md'>
-                  <div className='flex justify-between'>
-                    {/* <WriterView writer={post.nickname} date={post.createAt} profile={post.profileUrl} /> */}
-                    {/* <StatusView viewCount={post.viewCount} likeCount={post.likeCount} /> */}
-                  </div>
-                  <h2 className='my-4 text-xl font-semibold'>{post.status}</h2>
-                  <h2 className='my-4 text-xl font-semibold'>{post.xposition}</h2>
-                  <h2 className='my-4 text-xl font-semibold'>{post.yposition}</h2>
-                </div>
-              ))}
-            </div>
+            <h1 className='mb-4 pl-4 text-xl font-bold'>즐겨찾기 목록</h1>
+            {placeBookmarkList.map((post) => (
+              <div className='rounded-lg bg-white p-4 shadow-md'>
+                <div className='flex justify-between'></div>
+                <h2 className='my-4 text-xl font-semibold'>{post.status}</h2>
+                <h2 className='my-4 text-xl font-semibold'>{post.xposition}</h2>
+                <h2 className='my-4 text-xl font-semibold'>{post.yposition}</h2>
+              </div>
+            ))}
           </div>
         </>
       )}
       {mapMenu === '게시판' && (
         <>
-          {placeList.content.length === 0 ? (
+          {placeList.content?.length === 0 ? (
             <h1 className='mb-4 text-lg font-bold'>게시글이 존재하지 않습니다.</h1>
           ) : (
             <div className='mx-auto w-full overflow-y-auto py-8'>
               <h1 className='mb-4 pl-4 text-xl font-bold'>게시글 목록</h1>
-              <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 sm:grid-cols-2'>
-                {placeList.content.map((post) => (
-                  <div className='rounded-lg bg-white p-4 shadow-md'>
-                    <div className='flex justify-between'>
-                      <WriterView writer={post.nickname} date={post.createAt} profile={post.profileUrl} />
-                      <StatusView viewCount={post.viewCount} likeCount={post.likeCount} />
-                    </div>
-                    <h2 className='my-4 text-xl font-semibold'>{post.title}</h2>
-                    <div className='flex items-center justify-between'>
-                      <span className='text-sm text-gray-500'>댓글 수: {post.CommentCount}</span>
-                      <button className='rounded-xl bg-pink-500 px-4 py-2 text-white transition-all hover:bg-pink-600'>
-                        자세히 보기
-                      </button>
-                    </div>
+              {placeList.content?.map((post) => (
+                <div className='rounded-lg bg-white p-4 shadow-md transition-all hover:bg-pink-100'>
+                  <div className='flex justify-between'>
+                    <WriterView writer={post.nickname} date={post.createAt} profile={post.profileUrl} />
+                    <StatusView viewCount={post.viewCount} likeCount={post.likeCount} />
                   </div>
-                ))}
-              </div>
+                  <h2 className='my-4 text-xl font-semibold'>{post.title}</h2>
+                  <div className='flex items-center justify-between'>
+                    <span className='text-sm text-gray-500'>
+                      댓글 수: {post.CommentCount === 0 ? '0' : post.CommentCount}
+                    </span>
+                    <Link
+                      href={`/content/community/${post.postId}`}
+                      target='_blank'
+                      className='rounded-xl bg-pink-500 px-4 py-2 text-white transition-all hover:bg-pink-600'
+                    >
+                      자세히 보기
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </>

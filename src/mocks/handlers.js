@@ -720,44 +720,46 @@ export const handlers = [
   http.get('/api/map/post/:xPosition/:yPosition', ({ params }) => {
     const { xPosition, yPosition } = params;
     console.log(xPosition, yPosition);
-    return HttpResponse.json([
-      {
-        postId: 1,
-        nickname: '닉네임',
-        title: '제목',
-        createAt: '2024-04-01T16:00:48.884Z',
-        viewCount: 10,
-        likeCount: 10,
-        hashtags: '여행',
-        postCategory: '자유',
-        CommentCount: '30',
-        profileUrl: '/Images/forest.jpg',
-      },
-      {
-        postId: 2,
-        nickname: '닉네임',
-        title: '제목',
-        createAt: '2024-04-02T16:00:48.884Z',
-        viewCount: 10,
-        likeCount: 10,
-        hashtags: '여행',
-        postCategory: '자유',
-        CommentCount: '30',
-        profileUrl: '/Images/forest.jpg',
-      },
-      {
-        postId: 3,
-        nickname: '닉네임',
-        title: '제목',
-        createAt: '2024-04-03T16:00:48.884Z',
-        viewCount: 10,
-        likeCount: 10,
-        hashtags: '여행',
-        postCategory: '자유',
-        CommentCount: '30',
-        profileUrl: '/Images/forest.jpg',
-      },
-    ]);
+    return HttpResponse.json({
+      content: [
+        {
+          postId: 1,
+          nickname: '닉네임',
+          title: '제목',
+          createAt: '2024-04-01T16:00:48.884Z',
+          viewCount: 10,
+          likeCount: 10,
+          hashtags: '여행',
+          postCategory: '자유',
+          CommentCount: '30',
+          profileUrl: '/Images/forest.jpg',
+        },
+        {
+          postId: 2,
+          nickname: '닉네임',
+          title: '제목',
+          createAt: '2024-04-02T16:00:48.884Z',
+          viewCount: 10,
+          likeCount: 10,
+          hashtags: '여행',
+          postCategory: '자유',
+          CommentCount: '30',
+          profileUrl: '/Images/forest.jpg',
+        },
+        {
+          postId: 3,
+          nickname: '닉네임',
+          title: '제목',
+          createAt: '2024-04-03T16:00:48.884Z',
+          viewCount: 10,
+          likeCount: 10,
+          hashtags: '여행',
+          postCategory: '자유',
+          CommentCount: '30',
+          profileUrl: '/Images/forest.jpg',
+        },
+      ],
+    });
   }),
   http.post('/api/member/map/bookmark', () => {
     return HttpResponse.json({
@@ -776,6 +778,21 @@ export const handlers = [
       {
         xposition: 116853,
         yposition: 197744,
+        status: 'LIKE',
+      },
+      {
+        xposition: 146829,
+        yposition: 16945,
+        status: 'LIKE',
+      },
+      {
+        xposition: 146829,
+        yposition: 16945,
+        status: 'LIKE',
+      },
+      {
+        xposition: 146829,
+        yposition: 16945,
         status: 'LIKE',
       },
       {
