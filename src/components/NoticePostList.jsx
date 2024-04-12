@@ -8,12 +8,16 @@ import Pagination from 'react-js-pagination';
 import { useQuery } from '@tanstack/react-query';
 import Loading from './Loading';
 import WriterView from './Community/BestPost/WriterView';
-import { loginState } from '@/atoms/tokenState';
-import { useRecoilValue } from 'recoil';
+import { loginState, tokenState } from '@/atoms/tokenState';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { PencilIcon } from './UI/Icons';
 import CenterSearch from './CenterSearch';
-import { tokenState } from '@/atoms/tokenState';
+import { useRouter } from 'next/navigation';
+import { pageState } from '@/atoms/pageState';
+
 export default function NoticePostList({ url }) {
+  const [pageState1, setPageState1] = useRecoilState(pageState);
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
@@ -82,6 +86,11 @@ export default function NoticePostList({ url }) {
   const displayPosts = filteredPosts;
   //NoticePostList
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
+
+  const handleRouter = () => {
+    router.push(isLogin ? '/content/center/write' : '/login');
+    setPageState1(`/api/member/question`);
+  };
   return (
     <div className='sm:mr-[40px]'>
       <div className='flex flex-row'>
@@ -92,17 +101,13 @@ export default function NoticePostList({ url }) {
           setSearch={setSearch}
           onClickSearch={onClickSearch}
         /> */}
-        <Link
-          href={{
-            pathname: isLogin ? '/content/center/write' : '/login',
-            query: { urlProp: '/api/member/question' },
-          }}
-          passHref
+        <button
+          onClick={handleRouter}
           className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
         >
           <PencilIcon color='white' size={18} />
           Q&A
-        </Link>
+        </button>
       </div>
       <div className='float-right'>
         <select
@@ -118,7 +123,7 @@ export default function NoticePostList({ url }) {
       <ul>
         {displayPosts?.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
-            <WriterView writer={data.nickname} date={data.createAt} />
+            <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
               <Link href={`/content/center/${data.questionId}`}>{data.title}</Link>
               <div className='absolute right-0 flex gap-4'>

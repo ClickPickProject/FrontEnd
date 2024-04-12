@@ -3,14 +3,15 @@ import WriterView from '../BestPost/WriterView';
 import CenterComments from './CenterComments';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { MyNicknameState, tokenState } from '@/atoms/tokenState';
+import { MyNicknameState, tokenState, loginState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CommentIcon, ReportIcon, PencilIcon } from '../../UI/Icons';
-import { loginState } from '@/atoms/tokenState';
 import Loading from '../../Loading';
 import CenterCommentWrite from './CommentWrite';
 import Link from 'next/link';
+import { pageState } from '@/atoms/pageState';
+
 import {
   questionCategoryNameState,
   questionContentState,
@@ -22,6 +23,7 @@ import { reportModalState } from '@/atoms/commentState';
 import PostReportModal from '../PostReportModal';
 
 export default function CenterPostDetail() {
+  const [pageState1, setPageState1] = useRecoilState(pageState);
   const params = useParams();
   const token = useRecoilValue(tokenState);
   const myNickname = useRecoilValue(MyNicknameState);
@@ -73,6 +75,11 @@ export default function CenterPostDetail() {
 
   const onClickPostDelete = async () => {};
 
+  const routerPage = () => {
+    router.push(isLogin ? '/content/center/write' : '/login');
+    setPageState1(`/api/admin/${questionId}/answer`);
+    console.log(pageState1);
+  };
   return (
     <>
       <div className='w-full max-w-[830px]'>
@@ -82,27 +89,6 @@ export default function CenterPostDetail() {
           <div className='flex justify-between'>
             <WriterView writer={nickname} date={date} profile={profileUrl} />
           </div>
-
-          {/* 게시글 신고 */}
-          <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
-            <ReportIcon color='red' opacity='70%' />
-            <div className='text-xs font-semibold' onClick={() => setReportModal(true)}>
-              신고
-            </div>
-          </div>
-          {reportModal && (
-            <div
-              className='fixed inset-0 z-10 overflow-y-auto'
-              onKeyDown={(e) => {
-                if (e.code === 'Escape') setReportModal(false);
-              }}
-            >
-              <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
-                {/* <PostReportModal nickname={nickname} /> */}
-                <PostReportModal nickname={nickname} postId={questionId} />
-              </div>
-            </div>
-          )}
           {nickname === myNickname ? (
             <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
               <button
@@ -127,14 +113,14 @@ export default function CenterPostDetail() {
         <div className='flex items-center gap-1 text-base '>
           <CommentIcon size={18} />
           답변 {commentCount}
-          <Link
-            href={`${isLogin ? '/content/center/write' : '/login'}`}
+          <button
+            onClick={routerPage}
             className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
             //넘겨줄 값 /api/admin/{question_id}/answer
           >
             <PencilIcon color='white' size={18} />
             답변하기
-          </Link>
+          </button>
         </div>
         {/* 경계선 */}
         <div className='my-4 border-b-2' />

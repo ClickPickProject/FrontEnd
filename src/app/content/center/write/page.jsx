@@ -1,23 +1,22 @@
-//write
 'use client';
 import { editorContentState, editorTagState, editorTitleState, postImagesState } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import CustomEditor from '@/components/CustomEditor';
 import AuthContext from '@/components/context/AuthContext';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { pageState } from '@/atoms/pageState';
 
 function WritePage() {
   const router = useRouter();
-  const { query } = router;
   const [title, setTitle] = useRecoilState(editorTitleState);
   const content = useRecoilValue(editorContentState);
   const tag = useRecoilValue(editorTagState);
   const token = useRecoilValue(tokenState);
+  const url = useRecoilValue(pageState);
   const [postImages, setPostImages] = useRecoilState(postImagesState);
-
   useEffect(() => {
     setTitle('');
   }, [setTitle]);
@@ -34,7 +33,7 @@ function WritePage() {
         hashtags: tag,
         imageNames: postImages,
       };
-      const res = await axios.post(query.urlProp, body, {
+      const res = await axios.post(url, body, {
         withCredentials: true,
         headers: {
           Authorization: token,

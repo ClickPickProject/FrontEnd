@@ -204,6 +204,11 @@ const nextConfig = {
         source: '/api/question/list/:path*',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/question/list/:path*`,
       },
+      // Q&A 상태별 질문
+      {
+        source: '/api/admin/:path*/answer',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/:path*/answer`,
+      },
     ];
   },
 };

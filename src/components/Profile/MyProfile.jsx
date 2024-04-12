@@ -23,7 +23,7 @@ export default function MyProfile() {
   const [phoneDisabled, setPhoneDisabled] = useState(false);
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('');
   //token값 받아옴
   const token = useRecoilValue(tokenState);
   //유저 정보 받아오기
@@ -61,12 +61,10 @@ export default function MyProfile() {
         });
         if (res.status === 200) {
           setImage(res.data.url);
-          console.log(res.data);
         }
         return res.data;
       } catch (error) {
         console.log(error);
-        console.log(res.data);
       }
     },
   });
