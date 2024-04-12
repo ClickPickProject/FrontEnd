@@ -15,7 +15,7 @@ export default function ProfilePage() {
   };
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 transition-all bg-white z-50 w-full cursor-pointer';
-  const displayClass = showDis ? 'inline-block' : 'sm:hidden';
+  const displayClass = showDis ? 'inline-block' : 'sm:hidden lg:hidden';
   const [activeSection, setActiveSection] = useState(1);
   const handleSectionChange = (e) => {
     setActiveSection(e);
@@ -26,17 +26,17 @@ export default function ProfilePage() {
       <div className={`flex w-full flex-col `}>
         <div className='mx-auto mb-3 '>
           {showDis ? (
-            <div className='hidden p-1 sm:inline' onClick={handleClick}>
+            <div className='hidden p-1 lg:inline sm:inline' onClick={handleClick}>
               <FaAngleUp />
             </div>
           ) : (
-            <div className='hidden p-1 sm:inline' onClick={handleClick}>
+            <div className='hidden p-1 lg:inline sm:inline' onClick={handleClick}>
               <FaAngleDown />
             </div>
           )}
         </div>
         <div className=' flex justify-center sm:w-full'>
-          <ul className='my-5 flex items-center justify-center space-x-8 whitespace-nowrap text-base font-semibold lg:space-x-4 lg:text-sm sm:my-0 sm:flex-col sm:space-x-0 sm:p-3'>
+          <ul className='my-5 flex items-center justify-center space-x-8 whitespace-nowrap text-base font-semibold lg:my-0 lg:flex-col lg:space-x-0 lg:p-3 lg:text-sm sm:my-0 sm:flex-col sm:space-x-0 sm:p-3'>
             <li onClick={() => handleSectionChange(1)} className={`${hoverStyle} ${displayClass}`}>
               🙋‍♂️ 내프로필
             </li>
