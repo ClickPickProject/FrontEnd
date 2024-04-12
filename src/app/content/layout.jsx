@@ -5,7 +5,7 @@ export default function layout({ children }) {
 
   return (
     <>
-      <div className='mx-auto flex w-full max-w-6xl bg-white'>
+      <div className='mx-auto flex w-full max-w-6xl bg-white sm:flex-col'>
         <SideNavbar />
         {children}
       </div>

@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { CgMenu, CgMenuLeft } from 'react-icons/cg';
+import { motion } from 'framer-motion';
 
 import {
   FillMapIcon,
@@ -37,7 +38,6 @@ export default function SideNavbar() {
   }, [token]);
 
   const [showDis, setShowDis] = useState(false);
-  const [showMenu, setShowMenu] = useState();
 
   const handleClick = () => {
     setShowDis((show) => !show);
@@ -70,34 +70,69 @@ export default function SideNavbar() {
     },
   ];
 
+  const sideNavbarVariants = {
+    hidden: {
+      x: '-2%',
+      opacity: 1,
+    },
+    visible: {
+      x: '0%',
+      opacity: 1,
+    },
+  };
+
   return (
     <>
+      <figure className='hidden'>
+        <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
+      </figure>
       <div>
         {showDis ? (
-          <div className='hidden w-full bg-white p-2 sm:inline' onClick={handleClick}>
-            <CgMenu size={40} />
-          </div>
+          <>
+            <div className={`w-full bg-white p-2 sm:flex sm:items-center sm:bg-pink-300`}>
+              <button onClick={handleClick} className='transition-all hover:text-pink-500'>
+                <CgMenuLeft size={24} />
+              </button>
+              <figure className='mx-auto'>
+                <Image src={'/Images/clickpick_logo.png'} alt='#' width={100} height={100} />
+              </figure>
+            </div>
+          </>
         ) : (
-          <div className='hidden w-full bg-white p-2 sm:inline' onClick={handleClick}>
-            <CgMenuLeft size={40} />
+          <div className={`hidden w-full bg-white p-2 sm:flex sm:items-center sm:bg-pink-200`}>
+            <button onClick={handleClick} className='transition-all hover:text-pink-500'>
+              <CgMenuLeft size={24} />
+            </button>
+            <figure className='mx-auto'>
+              <Image src={'/Images/clickpick_logo.png'} alt='#' width={100} height={100} />
+            </figure>
           </div>
         )}
-        <div className={`${showDis ? 'z-50 sm:absolute sm:w-full sm:bg-white' : 'sm:hidden'}`}>
-          <div className='mr-8'>
-            <header className='mb-8 w-full'>
+        <div
+          className={`bg-gray-500 ${showDis ? 'fixed inset-0 z-40 opacity-30' : 'pointer-events-none opacity-0'}`}
+          onMouseDown={() => setShowDis(false)}
+        />
+        <motion.div
+          className={`${showDis ? 'z-50 bg-opacity-30 sm:fixed sm:top-0 sm:h-full  sm:bg-white' : 'sm:hidden '}`}
+          variants={sideNavbarVariants}
+          initial='hidden'
+          animate={showDis ? 'visible' : 'hidden'}
+        >
+          <div className='mr-8 sm:mr-0'>
+            <header className='mb-8 w-full sm:mb-2'>
               <figure className='ml-4'>
                 <Link alt='logo' href='/'>
                   <Image src={'/Images/clickpick_logo.png'} alt='#' width={168} height={76} />
                 </Link>
               </figure>
             </header>
-            <nav className='sticky top-0 mb-6 flex w-[220px] flex-col items-center'>
-              <ul className='flex w-full flex-col gap-[13px] text-sm [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold'>
+            <nav className='sticky top-0 mb-6 flex w-[220px] flex-col items-center sm:px-4'>
+              <ul className='flex w-full flex-col gap-[13px] text-sm sm:gap-[6px] sm:text-xs [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold sm:[&>*]:pl-0'>
                 {MENU.map(({ name, href, icon, clickedIcon }) => (
                   <Link
                     key={href}
                     href={href}
-                    className={`flex rounded-2xl hover:bg-pink-100 ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
+                    className={`flex rounded-2xl hover:bg-pink-100 sm:justify-center ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
                   >
                     <li className='flex items-center gap-2'>
                       {href === pathName ? clickedIcon : icon} {name}
@@ -107,12 +142,12 @@ export default function SideNavbar() {
               </ul>
             </nav>
           </div>
-          <div className='sticky top-[calc(239px+24px)] flex w-full justify-center gap-5 pb-4 sm:text-center [&>*]:rounded-xl [&>*]:text-xs'>
+          <div className='sticky top-[calc(239px+24px)] flex w-full items-center gap-5 pb-4 sm:static sm:justify-center [&>*]:rounded-xl [&>*]:text-xs sm:[&>*]:text-[10px]'>
             <Link
               href='/content/profile'
               className={`${
                 pathName === '/content/profile' ? 'bg-pink-300' : null
-              } flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300`}
+              } flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]`}
             >
               {pathName === '/content/profile' ? (
                 <FillProfileIcon size={28} color='#ec4899' />
@@ -125,7 +160,7 @@ export default function SideNavbar() {
             {isLogin ? (
               <button
                 onClick={onClickLogout}
-                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]'
               >
                 <LogoutIcon size={24} />
                 로그아웃
@@ -133,14 +168,14 @@ export default function SideNavbar() {
             ) : (
               <Link
                 href='/login'
-                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300'
+                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]'
               >
                 <LogoutIcon size={24} />
                 로그인
               </Link>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
