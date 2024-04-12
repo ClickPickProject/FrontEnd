@@ -27,7 +27,7 @@ export default function CommunityPage() {
             <h2 className='text-2xl font-bold'>💞 BEST 좋아요</h2>
             <p className='mb-4 text-sm opacity-50'>가장 많은 좋아요를 받은 게시글이에요.</p>
           </div>
-          <div className='mb-10 flex w-full justify-center gap-10'>
+          <div className='mb-10 flex w-full justify-center gap-10 md:mx-auto md:w-[250px] md:flex-col md:gap-5'>
             <BestPost />
           </div>
           {/* 경계선 */}
