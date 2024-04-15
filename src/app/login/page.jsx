@@ -19,7 +19,6 @@ export default function LoginPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setIsPending(true);
     try {
       const res = await axios.post(
         `/api/login`,
