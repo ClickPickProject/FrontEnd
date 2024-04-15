@@ -1,17 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { FillSirenIcon } from '../UI/Icons';
-import { reportModalState } from '@/atoms/commentState';
+import { postReportModalState, reportModalState } from '@/atoms/commentState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import { tokenState } from '@/atoms/tokenState';
+import { toast } from 'react-toastify';
 
 const PostReportModal = ({ nickname, postId }) => {
   const [reportReason, setReportReason] = useState('');
-  const setReportModal = useSetRecoilState(reportModalState);
+  const setPostReportModal = useSetRecoilState(postReportModalState);
   const token = useRecoilValue(tokenState);
 
-  const closeReportModal = () => setReportModal(false);
+  const closeReportModal = () => setPostReportModal(false);
 
   const handleSubmit = async (nickname, postId, reason) => {
     console.log('Reported User:', nickname);
@@ -29,10 +30,14 @@ const PostReportModal = ({ nickname, postId }) => {
         },
       });
       if (res.status === 200) {
-        console.log('신고 접수 완료', nickname, postId, reason);
+        toast.success('게시글 신고가 접수되었습니다.', {
+          icon: () => <FillSirenIcon color='red' />,
+        });
       }
     } catch (err) {
-      console.log(err);
+      toast.error('접수 중 오류가 발생하였습니다.', {
+        position: 'top-right',
+      });
     }
     closeReportModal();
   };
@@ -50,7 +55,7 @@ const PostReportModal = ({ nickname, postId }) => {
             <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
               <h3 className='flex items-center justify-center gap-2 pb-4 text-lg font-medium leading-6 text-gray-900'>
                 <FillSirenIcon color='red' />
-                사용자 신고
+                게시글 사용자 신고
               </h3>
               <div className='mt-2'>
                 {/* 유저명 입력 폼 */}

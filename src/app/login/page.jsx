@@ -1,12 +1,13 @@
 'use client';
 import { MailIcon, PasswordIcon } from '@/components/UI/Icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function LoginPage() {
   let [id, setId] = useState('');
@@ -18,6 +19,7 @@ export default function LoginPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsPending(true);
     try {
       const res = await axios.post(
         `/api/login`,
@@ -32,11 +34,15 @@ export default function LoginPage() {
         localStorage.clear();
         setToken(token);
         setMyNickname(res.data.nickname);
+        toast.success(`${res.data.nickname}님 환영합니다!`, {
+          position: 'top-right',
+        });
         router.replace('/');
       }
     } catch (err) {
-      console.log(err);
-      alert('로그인 불가');
+      toast.error('로그인 할 수 없습니다.', {
+        position: 'top-right',
+      });
     }
   };
   return (

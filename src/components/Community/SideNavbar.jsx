@@ -21,6 +21,7 @@ import { usePathname } from 'next/navigation';
 import { loginState, tokenState } from '@/atoms/tokenState';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 
 export default function SideNavbar() {
   const pathName = usePathname();
@@ -28,9 +29,11 @@ export default function SideNavbar() {
   const [isLogin, setIsLogin] = useRecoilState(loginState);
 
   const onClickLogout = () => {
+    toast.success('로그아웃 되었습니다.', {
+      position: 'top-right',
+    });
     localStorage.clear();
     setIsLogin(false);
-    window.location.reload();
   };
 
   useEffect(() => {

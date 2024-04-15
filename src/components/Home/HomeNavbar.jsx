@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
@@ -17,6 +18,9 @@ export default function HomeNavbar() {
   const onClickLogout = () => {
     localStorage.clear();
     setIsLogin(false);
+    toast.success('로그아웃 되었습니다.', {
+      position: 'top-right',
+    });
   };
   return (
     <>

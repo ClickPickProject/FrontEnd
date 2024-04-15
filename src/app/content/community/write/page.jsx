@@ -19,6 +19,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 
 function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
@@ -39,32 +40,37 @@ function WritePage() {
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
     if (title.length === 0 || content.length === 0 || category === '') {
-      alert('제목 또는 내용, 카테고리가 존재하지 않습니다.');
+      toast.error('제목 또는 내용, 카테고리가 존재하지 않습니다.', {
+        position: 'top-right',
+      });
       return;
     }
-    try {
-      const body = {
-        title,
-        content,
-        position: mapAddress, // 장소명
-        xposition: mapPosition.lng, // 경도
-        yposition: mapPosition.lat, // 위도
-        hashtags: tag,
-        postCategory: category,
-        imageNames: postImages,
-      };
+    const body = {
+      title,
+      content,
+      position: mapAddress, // 장소명
+      xposition: mapPosition.lng, // 경도
+      yposition: mapPosition.lat, // 위도
+      hashtags: tag,
+      postCategory: category,
+      imageNames: postImages,
+    };
+    const fetch = async () => {
       const res = await axios.post(`/api/member/post`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
         },
       });
-      if (res.status === 200 || 201) {
-        alert('게시글이 등록되었습니다.');
-        router.back();
-      }
-    } catch (err) {
-      console.log(err);
+      return res;
+    };
+    const res = await toast.promise(fetch, {
+      pending: '등록중...',
+      success: '게시글이 등록되었습니다.',
+      error: '게시글을 등록할 수 없습니다.',
+    });
+    if (res.status === 200 || 201) {
+      router.back();
     }
   };
 
@@ -72,10 +78,6 @@ function WritePage() {
     setCategory(item);
   };
 
-  const handlePostCodeClick = (address) => {
-    setPosition(address);
-  };
-  console.log(postImages);
   return (
     <>
       <div>
@@ -83,7 +85,6 @@ function WritePage() {
         <div className='flex flex-col gap-4'>
           <div className='flex justify-around gap-3'>
             <DropDownMenu onChange={handleMenuClick} />
-            {/* <Postcode onChange={handlePostCodeClick} /> */}
             <div className='flex w-full flex-1 justify-center gap-2 rounded-lg transition-all'>
               <input
                 disabled

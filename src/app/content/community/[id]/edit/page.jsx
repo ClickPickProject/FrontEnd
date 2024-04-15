@@ -33,7 +33,9 @@ function EditPage() {
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
     if (title.length === 0 || content.length === 0 || category === '') {
-      alert('제목 또는 내용, 카테고리가 존재하지 않습니다.');
+      toast.error('제목 또는 내용, 카테고리가 존재하지 않습니다.', {
+        position: 'top-right',
+      });
       return;
     }
     try {

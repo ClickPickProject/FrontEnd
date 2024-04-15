@@ -7,6 +7,7 @@ import { PencilIcon } from '@/components/UI/Icons';
 import { useState } from 'react';
 import { loginState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
 export default function CommunityPage() {
   const [category, setCategory] = useState('');
   const isLogin = useRecoilValue(loginState);
@@ -45,6 +46,13 @@ export default function CommunityPage() {
               <option value='여행지'>여행지</option>
             </select>
             <Link
+              onClick={() => {
+                if (!isLogin) {
+                  toast.error('로그인 후 이용해주세요.', {
+                    position: 'top-right',
+                  });
+                }
+              }}
               href={`${isLogin ? '/content/community/write' : '/login'}`}
               className='ml-auto flex w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
             >

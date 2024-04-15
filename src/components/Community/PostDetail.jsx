@@ -18,7 +18,7 @@ import {
   postHashtagState,
   postTitleState,
 } from '@/atoms/PostState';
-import { reportModalState } from '@/atoms/commentState';
+import { postReportModalState, reportModalState } from '@/atoms/commentState';
 import PostReportModal from './PostReportModal';
 
 export default function PostDetail() {
@@ -32,7 +32,7 @@ export default function PostDetail() {
   const setPostCategoryName = useSetRecoilState(postCategoryNameState);
   const setPostContent = useSetRecoilState(postContentState);
   const setPostHashtag = useSetRecoilState(postHashtagState);
-  const [reportModal, setReportModal] = useRecoilState(reportModalState);
+  const [postReportModal, setPostReportModal] = useRecoilState(postReportModalState);
   const {
     data: userPost,
     isPending,
@@ -124,19 +124,18 @@ export default function PostDetail() {
           {/* 게시글 신고 */}
           <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
             <ReportIcon color='red' opacity='70%' />
-            <div className='text-xs font-semibold' onClick={() => setReportModal(true)}>
+            <div className='text-xs font-semibold' onClick={() => setPostReportModal(true)}>
               신고
             </div>
           </div>
-          {reportModal && (
+          {postReportModal && (
             <div
               className='fixed inset-0 z-10 overflow-y-auto'
               onKeyDown={(e) => {
-                if (e.code === 'Escape') setReportModal(false);
+                if (e.code === 'Escape') setPostReportModal(false);
               }}
             >
               <div className='flex min-h-screen items-center justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0'>
-                {/* <PostReportModal nickname={nickname} /> */}
                 <PostReportModal nickname={nickname} postId={postId} />
               </div>
             </div>

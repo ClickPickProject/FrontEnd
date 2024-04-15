@@ -18,6 +18,10 @@ export const reportModalState = atom({
   key: 'reportModalState',
   default: false,
 });
+export const postReportModalState = atom({
+  key: 'postReportModalState',
+  default: false,
+});
 
 export const replyCommentCheckState = atom({
   key: 'replyCommentCheckState',
