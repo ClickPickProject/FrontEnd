@@ -1,4 +1,4 @@
-import { HttpResponse, http } from 'msw';
+import { HttpResponse, delay, http } from 'msw';
 
 export const handlers = [
   // 이메일 중복 확인
@@ -62,7 +62,8 @@ export const handlers = [
   }),
 
   // 게시글 작성
-  http.post('/api/member/post', () => {
+  http.post('/api/member/post', async () => {
+    await delay(1000);
     return HttpResponse.json({
       title: '제목',
       content: '내용',
