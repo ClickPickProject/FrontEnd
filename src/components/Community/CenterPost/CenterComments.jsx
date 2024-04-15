@@ -1,13 +1,10 @@
 import WriterView from '../BestPost/WriterView';
 import { useState } from 'react';
-import { EmptyHeartIcon, FillHeartIcon, ReplyIcon } from '../../UI/Icons';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { parentCommentIdState, parentCommentNickState } from '@/atoms/commentState';
-import CenterReplyComments from './CenterReplyComments';
-import ReplyToggle from '../ReplyToggle';
 import axios from 'axios';
 
 export default function CenterComments({ answer }) {
@@ -20,17 +17,6 @@ export default function CenterComments({ answer }) {
   const myNickname = useRecoilValue(MyNicknameState);
   const [commentContent, setCommentContent] = useState('');
   const queryClient = useQueryClient();
-
-  const onClickReply = (commentId, nickname) => {
-    setParentCommentNickname(nickname);
-    setParentCommentId(commentId);
-    setReplyToggle((prevToggles) => {
-      const newToggles = [...prevToggles];
-      newToggles.fill(false);
-      newToggles[commentId] = !prevToggles[commentId];
-      return newToggles;
-    });
-  };
 
   const onClickCommentDelete = async (commentId) => {
     try {
@@ -78,57 +64,6 @@ export default function CenterComments({ answer }) {
     setEditMode(null); // 취소 버튼 클릭 시 수정 모드 종료
   };
 
-  const onSubmitReply = async (content) => {
-    try {
-      const body = {
-        parentCommentId: parentCommentId,
-        postId: params.id,
-        content: content,
-      };
-      const res = await axios.post('/api/member/recomment', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: ['post', params.id] });
-        setReplyToggle((prevToggles) => {
-          const newToggles = [...prevToggles];
-          newToggles[parentCommentId] = false;
-          return newToggles;
-        });
-      }
-    } catch (error) {
-      console.error('답글 작성 오류:', error);
-    }
-  };
-
-  const onClickCommentLike = async (commentId, likeCheck) => {
-    try {
-      if (likeCheck === true) {
-        await axios.get(`/api/member/likedcomment/${commentId}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        queryClient.invalidateQueries(['post', params.id]);
-      }
-      if (likeCheck === false) {
-        await axios.get(`/api/member/likedcomment/${commentId}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
-        queryClient.invalidateQueries(['post', params.id]);
-      }
-    } catch (err) {
-      console.error('댓글 좋아요 오류', err);
-    }
-  };
-
   const onChangeTextarea = (e) => {
     setCommentContent(e.target.value);
   };
@@ -166,36 +101,6 @@ export default function CenterComments({ answer }) {
             )}
             {/* 답글 버튼 */}
             <div className='flex items-center gap-1'>
-              {/* 댓글 좋아요(like)
-              <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
-                {comment.likeCommentCheck ? (
-                  <div
-                    className='flex items-center gap-1'
-                    onClick={() => onClickCommentLike(comment.commentId, comment.likeCommentCheck)}
-                  >
-                    <FillHeartIcon color='red' />
-                    <div className='text-sm font-semibold'>{comment.likeCount}</div>
-                  </div>
-                ) : (
-                  <div
-                    className='flex items-center gap-1'
-                    onClick={() => onClickCommentLike(comment.commentId, comment.likeCommentCheck)}
-                  >
-                    <EmptyHeartIcon color='red' />
-                    <div className='text-sm font-semibold'>{comment.likeCount}</div>
-                  </div>
-                )}
-              </div> */}
-
-              {/* <div
-                className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-                onClick={() => onClickReply(comment.commentId, comment.nickname)}
-              >
-                <ReplyIcon color='#ec4899' />
-
-                <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
-              </div> */}
-
               {/* 댓글 수정 및 삭제 */}
               {comment.nickname === myNickname ? (
                 <button
@@ -214,32 +119,6 @@ export default function CenterComments({ answer }) {
                 </button>
               ) : null}
             </div>
-            {/* <div className='my-2 border' />
-            {replyToggle[comment.commentId] && (
-              <ReplyToggle
-                commentId={comment.commentId}
-                commentNickname={comment.nickname}
-                parentNickname={comment.nickname}
-                onSubmitReply={onSubmitReply}
-              />
-            )} */}
-            {/* 답글 목록 */}
-            {/* <div className='ml-4'>
-              {comment.recommentList.map((reply) => (
-                <CenterReplyComments
-                  key={reply.commentId}
-                  reply={reply}
-                  comments={comments}
-                  onSubmitReply={onSubmitReply}
-                  onClickEdit={onClickEdit}
-                  editMode={editMode}
-                  onSaveEdit={onSaveEdit}
-                  onCancelEdit={onCancelEdit}
-                  onClickCommentDelete={onClickCommentDelete}
-                  onClickCommentLike={onClickCommentLike}
-                />
-              ))}
-            </div> */}
           </li>
         ))}
       </ul>

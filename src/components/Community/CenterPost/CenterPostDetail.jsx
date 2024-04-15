@@ -5,11 +5,9 @@ import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { MyNicknameState, tokenState, loginState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CommentIcon, PencilIcon } from '../../UI/Icons';
 import Loading from '../../Loading';
-import CenterCommentWrite from './CommentWrite';
-import Link from 'next/link';
 import { pageState } from '@/atoms/pageState';
 
 import {
@@ -58,12 +56,12 @@ export default function CenterPostDetail() {
 
   const { title, questionId, nickname, date, postCategory, content, hashtags, commentCount, answer, profileUrl } =
     userPost;
-
+  // 클릭시 글 수정
   const onClickPostEdit = async (title, content) => {
     setQuestionEditMode(true);
     setQuestionTitle(title);
     setQuestionContent(content);
-    router.push(`/content/community/${params.id}/edit`);
+    router.push(`/content/center/${params.id}/edit`);
   };
 
   const onClickPostDelete = async () => {};
