@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { MyNicknameState, tokenState, loginState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { CommentIcon, ReportIcon, PencilIcon } from '../../UI/Icons';
+import { CommentIcon, PencilIcon } from '../../UI/Icons';
 import Loading from '../../Loading';
 import CenterCommentWrite from './CommentWrite';
 import Link from 'next/link';
@@ -19,8 +19,6 @@ import {
   questionHashtagState,
   questionTitleState,
 } from '@/atoms/questionState';
-import { reportModalState } from '@/atoms/commentState';
-import PostReportModal from '../PostReportModal';
 
 export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
@@ -31,10 +29,7 @@ export default function CenterPostDetail() {
   const isLogin = useRecoilValue(loginState);
   const setQuestionEditMode = useSetRecoilState(questionEditModeState);
   const setQuestionTitle = useSetRecoilState(questionTitleState);
-  const setQuestionCategoryName = useSetRecoilState(questionCategoryNameState);
   const setQuestionContent = useSetRecoilState(questionContentState);
-  const setQuestionHashtag = useSetRecoilState(questionHashtagState);
-  const [reportModal, setReportModal] = useRecoilState(reportModalState);
 
   const {
     data: userPost,
@@ -64,12 +59,10 @@ export default function CenterPostDetail() {
   const { title, questionId, nickname, date, postCategory, content, hashtags, commentCount, answer, profileUrl } =
     userPost;
 
-  const onClickPostEdit = async (title, category, content, hashtags) => {
+  const onClickPostEdit = async (title, content) => {
     setQuestionEditMode(true);
     setQuestionTitle(title);
-    setQuestionCategoryName(category);
     setQuestionContent(content);
-    setQuestionHashtag(hashtags);
     router.push(`/content/community/${params.id}/edit`);
   };
 
@@ -110,17 +103,20 @@ export default function CenterPostDetail() {
             <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         </div>
+
         <div className='flex items-center gap-1 text-base '>
           <CommentIcon size={18} />
           답변 {commentCount}
-          <button
-            onClick={routerPage}
-            className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
-            //넘겨줄 값 /api/admin/{question_id}/answer
-          >
-            <PencilIcon color='white' size={18} />
-            답변하기
-          </button>
+          {myNickname === 'ADMIN' ? (
+            <button
+              onClick={routerPage}
+              className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+              //넘겨줄 값 /api/admin/{question_id}/answer
+            >
+              <PencilIcon color='white' size={18} />
+              답변하기
+            </button>
+          ) : null}
         </div>
         {/* 경계선 */}
         <div className='my-4 border-b-2' />

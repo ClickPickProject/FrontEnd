@@ -87,7 +87,7 @@ export default function NoticePostList({ url }) {
   //NoticePostList
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
 
-  const handleRouter = () => {
+  const handleQAndARouter = () => {
     router.push(isLogin ? '/content/center/write' : '/login');
     setPageState1(`/api/member/question`);
   };
@@ -102,7 +102,7 @@ export default function NoticePostList({ url }) {
           onClickSearch={onClickSearch}
         /> */}
         <button
-          onClick={handleRouter}
+          onClick={handleQAndARouter}
           className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
         >
           <PencilIcon color='white' size={18} />
