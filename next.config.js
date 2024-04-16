@@ -181,8 +181,8 @@ const nextConfig = {
   //     },
   //     // 장소 즐겨찾기 / 즐겨찾기 리스트 조회
   //     {
-  //       source: '/api/member/map/bookmark',
-  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/map/bookmark`,
+  //       source: '/api/member/map/bookmark/:path*',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/map/bookmark/:path*`,
   //     },
   //   ];
   // },
