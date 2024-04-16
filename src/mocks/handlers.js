@@ -718,9 +718,7 @@ export const handlers = [
     ]);
   }),
   // 동일 좌표 게시글 리스트 조회
-  http.get('/api/map/post/:xPosition/:yPosition', ({ params }) => {
-    const { xPosition, yPosition } = params;
-    console.log(xPosition, yPosition);
+  http.get('/api/map/post/:xPosition/:yPosition', () => {
     return HttpResponse.json({
       content: [
         {
@@ -764,41 +762,68 @@ export const handlers = [
   }),
   http.post('/api/member/map/bookmark', () => {
     return HttpResponse.json({
+      장소: '스타벅스 선릉역점',
       xposition: 1,
       yposition: 1,
       status: 'LIKE',
     });
   }),
-  http.post('/api/member/map/bookmark/list', () => {
+
+  // 즐겨찾기 조회
+  http.get('/api/member/map/bookmark/list', () => {
     return HttpResponse.json([
       {
-        xposition: 167858,
-        yposition: 185975,
+        장소: '스타벅스 선릉역점',
+        카테고리: '카페',
+        주소: '서울특별시 강남구 테헤란로 334',
+        홈페이지: 'https://www.naver.com',
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
         status: 'LIKE',
       },
       {
-        xposition: 116853,
-        yposition: 197744,
+        장소: '스타벅스 선릉역점',
+        카테고리: '카페',
+        주소: '서울특별시 강남구 테헤란로 334',
+        홈페이지: 'https://www.naver.com',
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
         status: 'LIKE',
       },
       {
-        xposition: 146829,
-        yposition: 16945,
+        장소: '스타벅스 선릉역점',
+        카테고리: '카페',
+        주소: '서울특별시 강남구 테헤란로 334',
+        홈페이지: 'https://www.naver.com',
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
         status: 'LIKE',
       },
       {
-        xposition: 146829,
-        yposition: 16945,
+        장소: '스타벅스 선릉역점',
+        카테고리: '카페',
+        주소: '서울특별시 강남구 테헤란로 334',
+        홈페이지: 'https://www.naver.com',
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
         status: 'LIKE',
       },
       {
-        xposition: 146829,
-        yposition: 16945,
+        장소: '스타벅스 선릉역점',
+        카테고리: '카페',
+        주소: '서울특별시 강남구 테헤란로 334',
+        홈페이지: 'https://www.naver.com',
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
         status: 'LIKE',
       },
       {
-        xposition: 146829,
-        yposition: 16945,
+        장소: '스타벅스 선릉역점',
+        카테고리: '카페',
+        주소: '서울특별시 강남구 테헤란로 334',
+        홈페이지: 'https://www.naver.com',
+        xposition: 127.04859034788,
+        yposition: 37.5038956552172,
         status: 'LIKE',
       },
     ]);
