@@ -1,73 +1,49 @@
 import WriterView from '../BestPost/WriterView';
 import { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { parentCommentIdState, parentCommentNickState } from '@/atoms/commentState';
 import axios from 'axios';
-
+import { useRouter } from 'next/navigation';
+import { pageState } from '@/atoms/pageState';
+import ReplyToggle from '../ReplyToggle';
+import { ReplyIcon } from '@/components/UI/Icons';
 export default function CenterComments({ answer }) {
-  // const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
-  const params = useParams();
+  const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
   const [editMode, setEditMode] = useState(null); // 추가: 수정 모드를 저장하는 상태
-  const [parentCommentId, setParentCommentId] = useRecoilState(parentCommentIdState);
-  const setParentCommentNickname = useSetRecoilState(parentCommentNickState);
+  const [pageState1, setPageState1] = useRecoilState(pageState);
   const myNickname = useRecoilValue(MyNicknameState);
   const [commentContent, setCommentContent] = useState('');
-  const queryClient = useQueryClient();
-
-  const onClickCommentDelete = async (commentId) => {
+  const router = useRouter();
+  // 삭제
+  const onClickCommentDelete = async (answerId) => {
     try {
-      const res = await axios.delete(`/api/admin/${commentId}/answer`, {
+      const res = await axios.delete(`/api/admin/answer/${answerId}`, {
         withCredentials: true,
         headers: {
           Authorization: token,
         },
       });
       if (res.status === 200) {
-        queryClient.invalidateQueries(['post', params.id]);
-      }
-    } catch (error) {
-      console.error('댓글 삭제 오류:', error);
-    }
-  };
-
-  const onClickEdit = (commentId) => {
-    setEditMode(commentId); // 추가: 수정 버튼 클릭 시 수정 모드로 변경
-  };
-
-  const onSaveEdit = async (commentId, newContent, nickname, replyCommentCheck) => {
-    // 추가: 저장 버튼 클릭 시 수정된 내용을 저장
-    try {
-      const body = {
-        postId: commentId,
-        content: replyCommentCheck ? `${nickname}  ${newContent}` : newContent,
-      };
-      const res = await axios.post(`/api/admin/${commentId}/answer`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (res.status === 200) {
-        queryClient.invalidateQueries(['post', params.id]);
+        alert('질문을 삭제하였습니다.');
+        router.push('/');
       }
     } catch (err) {
       console.log(err);
+      alert('사용자가 삭제할 수 없는 질문입니다.');
+      console.log(answerId);
     }
-    setEditMode(null); // 저장 후 수정 모드 종료
   };
-
-  const onCancelEdit = () => {
-    setEditMode(null); // 취소 버튼 클릭 시 수정 모드 종료
+  // 수정
+  const onClickEdit = (answerId) => {
+    router.push(`/content/center/${answerId}/edit`);
+    setPageState1(`/api/admin/answer/${answerId}`);
   };
-
-  const onChangeTextarea = (e) => {
-    setCommentContent(e.target.value);
+  // 답글
+  const onClickReply = (answerId) => {
+    router.push(`/content/center/${answerId}/edit`);
+    setPageState1(`/api/member/${questionId}/${answerId}/reanswer`);
   };
-
   return (
     <div>
       <ul>
@@ -77,11 +53,6 @@ export default function CenterComments({ answer }) {
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             {editMode === comment.commentId ? ( // 수정 모드인 경우
               <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
-                <textarea
-                  defaultValue={comment.content} // 기존 내용을 입력창에 미리 표시
-                  className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
-                  onChange={onChangeTextarea}
-                />
                 <div>
                   <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId, commentContent)}>
                     저장
@@ -96,29 +67,41 @@ export default function CenterComments({ answer }) {
             ) : (
               <div className='flex flex-col gap-2 rounded-md  p-2 py-4'>
                 <p className='font-semibold text-pink-600 opacity-50'>관리자의 답글입니다.</p>
-                <p>{comment.content}</p>
+                <div dangerouslySetInnerHTML={{ __html: comment.content }} />
               </div>
             )}
             {/* 답글 버튼 */}
             <div className='flex items-center gap-1'>
+              <div
+                className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
+                onClick={() => onClickReply(comment.answerId, comment.questionId)}
+              >
+                <ReplyIcon color='#ec4899' />
+
+                <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
+              </div>
               {/* 댓글 수정 및 삭제 */}
               {comment.nickname === myNickname ? (
                 <button
                   className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-                  onClick={() => onClickEdit(comment.commentId)}
+                  onClick={() => onClickEdit(comment.answerId)}
                 >
                   {comment.commentStatus === 'DELETE' ? null : '수정'}
                 </button>
               ) : null}
               {comment.nickname === myNickname ? (
                 <button
-                  onClick={() => onClickCommentDelete(comment.commentId)}
-                  className='text-sm font-semibold opacity-50'
+                  onClick={() => onClickCommentDelete(comment.answerId)}
+                  className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
                 >
                   {comment.commentStatus === 'DELETE' ? null : '삭제'}
                 </button>
               ) : null}
+              <div className='my-2 border' />
+
+              {/* 답글 목록 */}
             </div>
+            <div className='my-4 flex w-full border-b-2 ' />
           </li>
         ))}
       </ul>

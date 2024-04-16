@@ -9,11 +9,14 @@ import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { pageState } from '@/atoms/pageState';
 
 function CenterEditPage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const [category, setCategory] = useState('');
   const content = useRecoilValue(editorContentState);
+  const url = useRecoilValue(pageState);
+
   const router = useRouter();
   const token = useRecoilValue(tokenState);
   const postTitle = useRecoilValue(postTitleState);
@@ -21,7 +24,7 @@ function CenterEditPage() {
   const queryClient = useQueryClient();
   const params = useParams();
   const [postOpen, setPostOpen] = useState(false);
-  let lock;
+  const [lock, setLock] = useState('');
   useEffect(() => {
     setTitle(postTitle);
     setCategory(postCategory);
@@ -29,12 +32,14 @@ function CenterEditPage() {
   const postOpenButtonClick = (e) => {
     e.preventDefault();
     setPostOpen((open) => !open);
-    let lock = { lock: postOpen ? 'LOCKED' : 'UNLOCK' };
+    setLock(postOpen ? 'UNLOCK' : 'LOCKED');
+    console.log(lock);
   };
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
-    if (title.length === 0 || content.length === 0 || category === '') {
-      alert('제목 또는 내용, 카테고리가 존재하지 않습니다.');
+    console.log(url);
+    if (title.length === 0 || content.length === 0) {
+      alert('제목 또는 내용이 존재하지 않습니다.');
       return;
     }
     try {
@@ -43,7 +48,7 @@ function CenterEditPage() {
         content,
         lock,
       };
-      const res = await axios.post(`/api/member/question/${params.id}`, body, {
+      const res = await axios.post(url, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -64,18 +69,21 @@ function CenterEditPage() {
       <div>
         <div className='p-4 text-2xl font-bold'>글 수정</div>
         <div className='flex flex-col gap-4'>
-          <input
-            placeholder='제목을 입력하세요'
-            className='h-12 rounded-lg border pl-2 text-xl outline-none'
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-          />
-          <button
-            onClick={postOpenButtonClick}
-            className='ml-2 h-12 w-[80px] items-center justify-center rounded-lg border bg-pink-300 font-semibold shadow-md transition-all hover:bg-pink-400'
-          >
-            {postOpen ? '공개' : '비공개'}
-          </button>
+          <span className='flex'>
+            <input
+              placeholder='제목을 입력하세요'
+              className='h-12 w-full rounded-lg border pl-2 text-xl outline-none'
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+            />
+
+            <button
+              onClick={postOpenButtonClick}
+              className='ml-2 h-12 w-[80px] items-center justify-center rounded-lg border bg-pink-300 font-semibold shadow-md transition-all hover:bg-pink-400'
+            >
+              {postOpen ? '공개' : '비공개'}
+            </button>
+          </span>
           {/* 에디터 */}
           <div className='h-[full] w-[full]'>
             <CenterCustomEditor editMode />
@@ -91,4 +99,4 @@ function CenterEditPage() {
   );
 }
 
-export default AuthContext(EditPage, { adminRequired: false });
+export default AuthContext(CenterEditPage, { adminRequired: false });

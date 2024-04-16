@@ -14,16 +14,18 @@ function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
   const content = useRecoilValue(editorContentState);
   const token = useRecoilValue(tokenState);
+
   const url = useRecoilValue(pageState);
   const [postOpen, setPostOpen] = useState(false);
-  let lock;
+  const [lock, setLock] = useState('');
   useEffect(() => {
     setTitle('');
   }, [setTitle]);
   const postOpenButtonClick = (e) => {
     e.preventDefault();
     setPostOpen((open) => !open);
-    let lock = { lock: postOpen ? 'LOCKED' : 'UNLOCK' };
+    setLock(postOpen ? 'UNLOCK' : 'LOCKED');
+    console.log(lock);
   };
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();

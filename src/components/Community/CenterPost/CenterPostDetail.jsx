@@ -10,13 +10,7 @@ import { CommentIcon, PencilIcon } from '../../UI/Icons';
 import Loading from '../../Loading';
 import { pageState } from '@/atoms/pageState';
 
-import {
-  questionCategoryNameState,
-  questionContentState,
-  questionEditModeState,
-  questionHashtagState,
-  questionTitleState,
-} from '@/atoms/questionState';
+import { questionContentState, questionEditModeState, questionTitleState } from '@/atoms/questionState';
 
 export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
@@ -54,22 +48,36 @@ export default function CenterPostDetail() {
   if (isPending) return <Loading isPending={isPending} />;
   if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
-  const { title, questionId, nickname, date, postCategory, content, hashtags, commentCount, answer, profileUrl } =
-    userPost;
+  const { title, questionId, nickname, date, postCategory, content, commentCount, answer, profileUrl } = userPost;
   // 클릭시 글 수정
-  const onClickPostEdit = async (title, content) => {
-    setQuestionEditMode(true);
-    setQuestionTitle(title);
-    setQuestionContent(content);
+  const onClickPostEdit = async () => {
     router.push(`/content/center/${params.id}/edit`);
   };
 
-  const onClickPostDelete = async () => {};
+  const onClickPostDelete = async () => {
+    try {
+      const res = await axios.delete(`/api/member/question/${params.id}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        alert('질문을 삭제하였습니다.');
+        router.push('/');
+      }
+    } catch (err) {
+      console.log(err);
+      alert('사용자가 삭제할 수 없는 질문입니다.');
+      console.log(params.id);
+    }
+  };
 
   const routerPage = () => {
     router.push(isLogin ? '/content/center/write' : '/login');
-    setPageState1(`/api/admin/${questionId}/answer`);
+    setPageState1(`/api/admin/${params.id}/answer`);
     console.log(pageState1);
+    console.log(params.id);
   };
   return (
     <>
@@ -82,10 +90,7 @@ export default function CenterPostDetail() {
           </div>
           {nickname === myNickname ? (
             <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
-              <button
-                className='hover:opacity-100'
-                onClick={() => onClickPostEdit(title, postCategory, content, hashtags)}
-              >
+              <button className='hover:opacity-100' onClick={() => onClickPostEdit(title, postCategory, content)}>
                 수정
               </button>
               <button className='hover:opacity-100' onClick={() => onClickPostDelete()}>
