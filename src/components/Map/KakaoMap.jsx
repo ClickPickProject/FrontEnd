@@ -273,7 +273,7 @@ export default function KakaoMap() {
             initial='hidden'
             animate={markerGuideModal ? 'visible' : 'hidden'}
           >
-            <Image src='/Images/markerGuide2.png' width={800} height={800} />
+            <Image src='/Images/markerGuide2.png' width={400} height={130} />
             <p className='mt-4 text-xl font-bold'>
               장소의 게시글 수에 따라 마커의 색상을 통해 활성화 정도를 반영합니다.
             </p>
