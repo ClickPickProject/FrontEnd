@@ -140,10 +140,10 @@ export default function MapSideMenu({
                     className='cursor-pointer text-lg font-bold'
                     onClick={() => {
                       handleMarkerClick({
-                        content: post.장소,
-                        placeUrl: post.홈페이지,
-                        placeCategoryGroupName: post.카테고리,
-                        placeAddressName: post.주소,
+                        content: post.name,
+                        placeUrl: post.homepage,
+                        placeCategoryGroupName: post.category,
+                        placeAddressName: post.address,
                         position: { lat: post.yposition, lng: post.xposition },
                       });
                     }}

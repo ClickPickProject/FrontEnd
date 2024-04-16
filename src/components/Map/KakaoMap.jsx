@@ -169,6 +169,10 @@ export default function KakaoMap() {
 
   const placeBookmark = async (info) => {
     const body = {
+      name: info.content,
+      category: info.placeCategory,
+      address: info.placeAddressName,
+      url: info.placeUrl,
       xposition: info.position.lng,
       yposition: info.position.lat,
       status: 'LIKE',
