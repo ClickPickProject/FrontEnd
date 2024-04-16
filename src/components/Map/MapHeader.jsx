@@ -38,7 +38,7 @@ export default function MapHeader() {
     };
     if (menu === '즐겨찾기') {
       try {
-        const res = await axios.post('/api/member/map/bookmark/list', body, {
+        const res = await axios.get('/api/member/map/bookmark/list', body, {
           withCredentials: true,
           headers: {
             Authorization: token,

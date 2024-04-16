@@ -20,10 +20,27 @@ export default function MapSideMenu({
   handlePageChange,
 }) {
   const mapMenu = useRecoilValue(mapMenuState);
-  const placeDetail = useRecoilValue(placeDetailState);
   const placeList = useRecoilValue(placeListState);
   const placeBookmarkList = useRecoilValue(placeBookmarkListState);
-
+  const categoryEmojiMap = {
+    편의점: '🏪',
+    카페: '☕️',
+    음식점: '🍽',
+    병원: '🏥',
+    학교: '🏫',
+    문화시설: '🏛',
+    숙박: '🏨',
+    관광명소: '🏞',
+    지하철역: '🚇',
+    은행: '💳',
+    '주유소,충전소': '⛽️',
+    백화점: '🛍',
+    약국: '💊',
+    주차장: '🅿️',
+  };
+  function getCategoryEmoji(category) {
+    return categoryEmojiMap[category] || '';
+  }
   return (
     <motion.div
       className='absolute left-0 z-50 flex h-screen w-[400px] flex-col bg-white shadow-lg'
@@ -71,27 +88,14 @@ export default function MapSideMenu({
               {markers.map((marker) => (
                 <li key={marker.content.placeUrl}>
                   <div
-                    className={`flex h-[120px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
+                    className={`flex h-[100px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
                   >
                     <div className='flex items-center gap-1'>
                       <span className='cursor-pointer text-lg font-bold' onClick={() => handleMarkerClick(marker)}>
                         {marker.content}
                       </span>
                       <span className='text-md font-normal opacity-80'>
-                        {marker.placeCategoryGroupName === '편의점' && '🏪' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '카페' && '☕️' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '음식점' && '🍽' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '병원' && '🏥' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '학교' && '🏫' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '문화시설' && '🏛' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '숙박' && '🏨' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '관광명소' && '🏞' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '지하철역' && '🚇' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '은행' && '💳' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '주유소,충전소' && '⛽️' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '백화점' && '🛍' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '약국' && '💊' + marker.placeCategoryGroupName}
-                        {marker.placeCategoryGroupName === '주차장' && '🅿️' + marker.placeCategoryGroupName}
+                        {getCategoryEmoji(marker.placeCategoryGroupName)} {marker.placeCategoryGroupName}
                       </span>
                     </div>
                     <span className='text-sm opacity-80'>{marker.placeAddressName}</span>
@@ -100,7 +104,6 @@ export default function MapSideMenu({
                         홈페이지
                       </Link>
                     </span>
-                    <span className='text-sm opacity-80'>관련 게시물 {placeList.length}개</span>
                   </div>
                 </li>
               ))}
@@ -129,11 +132,34 @@ export default function MapSideMenu({
           <div className='mx-auto w-full overflow-y-auto py-8'>
             <h1 className='mb-4 pl-4 text-xl font-bold'>즐겨찾기 목록</h1>
             {placeBookmarkList.map((post) => (
-              <div className='rounded-lg bg-white p-4 shadow-md'>
-                <div className='flex justify-between'></div>
-                <h2 className='my-4 text-xl font-semibold'>{post.status}</h2>
-                <h2 className='my-4 text-xl font-semibold'>{post.xposition}</h2>
-                <h2 className='my-4 text-xl font-semibold'>{post.yposition}</h2>
+              <div
+                className={`flex h-[100px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
+              >
+                <div className='flex items-center gap-1'>
+                  <span
+                    className='cursor-pointer text-lg font-bold'
+                    onClick={() => {
+                      handleMarkerClick({
+                        content: post.장소,
+                        placeUrl: post.홈페이지,
+                        placeCategoryGroupName: post.카테고리,
+                        placeAddressName: post.주소,
+                        position: { lat: post.yposition, lng: post.xposition },
+                      });
+                    }}
+                  >
+                    {post.장소}
+                  </span>
+                  <span className='text-md font-normal opacity-80'>
+                    {getCategoryEmoji(post.카테고리)} {post.카테고리}
+                  </span>
+                </div>
+                <span className='text-sm opacity-80'>{post.주소}</span>
+                <span className='mr-auto text-sm opacity-60 hover:opacity-100'>
+                  <Link href={post.홈페이지} target='_blank' rel='noopener noreferrer'>
+                    홈페이지
+                  </Link>
+                </span>
               </div>
             ))}
           </div>

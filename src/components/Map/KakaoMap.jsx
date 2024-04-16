@@ -1,14 +1,15 @@
 'use client';
 import { EmptyStarIcon, FillStarIcon, LeftArrowIcon, LinkIcon, RightArrowIcon } from '../UI/Icons';
-import { CustomOverlayMap, Map, MapMarker, MarkerClusterer } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
 import { mapAreaState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -29,6 +30,7 @@ export default function KakaoMap() {
   const setPlaceList = useSetRecoilState(placeListState);
   const [bookmark, setBookmark] = useState(false);
   const [markerGuideModal, setMarkerGuideModal] = useState(false);
+  const token = useRecoilValue(tokenState);
   const SPRITE_MARKER_URL = '/Images/sprite.png'; // 스프라이트 마커 이미지 URL
   const SPRITE_WIDTH = 48; // 스프라이트 이미지 너비
   const SPRITE_HEIGHT = 250; // 스프라이트 이미지 높이
@@ -166,7 +168,6 @@ export default function KakaoMap() {
   };
 
   const placeBookmark = async (info) => {
-    console.log(info);
     const body = {
       xposition: info.position.lng,
       yposition: info.position.lat,
@@ -181,7 +182,8 @@ export default function KakaoMap() {
       });
       if (res.status === 200) {
         console.log('placebookmark', res.data);
-        setBookmark(!bookmark);
+        setBookmark(res.data);
+        // setBookmark(!bookmark);
       }
     } catch (err) {
       console.log(err);
@@ -334,7 +336,7 @@ export default function KakaoMap() {
                           className='flex flex-1 justify-center border border-pink-200 text-pink-500 transition-all hover:opacity-50'
                           onClick={() => placeBookmark(marker)}
                         >
-                          {bookmark ? <FillStarIcon size={20} /> : <EmptyStarIcon size={20} />}
+                          {bookmark.status === 'LIKE' ? <FillStarIcon size={20} /> : <EmptyStarIcon size={20} />}
                         </button>
                         <Link
                           href={marker.placeUrl}
