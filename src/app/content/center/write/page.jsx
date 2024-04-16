@@ -24,7 +24,7 @@ function WritePage() {
   const postOpenButtonClick = (e) => {
     e.preventDefault();
     setPostOpen((open) => !open);
-    setLock(postOpen ? 'UNLOCK' : 'LOCKED');
+    setLock(postOpen ? 'LOCKED' : 'UNLOCK');
     console.log(lock);
   };
   const onClickWriteSubmit = async (e) => {

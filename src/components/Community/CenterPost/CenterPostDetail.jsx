@@ -39,8 +39,9 @@ export default function CenterPostDetail() {
 
       if (res.status !== 200) {
         throw new Error('Failed to fetch data');
+      } else if (res.status === 403) {
+        console.log('에러');
       }
-
       return res.data;
     },
   });
@@ -52,6 +53,7 @@ export default function CenterPostDetail() {
   // 클릭시 글 수정
   const onClickPostEdit = async () => {
     router.push(`/content/center/${params.id}/edit`);
+    setPageState1(`/api/member/question/${params.id}`);
   };
 
   const onClickPostDelete = async () => {
