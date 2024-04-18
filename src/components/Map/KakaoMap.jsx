@@ -2,7 +2,7 @@
 import { EmptyStarIcon, FillStarIcon, LeftArrowIcon, LinkIcon, RightArrowIcon } from '../UI/Icons';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
-import { mapAreaState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
+import { mapAreaState, mapMarkerState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
@@ -13,7 +13,7 @@ import { tokenState } from '@/atoms/tokenState';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useRecoilState(mapMarkerState);
   const [map, setMap] = useState();
   const [query, setQuery] = useState('');
   const [inputSearch, setInputSearch] = useState('');
@@ -45,7 +45,7 @@ export default function KakaoMap() {
   useEffect(() => {
     if (!map) return;
     const ps = new kakao.maps.services.Places();
-
+    setMarkers([]);
     ps.keywordSearch(query, (data, status, pagination) => {
       if (status === kakao.maps.services.Status.OK) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
@@ -117,8 +117,8 @@ export default function KakaoMap() {
   const handleSearch = (e) => {
     e.preventDefault();
     setCurrentPage(1);
-    setMapMenu('지도 홈');
     setQuery(inputSearch);
+    setMapMenu('지도 홈');
   };
 
   const handleMarkerClick = (marker) => {
@@ -220,7 +220,7 @@ export default function KakaoMap() {
       <AnimatePresence>
         {clickToggle && (
           <MapSideMenu
-            markers={markers}
+            // markers={markers}
             handleSearch={handleSearch}
             handleMarkerClick={handleMarkerClick}
             handleInputChange={handleInputChange}

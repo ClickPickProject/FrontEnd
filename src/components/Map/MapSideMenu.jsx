@@ -4,13 +4,16 @@ import { FaSearch } from 'react-icons/fa';
 import MapHeader from './MapHeader';
 import Pagination from 'react-js-pagination';
 import { useRecoilValue } from 'recoil';
-import { mapMenuState, placeBookmarkListState, placeDetailState, placeListState } from '@/atoms/mapState';
+import { mapMarkerState, mapMenuState, placeBookmarkListState, placeListState } from '@/atoms/mapState';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import WriterView from '../Community/BestPost/WriterView';
 import StatusView from '../Community/BestPost/StatusView';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 export default function MapSideMenu({
-  markers,
   handleMarkerClick,
   handleSearch,
   handleInputChange,
@@ -19,6 +22,7 @@ export default function MapSideMenu({
   postsPerPage,
   handlePageChange,
 }) {
+  dayjs.locale('ko');
   const mapMenu = useRecoilValue(mapMenuState);
   const placeList = useRecoilValue(placeListState);
   const placeBookmarkList = useRecoilValue(placeBookmarkListState);
@@ -38,9 +42,65 @@ export default function MapSideMenu({
     약국: '💊',
     주차장: '🅿️',
   };
+  const [temperature, setTemperature] = useState(0);
+  const [todayDust10, setTodayDust10] = useState(null);
+  const [tomorrowDust10, setTomorrowDust10] = useState(null);
+  const [todayDust25, setTodayDust25] = useState(null);
+  const [tomorrowDust25, setTomorrowDust25] = useState(null);
+  const [dustRegion, setDustRegion] = useState([]);
+  const [dustStatus, setDustStatus] = useState('미세먼지');
+  const markers = useRecoilValue(mapMarkerState);
+
   function getCategoryEmoji(category) {
     return categoryEmojiMap[category] || '';
   }
+
+  useEffect(() => {
+    const weatherFetch = async () => {
+      const res = await axios.get(
+        'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=t4HyzXokF2%2BegQjKxQ6Csf4oKnkGlP7SWlX7kTFIhMfM%2B%2FpYGSzqbONCgN9uxTRz9YgEUXZvFJwBSGufRkYrBw%3D%3D&pageNo=1&numOfRows=10&dataType=JSON&base_date=20240416&base_time=1200&nx=60&ny=127',
+      );
+      setTemperature(res.data.response.body);
+    };
+
+    const dustFetch = async () => {
+      const res = await axios.get(`https://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getMinuDustFrcstDspth`, {
+        params: {
+          serviceKey: process.env.NEXT_PUBLIC_WEATHER_SECRET_KEY,
+          returnType: 'json',
+          numOfRows: 10,
+          pageNo: 1,
+          searchDate: '2024-04-18',
+          // searchDate: dayjs().format('YYYY-MM-DD'),
+          InformCode: 'PM10',
+        },
+      });
+      dayjs().format('YYYY-MM-DD HH:mm');
+      console.log(dayjs().add(6, 'h').format('YYYY-MM-DD HH:mm'));
+      setTodayDust10(res.data.response.body.items[0]);
+      setTomorrowDust10(res.data.response.body.items[1]);
+      setTodayDust25(res.data.response.body.items[2]);
+      setTomorrowDust25(res.data.response.body.items[3]);
+      console.log(res.data.response.body.items[2]);
+    };
+    weatherFetch();
+    dustFetch();
+  }, []);
+
+  const dustStyle = (item) => {
+    switch (item) {
+      case '좋음':
+        return 'text-blue-500';
+      case '보통':
+        return 'text-green-600 font-bold';
+      case '나쁨':
+        return 'text-orange-600 font-bold';
+      case '매우나쁨':
+        return 'text-red-600 font-bold';
+      default:
+        return '';
+    }
+  };
   return (
     <motion.div
       className='absolute left-0 z-50 flex h-screen w-[400px] flex-col bg-white shadow-lg'
@@ -75,16 +135,99 @@ export default function MapSideMenu({
 
       {mapMenu === '지도 홈' && (
         <>
-          <div className='flex flex-col items-center gap-4 p-2'>
-            <div className='flex w-full items-center gap-4'>
-              <span className='text-lg font-bold'>{mapMenu}</span>
-            </div>
-          </div>
           {/* 지도 검색 결과 */}
           <section className='overflow-y-auto'>
             <ul>
-              {markers.length === 0 && null}
-              <h2 className='pl-4 text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
+              {markers.length === 0 ? (
+                <>
+                  {temperature && (
+                    <div className='flex flex-col items-center gap-2 border-2 p-4'>
+                      <span className='text-lg font-bold'>오늘의 날씨</span>
+                      <div className='flex items-center gap-2'>
+                        <span className='text-lg font-bold'>{temperature.fcstValue}℃</span>
+                      </div>
+                    </div>
+                  )}
+                  <div className='flex items-center justify-between pl-4'>
+                    <div className='mt-4 text-2xl font-bold'>금일의 날씨</div>
+                    <div className='[&>*]:text-md mt-4 flex gap-4 p-2 [&>*]:rounded-md [&>*]:p-2 [&>*]:transition-all'>
+                      <button
+                        className='bg-orange-300 transition-all hover:bg-orange-400'
+                        onClick={() => setDustStatus('초미세먼지')}
+                      >
+                        초미세먼지
+                      </button>
+                      <button
+                        className='bg-green-300 transition-all hover:bg-green-400'
+                        onClick={() => setDustStatus('미세먼지')}
+                      >
+                        미세먼지
+                      </button>
+                    </div>
+                  </div>
+
+                  {dustStatus === '미세먼지' && (
+                    <>
+                      {todayDust10?.informGrade.split(',').map((item, idx) => (
+                        <div className='flex p-4'>
+                          <div className='w-full rounded-lg bg-sky-200 p-4 shadow-lg'>
+                            <div className='flex justify-between'>
+                              <h2 className='mb-2 text-2xl font-bold'>{item.split(':')[0]}</h2>
+                              <h2 className='text-lg font-semibold text-green-600'>
+                                {todayDust10?.informCode === 'PM10' && '미세먼지'}
+                              </h2>
+                            </div>
+
+                            <div className='flex justify-between'>
+                              <div>
+                                <p className='text-lg font-semibold'>현재 온도:</p>
+                                <p className='text-xl'>1 °C</p>
+                              </div>
+                              <div className='flex items-center justify-center'>
+                                <p className={`text-md ${dustStyle(item.split(':')[1].trim())}`}>
+                                  {item.split(':')[1].trim()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  {dustStatus === '초미세먼지' && (
+                    <>
+                      {todayDust25?.informGrade.split(',').map((item, idx) => (
+                        <div className='flex p-4'>
+                          <div className='w-full rounded-lg bg-sky-200 p-4 shadow-lg'>
+                            <div className='flex justify-between'>
+                              <h2 className='mb-2 text-2xl font-bold'>{item.split(':')[0]}</h2>
+                              <h2 className='text-lg font-semibold text-orange-600'>
+                                {todayDust25?.informCode === 'PM25' && '초미세먼지'}
+                              </h2>
+                            </div>
+                            <div className='flex justify-between'>
+                              <div>
+                                <p className='text-lg font-semibold'>현재 온도:</p>
+                                <p className='text-xl'>1 °C</p>
+                              </div>
+                              <div className='flex items-center justify-center'>
+                                <p className={`text-md ${dustStyle(item.split(':')[1].trim())}`}>
+                                  {item.split(':')[1].trim()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <h2 className='pl-4 text-lg font-semibold'>검색 결과 ({totalItemsCount}개)</h2>
+                </>
+              )}
+
               {markers.map((marker) => (
                 <li key={marker.content.placeUrl}>
                   <div
@@ -131,7 +274,7 @@ export default function MapSideMenu({
         <>
           <div className='mx-auto w-full overflow-y-auto py-8'>
             <h1 className='mb-4 pl-4 text-xl font-bold'>즐겨찾기 목록</h1>
-            {placeBookmarkList.map((post) => (
+            {placeBookmarkList?.map((post) => (
               <div
                 className={`flex h-[100px] w-full flex-col gap-1 border-b py-2 pl-4 transition-all hover:bg-pink-100`}
               >
@@ -148,15 +291,15 @@ export default function MapSideMenu({
                       });
                     }}
                   >
-                    {post.장소}
+                    {post.name}
                   </span>
                   <span className='text-md font-normal opacity-80'>
-                    {getCategoryEmoji(post.카테고리)} {post.카테고리}
+                    {getCategoryEmoji(post.category)} {post.category}
                   </span>
                 </div>
-                <span className='text-sm opacity-80'>{post.주소}</span>
+                <span className='text-sm opacity-80'>{post.address}</span>
                 <span className='mr-auto text-sm opacity-60 hover:opacity-100'>
-                  <Link href={post.홈페이지} target='_blank' rel='noopener noreferrer'>
+                  <Link href={post.homepage} target='_blank' rel='noopener noreferrer'>
                     홈페이지
                   </Link>
                 </span>

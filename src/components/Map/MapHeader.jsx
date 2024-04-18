@@ -31,20 +31,16 @@ export default function MapHeader() {
     'flex w-full justify-center py-2 px-4 text-sm rounded-xl font-semibold transition-all cursor-pointer';
 
   const onClickMapMenu = async (menu) => {
-    const body = {
-      xposition: 1,
-      yposition: 1,
-      status: 'LIKE',
-    };
     if (menu === '즐겨찾기') {
       try {
-        const res = await axios.get('/api/member/map/bookmark/list', body, {
+        const res = await axios.get('/api/member/map/bookmark/list', {
           withCredentials: true,
           headers: {
             Authorization: token,
           },
         });
         if (res.status === 200) {
+          // console.log(res.data);
           setPlaceBookmarkList(res.data);
         }
       } catch (err) {
