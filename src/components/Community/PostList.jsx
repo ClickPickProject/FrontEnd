@@ -150,7 +150,7 @@ export default function PostList({ category }) {
         setSearch={setSearch}
         onClickSearch={onClickSearch}
       />
-      <ul>
+      <ul className='sm:px-8'>
         {displayPosts?.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />

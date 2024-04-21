@@ -2,12 +2,12 @@ import { FaSearch } from 'react-icons/fa';
 
 export default function Search({ searchOption, setSearchOption, search, setSearch, onClickSearch }) {
   return (
-    <div className='mb-4 flex w-1/2'>
+    <div className='mb-4 flex w-1/2 sm:mb-8 sm:w-full sm:px-8 sm:text-sm'>
       {/* 검색 옵션 */}
       <select
         value={searchOption}
         onChange={(e) => setSearchOption(e.target.value)}
-        className='mr-2 rounded-lg border-2 border-pink-300 px-3 py-2 outline-none'
+        className='mr-2 rounded-lg border-2 border-pink-300 px-3 py-2 outline-none sm:flex-1 '
       >
         <option value='title'>제목</option>
         <option value='content'>내용</option>
@@ -15,7 +15,7 @@ export default function Search({ searchOption, setSearchOption, search, setSearc
       </select>
 
       {/* 검색어 입력 */}
-      <form className='relative w-full' onSubmit={onClickSearch}>
+      <form className='relative w-full sm:text-sm' onSubmit={onClickSearch}>
         <input
           type='text'
           placeholder='검색어를 입력하세요.'

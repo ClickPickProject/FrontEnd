@@ -33,7 +33,7 @@ export default function CommunityPage() {
           </div>
           {/* 경계선 */}
           <div className='mb-10 border border-pink-200' />
-          <div className='mb-10 flex gap-4'>
+          <div className='mb-10 flex gap-4 sm:px-8'>
             <div className='text-2xl font-bold'>게시글</div>
             <select
               value={category}
