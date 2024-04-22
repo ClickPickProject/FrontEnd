@@ -560,23 +560,27 @@ export const handlers = [
     });
   }),
 
+  //  question
   // 게시글 조회
   http.get('/api/question/list', () => {
     return HttpResponse.json({
       content: [
         {
           questionId: 1,
-          nickname: '김추천',
           userId: 'chlwjd022@gmail.com',
-          title: '벚꽃임',
+          nickname: '김자장',
+          title: '테스트',
           createAt: '2024-03-10T18:55:48.884Z',
+          status: 'AWAITING',
+          profileUrl: '/Images/barn.jpg',
         },
         {
           questionId: 2,
-          nickname: '김추천',
+          nickname: '김짬뽕',
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
           status: 'COMPLETE',
+          profileUrl: '/Images/barn.jpg',
         },
         {
           questionId: 3,
@@ -584,6 +588,7 @@ export const handlers = [
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
           status: 'COMPLETE',
+          profileUrl: '/Images/barn.jpg',
         },
         {
           questionId: 4,
@@ -591,6 +596,7 @@ export const handlers = [
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
           status: 'COMPLETE',
+          profileUrl: '/Images/barn.jpg',
         },
         {
           questionId: 5,
@@ -598,6 +604,7 @@ export const handlers = [
           title: '벚꽃임',
           createAt: '2024-03-10T18:55:48.884Z',
           status: 'AWAITING',
+          profileUrl: '/Images/barn.jpg',
         },
       ],
     });
@@ -617,75 +624,64 @@ export const handlers = [
   //     content: '내용',
   //   });
   // }),
-  // 게시글 상세 조회
+  // 게시글 상세 조회 /api/question/${params.id}
   http.get('/api/question/:questionId', ({ params }) => {
     const { questionId } = params;
     return HttpResponse.json(
       {
         questionId: questionId,
-        nickname: 'testAccount',
-        title: 'title',
-        content: '내용 테스트 중입니다.',
-        likeCount: 1,
-        viewCount: 1,
-        position: '',
-        photoDate: '2024-03-05T18:55:48.884Z',
-        hashtags: ['#해쉬태그', '#테스트'],
-        postCategory: '자유',
-        commentCount: 3,
-        likePostCheck: false,
+        userId: 'chlwjd022@gmail.com',
+        nickname: '올빼미',
+        title: '제목입니다.',
+        content: '자장면인가 짬뽕인가 그것이 문제로다.',
+        status: 'COMPLETE',
+        date: '2024-03-05T18:55:48.884Z',
         profileUrl: '/Images/iphone.png',
-        comments: [
+        answer: [
           {
-            commentId: 1,
-            nickname: '야놀자',
-            content: '이게 맞나요',
-            createAt: '2024-03-06T18:55:48.884Z',
-            likeCount: 1,
-            likeCommentCheck: false,
-            commentStatus: 'LIVE',
+            answerId: 1,
+            questionId: 1,
+            adminId: 'admin@naver.com',
+            nickname: '관리자',
+            title: '자장면인가 짬뽕인가 그것이 문제로다',
+            content: '정답은 자장면',
+            date: '2024-03-06T18:55:48.884Z',
             profileUrl: '/Images/barn.jpg',
-            recommentList: [
+            reAnswer: [
               {
-                commentId: 2,
-                nickname: '기사일세',
-                content: '@야놀자 탑승',
+                answerId: 1,
+                questionId: 1,
+                userId: 'chlwjd022@gmail.com',
+                nickname: 'ADMIN',
+                title: '대댓글입니다.',
+                content: '내용입니다.',
                 createAt: '2024-03-086T10:55:48.884Z',
-                likeCount: 13,
-                likeCommentCheck: false,
                 profileUrl: '/Images/barn.jpg',
-                parentId: 1,
-              },
-            ],
-          },
-          {
-            commentId: 3,
-            nickname: '응맞음',
-            content: '네네',
-            createAt: '2024-03-07T18:55:48.884Z',
-            likeCount: 3,
-            likeCommentCheck: true,
-            commentStatus: 'LIVE',
-            recommentList: [
-              {
-                commentId: 4,
-                nickname: '대대대댓',
-                content: '@응맞음 대래대래댓댓 댓걸',
-                createAt: '2024-03-166T10:55:48.884Z',
-                likeCount: 123,
-                likeCommentCheck: false,
-                profileUrl: '/Images/cloud.jpg',
-                parentId: 3,
-              },
-              {
-                commentId: 5,
-                nickname: '아아악',
-                content: '@대대대댓 2빠',
-                createAt: '2024-03-166T11:55:48.884Z',
-                likeCount: 123,
-                likeCommentCheck: false,
-                profileUrl: '/Images/black.jpg',
-                parentId: 3,
+                reAnswer: [
+                  {
+                    answerId: 1,
+                    questionId: 1,
+                    adminId: 'admin@naver.com',
+                    nickname: '관리자',
+                    title: '자장면인가 짬뽕인가 그것이 문제로다',
+                    content: '정답은 자장면',
+                    date: '2024-03-06T18:55:48.884Z',
+                    profileUrl: '/Images/barn.jpg',
+                    reAnswer: [
+                      {
+                        answerId: 1,
+                        questionId: 1,
+                        userId: 'chlwjd022@gmail.com',
+                        nickname: 'ADMIN',
+                        title: '대댓글입니다.',
+                        content: '내용입니다.',
+                        createAt: '2024-03-086T10:55:48.884Z',
+                        profileUrl: '/Images/barn.jpg',
+                        reAnswer: [],
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },

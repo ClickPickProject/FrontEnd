@@ -6,149 +6,62 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { parentCommentIdState } from '@/atoms/commentState';
 
-export default function CenterReplyComments({
-  reply,
-  onSubmitReply,
-  onClickEdit,
-  editMode,
-  onSaveEdit,
-  onCancelEdit,
-  onClickCommentDelete,
-  onClickCommentLike,
-}) {
-  const [replyComment, setReplyComment] = useState('');
-  const [isReplyOpen, setIsReplyOpen] = useState(false);
-  const [replyCommentCheck, setReplyCommentCheck] = useState(true);
-
+export default function CenterReplyComments({ reply, onClickCommentDelete, onClickReply, onClickEdit }) {
   const myNickname = useRecoilValue(MyNicknameState);
-  const setParentCommentId = useSetRecoilState(parentCommentIdState);
   const token = useRecoilValue(tokenState);
-
-  const handleReplyChange = (e) => {
-    setReplyComment(e.target.value);
-  };
-
-  const toggleReply = () => {
-    setParentCommentId(reply.parentId);
-    setIsReplyOpen((prevIsReplyOpen) => !prevIsReplyOpen);
-  };
-
-  const submitReply = () => {
-    const mentionedWriter = `@${reply.nickname}`; // 작성자의 닉네임을 멘션
-    const fullReplyContent = `${mentionedWriter} ${replyComment}`;
-    onSubmitReply(fullReplyContent);
-    setReplyComment('');
-    toggleReply(); // 답글 제출 후 답글 폼 close
-  };
-
-  const mentionMatch = reply.content.match(/(@\S+)\s(.+)/);
-  const mention = mentionMatch ? mentionMatch[1] : ''; // match 결과가 null이 아니면 첫 번째 그룹을 가져옴
-  const commentContent = mentionMatch ? mentionMatch[2] : ''; // match 결과가 null이 아니면 두 번째 그룹을 가져옴
-
-  const onChangeTextarea = (e) => {
-    setReplyComment(e.target.value);
-  };
-
   return (
     <>
-      {/* 답글 목록 */}
-      <div className='flex flex-col gap-2'>
+      <li key={reply.answerId} className='flex flex-col gap-4'>
         <WriterView writer={reply.nickname} date={reply.createAt} profile={reply.profileUrl} />
-        {editMode === reply.commentId ? ( // 수정 모드인 경우
-          <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
-            <textarea
-              defaultValue={''} // 기존 내용을 입력창에 미리 표시
-              onChange={onChangeTextarea}
-              className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
-            />
-            <div>
-              <button
-                className='hover:text-pink-400'
-                onClick={() => onSaveEdit(reply.commentId, replyComment, '@' + reply.nickname, replyCommentCheck)}
-              >
-                저장
-              </button>
-            </div>
-            <div>
-              <button className='hover:text-pink-400' onClick={onCancelEdit}>
-                취소
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div className='flex flex-col gap-2 p-2 py-4'>
-              <p className='font-semibold text-pink-600 opacity-50'>질문자의 답글입니다.</p>
-              <p className='flex items-center gap-2'>
-                <span className='text-sm opacity-50'>{mention}</span>
-                <span>{commentContent}</span>
-              </p>
-            </div>
-          </div>
-        )}
-        <div className='flex items-center gap-1'>
-          <div className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'>
-            {reply.likeCommentCheck ? (
-              <div
-                className='flex items-center gap-1'
-                onClick={() => onClickCommentLike(reply.commentId, reply.likeCommentCheck)}
-              >
-                <FillHeartIcon color='red' />
-                <div className='text-sm font-semibold'>{reply.likeCount}</div>
-              </div>
-            ) : (
-              <div
-                className='flex items-center gap-1'
-                onClick={() => onClickCommentLike(reply.commentId, reply.likeCommentCheck)}
-              >
-                <EmptyHeartIcon color='red' />
-                <div className='text-sm font-semibold'>{reply.likeCount}</div>
-              </div>
-            )}
-          </div>
 
+        <h2 className='font-semibold'> {reply.title}</h2>
+
+        <div className='flex flex-col gap-1 rounded-md'>
+          <div dangerouslySetInnerHTML={{ __html: reply.content }} />
+        </div>
+        {/* 답글 버튼 */}
+        <div className='flex items-center gap-1'>
           <div
-            className='flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100'
-            onClick={() => toggleReply(reply)}
+            className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
+            onClick={() => onClickReply(reply.answerId, reply.questionId)}
           >
             <ReplyIcon color='#ec4899' />
-            <div className='text-sm font-semibold hover:opacity-100'>답글</div>
+
+            <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
           </div>
+          {/* 댓글 수정 및 삭제 */}
           {reply.nickname === myNickname ? (
             <button
               className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-              onClick={() => onClickEdit(reply.commentId)}
+              onClick={() => onClickEdit(reply.answerId)}
             >
               {reply.commentStatus === 'DELETE' ? null : '수정'}
             </button>
           ) : null}
           {reply.nickname === myNickname ? (
-            <button onClick={() => onClickCommentDelete(reply.commentId)} className='text-sm font-semibold opacity-50'>
+            <button
+              onClick={() => onClickCommentDelete(reply.answerId)}
+              className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
+            >
               {reply.commentStatus === 'DELETE' ? null : '삭제'}
             </button>
           ) : null}
+          <div className='my-2 border' />
         </div>
-        <div className='my-2 border' />
-        {isReplyOpen && (
-          <div className='mb-5 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
-            <div className='mt-2'>
-              <WriterView writer={myNickname} profile={reply.profileUrl} />
-            </div>
-            <textarea
-              placeholder={token ? '답글을 입력하세요' : '로그인 후 이용해주세요'}
-              disabled={token ? false : true}
-              className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none disabled:bg-white'
-              value={replyComment}
-              onChange={handleReplyChange}
+        {/* 답글 목록 */}
+        <div className='ml-5'>
+          <div className='my-2 flex w-full border-b-2 ' />
+          {reply.reAnswer.map((reply) => (
+            <CenterReplyComments
+              key={reply.questionId}
+              reply={reply}
+              onClickCommentDelete={onClickCommentDelete}
+              onClickReply={onClickReply}
+              onClickEdit={onClickEdit}
             />
-            <div className='m-2 flex w-[54px] cursor-pointer justify-center rounded-md bg-pink-300 py-1 text-sm transition-all hover:bg-pink-400 hover:text-white'>
-              <button className='h-full w-full' onClick={submitReply}>
-                등록
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      </li>
     </>
   );
 }

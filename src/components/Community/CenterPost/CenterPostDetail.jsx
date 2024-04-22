@@ -124,7 +124,7 @@ export default function CenterPostDetail() {
           ) : null}
         </div>
         {/* 경계선 */}
-        <div className='my-4 border-b-2' />
+        <div className='my-2 border-b-2' />
         {/* 차후 수정할 댓글 내용들 */}
         <CenterComments answer={answer} />
         {/* <CenterCommentWrite /> */}

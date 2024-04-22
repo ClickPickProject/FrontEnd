@@ -36,7 +36,7 @@ export default function ProfilePage() {
           )}
         </div>
         <div className=' flex justify-center sm:w-full'>
-          <ul className='my-5 flex items-center justify-center space-x-8 whitespace-nowrap text-base font-semibold lg:my-0 lg:flex-col lg:space-x-0 lg:p-3 lg:text-sm sm:my-0 sm:flex-col sm:space-x-0 sm:p-3'>
+          <ul className='my-2 flex items-center justify-center space-x-8 whitespace-nowrap text-base font-semibold lg:my-0 lg:flex-col lg:space-x-0 lg:p-3 lg:text-sm sm:my-0 sm:flex-col sm:space-x-0 sm:p-3'>
             <li onClick={() => handleSectionChange(1)} className={`${hoverStyle} ${displayClass}`}>
               🙋‍♂️ 내프로필
             </li>

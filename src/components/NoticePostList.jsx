@@ -93,7 +93,7 @@ export default function NoticePostList({ url }) {
   };
   return (
     <div className='sm:mr-[40px]'>
-      <div className='flex flex-row'>
+      <div className='mb-4 flex flex-row'>
         {/* <CenterSearch
           searchOption={searchOption}
           setSearchOption={setSearchOption}
@@ -101,6 +101,15 @@ export default function NoticePostList({ url }) {
           setSearch={setSearch}
           onClickSearch={onClickSearch}
         /> */}
+        <select
+          value={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
+          className='rounded-lg bg-pink-200 px-2 py-1 text-center font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
+        >
+          <option value='모두'>모두</option>
+          <option value='COMPLETE'>답변대기</option>
+          <option value='AWAITING'>답변완료</option>
+        </select>
         <button
           onClick={handleQAndARouter}
           className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
@@ -108,17 +117,6 @@ export default function NoticePostList({ url }) {
           <PencilIcon color='white' size={18} />
           Q&A
         </button>
-      </div>
-      <div className='float-right'>
-        <select
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-          className='rounded-lg bg-pink-200 px-2 py-1 font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
-        >
-          <option value='모두'>모두</option>
-          <option value='COMPLETE'>답변대기</option>
-          <option value='AWAITING'>답변완료</option>
-        </select>
       </div>
       <ul>
         {displayPosts?.map((data) => (

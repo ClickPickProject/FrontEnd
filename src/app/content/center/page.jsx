@@ -20,7 +20,7 @@ export default function CenterPage() {
           <div className='flex flex-col gap-2 p-2'>
             <h2 className='text-2xl font-bold'>⭐ 소통센터</h2>
             <p className='mb-4 text-sm opacity-50'>개선사항을 함께 얘기해보세요.</p>
-            <div className='mb-10 border border-pink-200' />
+            <div className='mb-4 border border-pink-200' />
           </div>
 
           <NoticePostList url={`/api/question/list`} />

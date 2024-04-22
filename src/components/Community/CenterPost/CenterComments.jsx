@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { pageState } from '@/atoms/pageState';
 import ReplyToggle from '../ReplyToggle';
 import { ReplyIcon } from '@/components/UI/Icons';
+import CenterReplyComments from './CenterReplyComments';
 export default function CenterComments({ answer }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
@@ -39,10 +40,10 @@ export default function CenterComments({ answer }) {
     router.push(`/content/center/${answerId}/edit`);
     setPageState1(`/api/admin/answer/${answerId}`);
   };
-  // 답글
-  const onClickReply = (answerId) => {
-    router.push(`/content/center/${answerId}/edit`);
-    setPageState1(`/api/member/${questionId}/${answerId}/reanswer`);
+  // 답변
+  const onClickReply = (questionId, answerId) => {
+    router.push(`/content/center/${answerId}/reAnswer`);
+    setPageState1(`/api/member/${questionId}/${answerId}/reAnswer`);
   };
   return (
     <div>
@@ -51,25 +52,11 @@ export default function CenterComments({ answer }) {
         {answer.map((comment) => (
           <li key={comment.commentId} className='flex flex-col gap-4'>
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
-            {editMode === comment.commentId ? ( // 수정 모드인 경우
-              <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
-                <div>
-                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId, commentContent)}>
-                    저장
-                  </button>
-                </div>
-                <div>
-                  <button className='hover:text-pink-400' onClick={onCancelEdit}>
-                    취소
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className='flex flex-col gap-2 rounded-md  p-2 py-4'>
-                <p className='font-semibold text-pink-600 opacity-50'>관리자의 답글입니다.</p>
-                <div dangerouslySetInnerHTML={{ __html: comment.content }} />
-              </div>
-            )}
+            <h2 className=' font-semibold'> {comment.title}</h2>
+
+            <div className='flex flex-col gap-1 rounded-md'>
+              <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+            </div>
             {/* 답글 버튼 */}
             <div className='flex items-center gap-1'>
               <div
@@ -97,11 +84,22 @@ export default function CenterComments({ answer }) {
                   {comment.commentStatus === 'DELETE' ? null : '삭제'}
                 </button>
               ) : null}
-              <div className='my-2 border' />
-
-              {/* 답글 목록 */}
+              <div className=' border' />
             </div>
-            <div className='my-4 flex w-full border-b-2 ' />
+            <div className='flex w-full border-b-2 ' />
+
+            {/* 답글 목록 */}
+            <div className='ml-5'>
+              {comment.reAnswer.map((reply) => (
+                <CenterReplyComments
+                  key={reply.questionId}
+                  reply={reply}
+                  onClickCommentDelete={onClickCommentDelete}
+                  onClickReply={onClickReply}
+                  onClickEdit={onClickEdit}
+                />
+              ))}
+            </div>
           </li>
         ))}
       </ul>

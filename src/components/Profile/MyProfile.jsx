@@ -211,7 +211,7 @@ export default function MyProfile() {
           <h2 className='mt-5 text-2xl font-bold sm:text-center'>🙋‍♂️ 마이 프로필</h2>
           <p className='mb-4 text-sm opacity-50 sm:text-center'>나의 프로필을 자유롭게 꾸며보세요.</p>
         </div>
-        <div className='mb-10 border border-pink-200' />
+        <div className='mb-4 border border-pink-200' />
         <div className='mx-auto flex h-full w-full justify-around rounded-2xl border border-pink-200 px-5 lg:flex-col md:flex-col'>
           <div className='mx-auto flex w-full flex-col items-center justify-center'>
             <form action=''>

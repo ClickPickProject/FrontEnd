@@ -17,7 +17,7 @@ export default function CenterPost() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <div className='mb-10 flex gap-4 sm:mr-[40px] sm:gap-2'>
+          <div className='mb-4 flex gap-4 sm:mr-[40px] sm:gap-2'>
             <div className='whitespace-nowrap text-2xl font-bold sm:text-xl'>🙋🏻‍♀️ 나의소통</div>
             <div className='mb-10 border border-pink-200' />
           </div>
