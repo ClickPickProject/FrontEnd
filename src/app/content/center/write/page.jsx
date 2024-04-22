@@ -17,7 +17,7 @@ function WritePage() {
 
   const url = useRecoilValue(pageState);
   const [postOpen, setPostOpen] = useState(false);
-  const [lock, setLock] = useState('');
+  const [lock, setLock] = useState('LOCKED');
   useEffect(() => {
     setTitle('');
   }, [setTitle]);

@@ -23,6 +23,7 @@ export default function MyProfile() {
   const [phoneDisabled, setPhoneDisabled] = useState(false);
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
+
   const [image, setImage] = useState('');
   //token값 받아옴
   const token = useRecoilValue(tokenState);

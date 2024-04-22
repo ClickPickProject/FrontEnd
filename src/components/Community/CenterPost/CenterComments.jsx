@@ -37,12 +37,12 @@ export default function CenterComments({ answer }) {
   };
   // 수정
   const onClickEdit = (answerId) => {
-    router.push(`/content/center/${answerId}/edit`);
+    router.push(`/content/center/${answerId}/answer`);
     setPageState1(`/api/admin/answer/${answerId}`);
   };
   // 답변
   const onClickReply = (questionId, answerId) => {
-    router.push(`/content/center/${answerId}/reAnswer`);
+    router.push(`/content/center/${answerId}/answer`);
     setPageState1(`/api/member/${questionId}/${answerId}/reAnswer`);
   };
   return (

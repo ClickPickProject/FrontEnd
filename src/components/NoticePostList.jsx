@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { TbMessageCircleQuestion } from 'react-icons/tb';
 // import WriterView from './BestPost/WriterView';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -14,7 +13,7 @@ import { PencilIcon } from './UI/Icons';
 import CenterSearch from './CenterSearch';
 import { useRouter } from 'next/navigation';
 import { pageState } from '@/atoms/pageState';
-
+import { FaUnlock, FaLock } from 'react-icons/fa';
 export default function NoticePostList({ url }) {
   const [pageState1, setPageState1] = useRecoilState(pageState);
   const router = useRouter();
@@ -35,6 +34,7 @@ export default function NoticePostList({ url }) {
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedStatus]);
+
   const {
     data: posts,
     isPending,
@@ -52,6 +52,7 @@ export default function NoticePostList({ url }) {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
       });
+      console.log(res);
       if (res.status === 200) {
         setTotalPages(res.data.totalPages);
         setTotalItems(res.data.totalElements);
@@ -104,15 +105,15 @@ export default function NoticePostList({ url }) {
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className='rounded-lg bg-pink-200 px-2 py-1 text-center font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
+          className='rounded-lg bg-pink-200 px-2 text-center font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
         >
           <option value='모두'>모두</option>
-          <option value='COMPLETE'>답변대기</option>
-          <option value='AWAITING'>답변완료</option>
+          <option value='COMPLETE'>답변완료</option>
+          <option value='AWAITING'>답변대기</option>
         </select>
         <button
           onClick={handleQAndARouter}
-          className='ml-auto flex h-[44px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
+          className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
         >
           <PencilIcon color='white' size={18} />
           Q&A
@@ -123,20 +124,26 @@ export default function NoticePostList({ url }) {
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
             <div className='relative flex flex-row items-center gap-2 font-semibold'>
-              <Link href={`/content/center/${data.questionId}`}>{data.title}</Link>
-              <div className='absolute right-0 flex gap-4'>
-                <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status !== 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
-                >
-                  <TbMessageCircleQuestion size={20} /> 답변대기
-                </div>
-                <div
-                  className={`flex cursor-pointer items-center gap-2 rounded-lg ${data.status === 'COMPLETE' ? `bg-pink-600` : `bg-pink-400`} p-1.5 text-white`}
-                >
-                  <TbMessageCircleQuestion size={20} /> 답변완료
-                </div>
+              <div className='absolute right-0 flex'>
+                <FaUnlock color='red' />
+                <FaLock color='red' />
               </div>
+              <Link href={`/content/center/${data.questionId}`}>{data.title}</Link>
             </div>
+
+            {data.status !== 'COMPLETE' ? (
+              <div
+                className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status === 'COMPLETE' ? `bg-pink-300` : `bg-pink-200`}`}
+              >
+                답변대기
+              </div>
+            ) : (
+              <div
+                className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status !== 'COMPLETE' ? `bg-pink-200` : `bg-pink-300`}`}
+              >
+                답변완료
+              </div>
+            )}
             <div className='mb-4 w-full border border-gray-200' />
           </li>
         ))}

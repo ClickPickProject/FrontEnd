@@ -48,7 +48,7 @@ function WritePage() {
   return (
     <>
       <div>
-        <div className='p-4 text-2xl font-bold'>답변 작성</div>
+        <div className='p-4 text-2xl font-bold'>답변</div>
         <div className='flex flex-col gap-4'>
           <span className='flex'>
             <input

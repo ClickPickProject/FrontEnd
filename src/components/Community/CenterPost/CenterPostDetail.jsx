@@ -4,6 +4,7 @@ import CenterComments from './CenterComments';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { MyNicknameState, tokenState, loginState } from '@/atoms/tokenState';
+import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 import { CommentIcon, PencilIcon } from '../../UI/Icons';
@@ -16,7 +17,7 @@ export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
   const params = useParams();
   const token = useRecoilValue(tokenState);
-  const myNickname = useRecoilValue(MyNicknameState);
+  const myNickname = useRecoilValue(userNickNameState);
   const router = useRouter();
   const isLogin = useRecoilValue(loginState);
   const setQuestionEditMode = useSetRecoilState(questionEditModeState);
@@ -30,19 +31,22 @@ export default function CenterPostDetail() {
   } = useQuery({
     queryKey: ['post', params.id],
     queryFn: async () => {
-      const res = await axios.get(`/api/question/${params.id}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      try {
+        const res = await axios.get(`/api/question/${params.id}`, {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
 
-      if (res.status !== 200) {
-        throw new Error('Failed to fetch data');
-      } else if (res.status === 403) {
-        console.log('에러');
+        return res.data;
+      } catch (err) {
+        if (err.response.status === 403) {
+          console.log('에러 : ', err);
+          alert('비공개된 게시글입니다.');
+          router.back();
+        }
       }
-      return res.data;
     },
   });
 
@@ -76,7 +80,7 @@ export default function CenterPostDetail() {
   };
 
   const routerPage = () => {
-    router.push(isLogin ? '/content/center/write' : '/login');
+    router.push(isLogin ? `/content/center/${params.id}/answer` : '/login');
     setPageState1(`/api/admin/${params.id}/answer`);
     console.log(pageState1);
     console.log(params.id);
@@ -103,16 +107,16 @@ export default function CenterPostDetail() {
         </div>
         {/* 내용 */}
         <div className='flex flex-col gap-2'>
-          <div className='font-semibold text-pink-600 opacity-50'>사용자가 질문한 내용입니다.</div>
           <div className='mb-4 flex flex-row'>
             <div dangerouslySetInnerHTML={{ __html: content }} />
+            {myNickname}
           </div>
         </div>
 
         <div className='flex items-center gap-1 text-base '>
           <CommentIcon size={18} />
           답변 {commentCount}
-          {myNickname === 'ADMIN' ? (
+          {myNickname === '' ? (
             <button
               onClick={routerPage}
               className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'

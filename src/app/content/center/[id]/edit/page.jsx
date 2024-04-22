@@ -24,7 +24,7 @@ function CenterEditPage() {
   const queryClient = useQueryClient();
   const params = useParams();
   const [postOpen, setPostOpen] = useState(false);
-  const [lock, setLock] = useState('');
+  const [lock, setLock] = useState('LOCKED');
   useEffect(() => {
     setTitle(postTitle);
     setCategory(postCategory);
@@ -32,7 +32,7 @@ function CenterEditPage() {
   const postOpenButtonClick = (e) => {
     e.preventDefault();
     setPostOpen((open) => !open);
-    setLock(postOpen ? 'UNLOCK' : 'LOCKED');
+    setLock(postOpen ? 'LOCKED' : 'UNLOCK');
     console.log(lock);
   };
   const onClickWriteSubmit = async (e) => {
