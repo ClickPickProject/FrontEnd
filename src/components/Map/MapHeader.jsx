@@ -28,7 +28,7 @@ export default function MapHeader() {
   ];
 
   const defaultClass =
-    'flex w-full justify-center py-2 px-4 text-sm rounded-xl font-semibold transition-all cursor-pointer';
+    'flex w-full justify-center py-2 px-4 text-sm rounded-md font-semibold transition-all cursor-pointer';
 
   const onClickMapMenu = async (menu) => {
     if (menu === '즐겨찾기') {

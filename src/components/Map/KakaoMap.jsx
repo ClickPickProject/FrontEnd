@@ -249,7 +249,7 @@ export default function KakaoMap() {
           animate={{ x: clickToggle ? 400 : 0 }}
           exit={{ x: '-100%' }}
           transition={{ duration: 0.3 }}
-          className='absolute left-4 top-4 z-50 items-center rounded-sm bg-white bg-opacity-70 py-2 font-bold outline-none transition-opacity hover:bg-opacity-90'
+          className='absolute left-4 top-4 z-50 items-center rounded-sm bg-white bg-opacity-70 py-2 font-bold outline-none transition-opacity hover:bg-opacity-90 sm:hidden'
           onClick={() => setMarkerGuideModal(!markerGuideModal)}
         >
           {/* <div className='pb-1 pl-2 text-left text-black'>장소 활성화 지표</div> */}
