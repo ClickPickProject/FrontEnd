@@ -9,6 +9,7 @@ import ReplyToggle from '../ReplyToggle';
 import { ReplyIcon } from '@/components/UI/Icons';
 import { useEffect } from 'react';
 import CenterReplyComments from './CenterReplyComments';
+import { postContentState, postTitleState } from '@/atoms/PostState';
 export default function CenterComments({ answer }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
@@ -17,6 +18,9 @@ export default function CenterComments({ answer }) {
   const myNickname = useRecoilValue(MyNicknameState);
   const [commentContent, setCommentContent] = useState('');
   const router = useRouter();
+  const setPostContent = useSetRecoilState(postContentState);
+  const setPostTitle = useSetRecoilState(postTitleState);
+
   // 삭제
   const onClickCommentDelete = async (answerId) => {
     try {
@@ -37,7 +41,9 @@ export default function CenterComments({ answer }) {
     }
   };
   // 수정
-  const onClickEdit = (answerId) => {
+  const onClickEdit = (answerId, title, content) => {
+    setPostContent(content);
+    setPostTitle(title);
     router.push(`/content/center/${answerId}/answer`);
     setPageState1(`/api/admin/answer/${answerId}`);
   };
@@ -73,7 +79,7 @@ export default function CenterComments({ answer }) {
               {comment.nickname === myNickname ? (
                 <button
                   className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-                  onClick={() => onClickEdit(comment.answerId)}
+                  onClick={() => onClickEdit(comment.answerId, comment.title, comment.content)}
                 >
                   {comment.commentStatus === 'DELETE' ? null : '수정'}
                 </button>

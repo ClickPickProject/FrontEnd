@@ -10,8 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CommentIcon, PencilIcon } from '../../UI/Icons';
 import Loading from '../../Loading';
 import { pageState } from '@/atoms/pageState';
-
-import { questionContentState, questionEditModeState, questionTitleState } from '@/atoms/questionState';
+import { postContentState, postTitleState } from '@/atoms/PostState';
 import { useEffect } from 'react';
 
 export default function CenterPostDetail() {
@@ -21,10 +20,8 @@ export default function CenterPostDetail() {
   const myNickname = useRecoilValue(userNickNameState);
   const router = useRouter();
   const isLogin = useRecoilValue(loginState);
-  const setQuestionEditMode = useSetRecoilState(questionEditModeState);
-  const setQuestionTitle = useSetRecoilState(questionTitleState);
-  const setQuestionContent = useSetRecoilState(questionContentState);
-
+  const setPostContent = useSetRecoilState(postContentState);
+  const setPostTitle = useSetRecoilState(postTitleState);
   const {
     data: userPost,
     isPending,
@@ -54,10 +51,12 @@ export default function CenterPostDetail() {
   if (isPending) return <Loading isPending={isPending} />;
   if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
-  const { title, questionId, nickname, date, postCategory, content, commentCount, answer, profileUrl } = userPost;
+  const { title, questionId, nickname, date, content, commentCount, answer, profileUrl } = userPost;
 
   // 클릭시 글 수정
-  const onClickPostEdit = async () => {
+  const onClickPostEdit = async (title, content) => {
+    setPostTitle(title);
+    setPostContent(content);
     router.push(`/content/center/${params.id}/edit`);
     setPageState1(`/api/member/question/${params.id}`);
   };
@@ -98,7 +97,7 @@ export default function CenterPostDetail() {
           </div>
           {nickname === myNickname ? (
             <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
-              <button className='hover:opacity-100' onClick={() => onClickPostEdit(title, postCategory, content)}>
+              <button className='hover:opacity-100' onClick={() => onClickPostEdit(title, content)}>
                 수정
               </button>
               <button className='hover:opacity-100' onClick={() => onClickPostDelete()}>

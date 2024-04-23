@@ -8,11 +8,13 @@ import { pageState } from '@/atoms/pageState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { parentCommentIdState } from '@/atoms/commentState';
-
+import { postContentState, postTitleState } from '@/atoms/PostState';
 export default function CenterReplyComments({ reply, onClickCommentDelete, onClickEdit, onClickReply }) {
   const myNickname = useRecoilValue(MyNicknameState);
   const token = useRecoilValue(tokenState);
   const [pageState1, setPageState1] = useRecoilState(pageState);
+  const setPostContent = useSetRecoilState(postContentState);
+  const setPostTitle = useSetRecoilState(postTitleState);
   const router = useRouter();
   useEffect(() => {
     console.log(reply.questionId);
@@ -41,7 +43,7 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
           {reply.nickname === myNickname ? (
             <button
               className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-              onClick={() => onClickEdit(reply.answerId)}
+              onClick={() => onClickEdit(reply.answerId, reply.title, reply.content)}
             >
               {reply.commentStatus === 'DELETE' ? null : '수정'}
             </button>
