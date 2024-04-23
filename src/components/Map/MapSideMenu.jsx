@@ -185,16 +185,9 @@ export default function MapSideMenu({
                   >
                     {post.name}
                   </span>
-                  <span className='text-md font-normal opacity-80'>
-                    {getCategoryEmoji(post.category)} {post.category}
-                  </span>
+                  <span className='text-md font-normal opacity-80'>{getCategoryEmoji(post.category)}</span>
                 </div>
                 <span className='text-sm opacity-80'>{post.address}</span>
-                <span className='mr-auto text-sm opacity-60 hover:opacity-100'>
-                  <Link href={post.homepage} target='_blank' rel='noopener noreferrer'>
-                    홈페이지
-                  </Link>
-                </span>
               </div>
             ))}
           </div>

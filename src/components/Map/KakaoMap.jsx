@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { tokenState } from '@/atoms/tokenState';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -41,6 +42,19 @@ export default function KakaoMap() {
     { x: 0, y: 130 }, // 3개
     { x: 0, y: 190 }, // 5개 이상
   ];
+  const queryClient = useQueryClient();
+  const { data } = useQuery({
+    queryKey: ['bookmarkList'],
+    queryFn: async () => {
+      const res = await axios.get('/api/member/map/bookmark/list', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      return res.data;
+    },
+  });
 
   useEffect(() => {
     if (!map) return;
@@ -170,7 +184,7 @@ export default function KakaoMap() {
   const placeBookmark = async (info) => {
     const body = {
       name: info.content,
-      category: info.placeCategory,
+      category: info.placeCategoryGroupName,
       address: info.placeAddressName,
       url: info.placeUrl,
       xposition: info.position.lng,
@@ -185,9 +199,7 @@ export default function KakaoMap() {
         },
       });
       if (res.status === 200) {
-        console.log('placebookmark', res.data);
-        setBookmark(res.data);
-        // setBookmark(!bookmark);
+        queryClient.invalidateQueries(['bookmarkList']);
       }
     } catch (err) {
       console.log(err);
@@ -340,7 +352,11 @@ export default function KakaoMap() {
                           className='flex flex-1 justify-center border border-pink-200 text-pink-500 transition-all hover:opacity-50'
                           onClick={() => placeBookmark(marker)}
                         >
-                          {bookmark.status === 'LIKE' ? <FillStarIcon size={20} /> : <EmptyStarIcon size={20} />}
+                          {data?.filter((item) => item.name === marker.content).length > 0 ? (
+                            <FillStarIcon size={20} />
+                          ) : (
+                            <EmptyStarIcon size={20} />
+                          )}
                         </button>
                         <Link
                           href={marker.placeUrl}

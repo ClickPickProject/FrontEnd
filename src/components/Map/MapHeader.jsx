@@ -40,7 +40,6 @@ export default function MapHeader() {
           },
         });
         if (res.status === 200) {
-          // console.log(res.data);
           setPlaceBookmarkList(res.data);
         }
       } catch (err) {
