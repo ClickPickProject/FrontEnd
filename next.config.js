@@ -213,6 +213,14 @@ const nextConfig = {
       {
         source: '/api/admin/:path*/answer',
         destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/:path*/answer`,
+      }, // 추가 질문/답변 작성
+      {
+        source: '/api/member/:path*/:path*/reanswer',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/:path*/:path*/reanswer`,
+      }, // Q&A 상태별 질문
+      {
+        source: '/api/admin/:path*/answer',
+        destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/:path*/answer`,
       },
     ];
   },

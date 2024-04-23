@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { pageState } from '@/atoms/pageState';
 import ReplyToggle from '../ReplyToggle';
 import { ReplyIcon } from '@/components/UI/Icons';
+import { useEffect } from 'react';
 import CenterReplyComments from './CenterReplyComments';
 export default function CenterComments({ answer }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
@@ -43,14 +44,15 @@ export default function CenterComments({ answer }) {
   // 답변
   const onClickReply = (questionId, answerId) => {
     router.push(`/content/center/${answerId}/answer`);
-    setPageState1(`/api/member/${questionId}/${answerId}/reAnswer`);
+    setPageState1(`/api/member/${questionId}/${answerId}/reanswer`);
   };
+
   return (
     <div>
       <ul>
         {/* 댓글 목록 */}
         {answer.map((comment) => (
-          <li key={comment.commentId} className='flex flex-col gap-4'>
+          <li key={comment.answerId} className='flex flex-col gap-4'>
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             <h2 className=' font-semibold'> {comment.title}</h2>
 
@@ -61,7 +63,7 @@ export default function CenterComments({ answer }) {
             <div className='flex items-center gap-1'>
               <div
                 className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-                onClick={() => onClickReply(comment.answerId, comment.questionId)}
+                onClick={() => onClickReply(comment.questionId, comment.answerId)}
               >
                 <ReplyIcon color='#ec4899' />
 
@@ -92,11 +94,11 @@ export default function CenterComments({ answer }) {
             <div className='ml-5'>
               {comment.reAnswer.map((reply) => (
                 <CenterReplyComments
-                  key={reply.questionId}
+                  key={reply.answerId}
                   reply={reply}
                   onClickCommentDelete={onClickCommentDelete}
-                  onClickReply={onClickReply}
                   onClickEdit={onClickEdit}
+                  onClickReply={onClickReply}
                 />
               ))}
             </div>

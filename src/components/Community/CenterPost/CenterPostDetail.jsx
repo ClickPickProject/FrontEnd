@@ -12,6 +12,7 @@ import Loading from '../../Loading';
 import { pageState } from '@/atoms/pageState';
 
 import { questionContentState, questionEditModeState, questionTitleState } from '@/atoms/questionState';
+import { useEffect } from 'react';
 
 export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
@@ -54,6 +55,7 @@ export default function CenterPostDetail() {
   if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
   const { title, questionId, nickname, date, postCategory, content, commentCount, answer, profileUrl } = userPost;
+
   // 클릭시 글 수정
   const onClickPostEdit = async () => {
     router.push(`/content/center/${params.id}/edit`);
@@ -78,13 +80,13 @@ export default function CenterPostDetail() {
       console.log(params.id);
     }
   };
-
   const routerPage = () => {
     router.push(isLogin ? `/content/center/${params.id}/answer` : '/login');
     setPageState1(`/api/admin/${params.id}/answer`);
     console.log(pageState1);
     console.log(params.id);
   };
+
   return (
     <>
       <div className='w-full max-w-[830px]'>
@@ -109,7 +111,6 @@ export default function CenterPostDetail() {
         <div className='flex flex-col gap-2'>
           <div className='mb-4 flex flex-row'>
             <div dangerouslySetInnerHTML={{ __html: content }} />
-            {myNickname}
           </div>
         </div>
 
@@ -130,7 +131,7 @@ export default function CenterPostDetail() {
         {/* 경계선 */}
         <div className='my-2 border-b-2' />
         {/* 차후 수정할 댓글 내용들 */}
-        <CenterComments answer={answer} />
+        <CenterComments answer={answer} Id={params.id} />
         {/* <CenterCommentWrite /> */}
       </div>
     </>

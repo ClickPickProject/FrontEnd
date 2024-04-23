@@ -105,7 +105,7 @@ export default function NoticePostList({ url }) {
         <select
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
-          className='rounded-lg bg-pink-200 px-2 text-center font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
+          className='flex rounded-lg bg-pink-200 text-center font-semibold outline-none transition-all hover:cursor-pointer hover:bg-pink-300 sm:px-1.5 sm:text-xs'
         >
           <option value='모두'>모두</option>
           <option value='COMPLETE'>답변완료</option>
@@ -123,12 +123,15 @@ export default function NoticePostList({ url }) {
         {displayPosts?.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
             <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
-            <div className='relative flex flex-row items-center gap-2 font-semibold'>
-              <div className='absolute right-0 flex'>
-                <FaUnlock color='red' />
-                <FaLock color='red' />
-              </div>
-              <Link href={`/content/center/${data.questionId}`}>{data.title}</Link>
+            <div className='relative flex items-center gap-2 font-semibold'>
+              <Link href={`/content/center/${data.questionId}`}>
+                {' '}
+                <div className='flex items-center gap-2'>
+                  <FaUnlock color='pink' />
+                  {/* <FaLock color='red' /> */}
+                  {data.title}
+                </div>
+              </Link>
             </div>
 
             {data.status !== 'COMPLETE' ? (

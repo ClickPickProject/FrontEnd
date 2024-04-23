@@ -1,14 +1,22 @@
 'use client';
 import WriterView from '../BestPost/WriterView';
 import { EmptyHeartIcon, FillHeartIcon, ReplyIcon } from '../../UI/Icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { pageState } from '@/atoms/pageState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { parentCommentIdState } from '@/atoms/commentState';
 
-export default function CenterReplyComments({ reply, onClickCommentDelete, onClickReply, onClickEdit }) {
+export default function CenterReplyComments({ reply, onClickCommentDelete, onClickEdit, onClickReply }) {
   const myNickname = useRecoilValue(MyNicknameState);
   const token = useRecoilValue(tokenState);
+  const [pageState1, setPageState1] = useRecoilState(pageState);
+  const router = useRouter();
+  useEffect(() => {
+    console.log(reply.questionId);
+  }, []);
   return (
     <>
       <li key={reply.answerId} className='flex flex-col gap-4'>
@@ -23,7 +31,7 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
         <div className='flex items-center gap-1'>
           <div
             className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-            onClick={() => onClickReply(reply.answerId, reply.questionId)}
+            onClick={() => onClickReply(reply.questionId, reply.answerId)}
           >
             <ReplyIcon color='#ec4899' />
 
@@ -53,11 +61,11 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
           <div className='my-2 flex w-full border-b-2 ' />
           {reply.reAnswer.map((reply) => (
             <CenterReplyComments
-              key={reply.questionId}
+              key={reply.answerId}
               reply={reply}
               onClickCommentDelete={onClickCommentDelete}
-              onClickReply={onClickReply}
               onClickEdit={onClickEdit}
+              onClickReply={onClickReply}
             />
           ))}
         </div>
