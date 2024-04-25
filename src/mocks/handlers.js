@@ -539,6 +539,41 @@ export const handlers = [
           nickname: 'ban',
           phone: '01012345679',
         },
+        {
+          id: 'eg@juppatpe.ht', //정지된 유저 정보
+          password: null,
+          name: 'Rose Chandlerban',
+          nickname: 'Jack Cooperban',
+          phone: '01012345679',
+        },
+        {
+          id: 'en@tif.za', //정지된 유저 정보
+          password: null,
+          name: 'Marcus Armstrongban',
+          nickname: 'Glen Reyesban',
+          phone: '01012345679',
+        },
+        {
+          id: 'ju@rupno.na', //정지된 유저 정보
+          password: null,
+          name: 'Julian Ballardban',
+          nickname: 'Michael Gutierrezban',
+          phone: '01012345679',
+        },
+        {
+          id: 'fotlemug@tukiero.pr', //정지된 유저 정보
+          password: null,
+          name: 'Katharine Tateban',
+          nickname: 'Edgar Cohenban',
+          phone: '01012345679',
+        },
+        {
+          id: 'kel@nosege.is', //정지된 유저 정보
+          password: null,
+          name: 'Dale Barkerban',
+          nickname: 'Jeremiah Perkinsban',
+          phone: '01012345679',
+        },
       ],
     });
   }),
@@ -827,5 +862,65 @@ export const handlers = [
         status: 'LIKE',
       },
     ]);
+  }),
+  // 공지사항 목록 조회
+  http.get('/api/notice/list', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          noticeId: 1,
+          nickname: '관리자',
+          title: '공지사항',
+          createAt: '2024-04-24T19:55:48.884Z',
+        },
+        {
+          noticeId: 2,
+          nickname: 'hall',
+          title: 'Bhutan',
+          createAt: '2024-04-24T20:55:48.884Z',
+        },
+        {
+          noticeId: 3,
+          nickname: 'stems',
+          title: 'cap',
+          createAt: '2024-04-25T19:55:48.884Z',
+        },
+        {
+          noticeId: 4,
+          nickname: 'comfortable',
+          title: 'palace',
+          createAt: '2024-04-25T20:55:48.884Z',
+        },
+        {
+          noticeId: 5,
+          nickname: 'beautiful',
+          title: 'luck',
+          createAt: '2024-04-25T20:55:48.884Z',
+        },
+        {
+          noticeId: 6,
+          nickname: 'hat',
+          title: 'serious',
+          createAt: '2024-04-25T21:55:48.884Z',
+        },
+        {
+          noticeId: 7,
+          nickname: 'bone',
+          title: 'roar',
+          createAt: '2024-04-25T22:55:48.884Z',
+        },
+      ],
+    });
+  }),
+  // 공지사항 상세 조회
+  http.get('/api/notice/:noticeId', ({ params }) => {
+    const { noticeId } = params;
+    return HttpResponse.json({
+      noticeId: noticeId,
+      nickname: '관리자',
+      title: '공지사항',
+      content: '공지사항 내용입니다.',
+      createAt: '2024-04-24T19:55:48.884Z',
+    });
   }),
 ];
