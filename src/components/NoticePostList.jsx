@@ -28,7 +28,7 @@ export default function NoticePostList() {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/list`, {
+      const res = await axios.get(`/api/notice/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
@@ -42,51 +42,28 @@ export default function NoticePostList() {
     refetch();
   };
 
-  const [search, setSearch] = useState('');
-  const [searchResults, setSearchResults] = useState(null);
-  const onClickSearch = async (e) => {
-    try {
-      const res = await axios.get('/api/post/title', {
-        params: {
-          title: search,
-        },
-      });
-      if (res.status === 200) {
-        setSearchResults(res.data.content);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
+
   return (
-    <div className=''>
-      <div className='relative mb-4 w-1/3'>
-        <input
-          type='text'
-          placeholder='검색어를 입력하세요.'
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className='w-full rounded-lg border-2 border-pink-300 px-3 py-2 outline-none'
-        />
-        <button className='absolute right-0 mr-2 h-full items-center' onClick={onClickSearch}>
-          검색
-        </button>
-      </div>
-      <ul>
+    <div>
+      <ul className='flex flex-col gap-8'>
+        <div className='flex justify-between text-xl font-bold'>
+          <div className='flex flex-1 justify-center'>제목</div>
+          <div className='flex justify-center'>작성일</div>
+        </div>
         {posts.content.map((data) => (
-          <li key={data.postId} className='flex w-full flex-col gap-4'>
-            <div className='relative flex items-center gap-2 font-semibold'>
+          <li key={data.postId} className='flex w-full flex-col'>
+            <div className='relative flex items-center text-lg'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
               <div className='absolute right-0'>{data.createAt ? dayjs(data.createAt).fromNow() : null}</div>
             </div>
             {/* 경계선 */}
-            <div className='mb-4 w-full border border-gray-200' />
+            <div className='mt-4 w-full border border-gray-200' />
           </li>
         ))}
       </ul>
 
-      <div className=''>
+      <div className='py-4'>
         <Pagination
           activePage={currentPage}
           itemsCountPerPage={postsPerPage}
