@@ -1,19 +1,9 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
+import Select from 'react-select';
 
 export default function ReporterList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간 상태
-  const [openDropdown, setOpenDropdown] = useState(false);
-
-  const handlePeriodSelect = (period) => {
-    setSelectedPeriod(period);
-    console.log(period);
-    setOpenDropdown(false);
-  };
-
-  const toggleDropdown = (index) => {
-    setOpenDropdown(openDropdown !== index ? index : null);
-  };
 
   const onClickAccept = () => {
     const currentDate = dayjs();
@@ -44,44 +34,39 @@ export default function ReporterList() {
     console.log('거부');
   };
 
+  const options = [
+    { value: '3', label: '3일' },
+    { value: '7', label: '7일' },
+    { value: '30', label: '30일' },
+    { value: '99999', label: '영구' },
+  ];
+
   return (
-    <div className='grid w-full grid-cols-6 gap-2 bg-white py-2 text-center'>
+    <div className='grid  w-full grid-cols-6 items-center gap-2 bg-white py-2 text-center'>
       <div className=''>댓글</div>
       <div className=''>경찰</div>
       <div className=''>악질 유저2</div>
       <div className=''>도배</div>
       <div className=''>
         <div className='relative'>
-          <div className='cursor-pointer' onClick={() => toggleDropdown(2)}>
-            {selectedPeriod ? selectedPeriod : '기간 선택'}
-            <span className='ml-1'>{openDropdown ? '▲' : '▼'}</span>
+          <div className='cursor-pointer'>
+            <Select
+              defaultValue={selectedPeriod}
+              onChange={setSelectedPeriod}
+              options={options}
+              placeholder='기간 선택'
+              className='border-pink-200 px-2'
+              autoFocus
+              isSearchable={false}
+            />
           </div>
-          {openDropdown && (
-            <div className='absolute right-0 z-50 w-full rounded-md bg-white shadow-lg'>
-              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('3일')}>
-                3일
-              </span>
-              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('5일')}>
-                5일
-              </span>
-              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('7일')}>
-                7일
-              </span>
-              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('30일')}>
-                30일
-              </span>
-              <span className='block cursor-pointer px-4 py-2' onClick={() => handlePeriodSelect('영구')}>
-                영구
-              </span>
-            </div>
-          )}
         </div>
       </div>
-      <div className='mx-auto flex items-center gap-2'>
-        <button className='rounded bg-blue-500 px-2 font-bold text-white hover:bg-blue-700' onClick={onClickAccept}>
+      <div className='mx-auto flex items-center gap-2 text-lg'>
+        <button className='rounded bg-blue-500 px-2 font-semibold text-white hover:bg-blue-700' onClick={onClickAccept}>
           승인
         </button>
-        <button className='rounded bg-red-500 px-2 font-bold text-white hover:bg-red-700' onClick={onClickReject}>
+        <button className='rounded bg-red-500 px-2 font-semibold text-white hover:bg-red-700' onClick={onClickReject}>
           거부
         </button>
       </div>
