@@ -923,4 +923,36 @@ export const handlers = [
       createAt: '2024-04-24T19:55:48.884Z',
     });
   }),
+  // 신고된 게시글 처리
+  http.post('/api/admin/postban', () => {
+    return HttpResponse.json({
+      reportPostId: '1',
+      reportedUserId: 'test@gmail.com',
+      reason: '욕설',
+      banDays: '3',
+    });
+  }),
+  // 신고된 게시글 리스트 조회
+  http.post('/api/admin/reportpostlist', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          reportPostId: 1,
+          reportUserId: 'police@gmail.com',
+          reportedUserId: 'uneducated@gmail.com',
+          postId: 2,
+          reason: '욕설',
+          reportStatus: '처리전',
+        },
+        {
+          reportPostId: 2,
+          reportUserId: 'police@gmail.com',
+          reportedUserId: 'uneducated@gmail.com',
+          postId: 2,
+          reason: '욕설',
+          reportStatus: '처리전',
+        },
+      ],
+    });
+  }),
 ];
