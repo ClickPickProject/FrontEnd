@@ -528,51 +528,57 @@ export const handlers = [
     });
   }),
 
-  // 정지된(banned) 사용자 목록
+  // 정지된(banned) 유저 리스트
   http.post('/api/admin/manager/banuserlist', () => {
     return HttpResponse.json({
       content: [
         {
           id: 'ban@naver.com', //정지된 유저 정보
-          password: null,
           name: 'ban',
           nickname: 'ban',
           phone: '01012345679',
+          startDate: '2024-04-01T16:00:48.884Z',
+          endDate: '2024-04-30T16:00:48.884Z',
         },
         {
           id: 'eg@juppatpe.ht', //정지된 유저 정보
-          password: null,
           name: 'Rose Chandlerban',
           nickname: 'Jack Cooperban',
           phone: '01012345679',
+          startDate: '2024-04-20T16:00:48.884Z',
+          endDate: '2024-04-30T16:00:48.884Z',
         },
         {
           id: 'en@tif.za', //정지된 유저 정보
-          password: null,
           name: 'Marcus Armstrongban',
           nickname: 'Glen Reyesban',
           phone: '01012345679',
+          startDate: '2024-04-20T16:00:48.884Z',
+          endDate: '2024-04-30T16:00:48.884Z',
         },
         {
           id: 'ju@rupno.na', //정지된 유저 정보
-          password: null,
           name: 'Julian Ballardban',
           nickname: 'Michael Gutierrezban',
           phone: '01012345679',
+          startDate: '2024-04-20T16:00:48.884Z',
+          endDate: '2024-04-30T16:00:48.884Z',
         },
         {
           id: 'fotlemug@tukiero.pr', //정지된 유저 정보
-          password: null,
           name: 'Katharine Tateban',
           nickname: 'Edgar Cohenban',
           phone: '01012345679',
+          startDate: '2024-04-20T16:00:48.884Z',
+          endDate: '2024-04-30T16:00:48.884Z',
         },
         {
           id: 'kel@nosege.is', //정지된 유저 정보
-          password: null,
           name: 'Dale Barkerban',
           nickname: 'Jeremiah Perkinsban',
           phone: '01012345679',
+          startDate: '2024-04-20T16:00:48.884Z',
+          endDate: '2024-04-30T16:00:48.884Z',
         },
       ],
     });
@@ -926,10 +932,10 @@ export const handlers = [
   // 신고된 게시글 처리
   http.post('/api/admin/postban', () => {
     return HttpResponse.json({
-      reportPostId: '1',
+      reportPostId: 1,
       reportedUserId: 'test@gmail.com',
       reason: '욕설',
-      banDays: '3',
+      banDays: 3,
     });
   }),
   // 신고된 게시글 리스트 조회
@@ -949,6 +955,39 @@ export const handlers = [
           reportUserId: 'police@gmail.com',
           reportedUserId: 'uneducated@gmail.com',
           postId: 2,
+          reason: '욕설',
+          reportStatus: '처리전',
+        },
+      ],
+    });
+  }),
+  // 신고된 댓글 처리
+  http.post('/api/admin/commentban', () => {
+    return HttpResponse.json({
+      reportCommentId: 1,
+      reportedUserId: 'commentBadUser@gmail.com',
+      reason: '비방',
+      banDays: 7,
+    });
+  }),
+
+  // 신고된 댓글 리스트 조회
+  http.post('/api/admin/reportcommentlist', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          reportCommentId: 1,
+          reportUserId: 'police@gmail.com',
+          reportedUserId: 'uneducated@gmail.com',
+          commentId: 2,
+          reason: '욕설',
+          reportStatus: '처리전',
+        },
+        {
+          reportCommentId: 2,
+          reportUserId: 'police2@naver.com',
+          reportedUserId: 'uneducated2@naver.com',
+          commentId: 3,
           reason: '욕설',
           reportStatus: '처리전',
         },
