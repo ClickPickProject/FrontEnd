@@ -40,7 +40,7 @@ export default function layout({ children }) {
   return (
     <>
       <div className='flex min-h-screen bg-white'>
-        <div className={`w-[84px] bg-white shadow-xl`}>
+        <div className={`z-50 w-[84px] bg-white shadow-xl`}>
           {/* Nav */}
           <nav className='flex h-full flex-col justify-between px-4'>
             <figure className='my-4 flex justify-center'>

@@ -1,11 +1,12 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import UserList from './UserList';
 import Select from 'react-select';
 import { useRecoilState } from 'recoil';
 import { filterUserStatusState } from '@/atoms/managerState';
 import BannedUserList from './BannedUserList';
 import NormalUserList from './NormalUserList';
+import { motion } from 'framer-motion';
 
 export default function UsersPage() {
   useEffect(() => {
@@ -34,7 +35,11 @@ export default function UsersPage() {
           />
         </div>
         {filterUserStatus.value === 'ALL' && (
-          <div className='mx-auto flex w-full flex-col'>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, delay: 0.5 }}
+            className='mx-auto flex w-full flex-col'
+          >
             <div className='overflow-hidden rounded-sm border-b border-gray-200 shadow'>
               <div className='bg-pink-300 text-black'>
                 <div className='grid grid-cols-6 gap-2 py-2 text-center text-sm [&>*]:font-semibold'>
@@ -50,10 +55,14 @@ export default function UsersPage() {
                 <UserList />
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
         {filterUserStatus.value === 'NORMAL' && (
-          <div className='mx-auto flex w-full flex-col'>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, delay: 0.5 }}
+            className='mx-auto flex w-full flex-col'
+          >
             <div className='overflow-hidden rounded-sm border-b border-gray-200 shadow'>
               <div className='bg-pink-300 text-black'>
                 <div className='grid grid-cols-5 gap-2 py-2 text-center text-sm [&>*]:font-semibold'>
@@ -68,10 +77,14 @@ export default function UsersPage() {
                 <NormalUserList />
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
         {filterUserStatus.value === 'BAN' && (
-          <div className='mx-auto flex w-full flex-col'>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, delay: 0.5 }}
+            className='mx-auto flex w-full flex-col'
+          >
             <div className='overflow-hidden rounded-sm border-b border-gray-200 shadow'>
               <div className='bg-pink-300 text-black'>
                 <div className='grid grid-cols-5 gap-2 py-2 text-center text-sm [&>*]:font-semibold'>
@@ -86,7 +99,7 @@ export default function UsersPage() {
                 <BannedUserList />
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
     </>

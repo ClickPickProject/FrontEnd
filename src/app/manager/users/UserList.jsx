@@ -24,9 +24,9 @@ export default function UserList() {
           <div className=''>{user.createAt.split('T')[0]}</div>
           <div className=''>
             {user.userStatus === 'NORMAL' ? (
-              <span className='rounded-full bg-blue-500 px-1 text-white'>일반</span>
+              <span className='rounded-full bg-blue-500 px-2 text-white'>일반</span>
             ) : (
-              <span className='rounded-full bg-red-500 px-1 text-white'>정지됨</span>
+              <span className='rounded-full bg-red-500 px-2 text-white'>정지됨</span>
             )}
           </div>
         </>
