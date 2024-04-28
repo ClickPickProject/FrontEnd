@@ -7,3 +7,11 @@ export const filterUserStatusState = atom({
     label: '모두',
   },
 });
+
+export const filterReportStatusState = atom({
+  key: 'filterReportStatusState',
+  default: {
+    value: 'posts',
+    label: '게시글',
+  },
+});
