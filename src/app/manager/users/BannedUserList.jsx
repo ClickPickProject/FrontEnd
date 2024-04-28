@@ -3,32 +3,24 @@ import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-export default function UserList() {
+export default function BannedUserList() {
   const { data, isPending, isError } = useQuery({
-    queryKey: ['users'],
+    queryKey: ['banndUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/userlist');
+      const res = await axios.get('/api/admin/banuserlist');
       return res.data;
     },
   });
-
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div className='grid w-full grid-cols-6 gap-2 bg-white py-2 text-center'>
+    <div className='grid w-full grid-cols-5 gap-2 bg-white py-2 text-center'>
       {data.content.map((user) => (
         <>
           <div className=''>{user.id}</div>
           <div className=''>{user.name}</div>
           <div className=''>{user.nickname}</div>
           <div className=''>{user.phone}</div>
-          <div className=''>{user.createAt.split('T')[0]}</div>
-          <div className=''>
-            {user.userStatus === 'NORMAL' ? (
-              <span className='rounded-full bg-blue-500 px-1 text-white'>일반</span>
-            ) : (
-              <span className='rounded-full bg-red-500 px-1 text-white'>정지됨</span>
-            )}
-          </div>
+          <div className=''>{`${user.startDate.split('T')[0]} ~ ${user.endDate.split('T')[0]}`}</div>
         </>
       ))}
     </div>
