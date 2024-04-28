@@ -509,74 +509,94 @@ export const handlers = [
   }),
 
   // 사용자 목록
-  http.get('/api/admin/manager/userlist', () => {
+  http.get('/api/admin/userlist', () => {
     return HttpResponse.json({
       content: [
         {
           id: 'tm4839@naver.com',
-          name: '태민',
-          nickname: '태민',
+          name: '김철수',
+          nickname: '닉네임',
           phone: '01012345678',
+          createAt: '2024-03-20T12:00:00.884Z',
+          userStatus: 'NORMAL',
         },
         {
           id: 'ban@naver.com',
+          name: 'name',
+          nickname: 'nickname',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'NORMAL',
+        },
+        {
+          id: 'zozispor@tiusewi.gt',
           name: 'ban',
           nickname: 'ban',
-          phone: '01012345679',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'NORMAL',
+        },
+        {
+          id: 'to@vaneid.org',
+          name: 'Craig',
+          nickname: 'kind',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'NORMAL',
+        },
+        {
+          id: 'ijpovo@lolef.cg',
+          name: 'Brett',
+          nickname: 'dream',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'NORMAL',
+        },
+        {
+          id: 'kopez@cahibowo.ru',
+          name: 'Elizabeth',
+          nickname: 'honor',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'NORMAL',
+        },
+        {
+          id: 'kalu@zi.us',
+          name: 'Ida',
+          nickname: 'discovery',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'BAN',
+        },
+        {
+          id: 'le@inafe.tm',
+          name: 'Lina',
+          nickname: 'involved',
+          phone: '01099998877',
+          createAt: '2024-03-15T16:00:00.884Z',
+          userStatus: 'BAN',
         },
       ],
     });
   }),
 
   // 정지된(banned) 유저 리스트
-  http.post('/api/admin/manager/banuserlist', () => {
+  http.get('/api/admin/banuserlist', () => {
     return HttpResponse.json({
       content: [
         {
-          id: 'ban@naver.com', //정지된 유저 정보
-          name: 'ban',
-          nickname: 'ban',
-          phone: '01012345679',
+          id: 'kalu@zi.us',
+          name: 'Ida',
+          nickname: 'discovery',
+          phone: '01099998877',
           startDate: '2024-04-01T16:00:48.884Z',
           endDate: '2024-04-30T16:00:48.884Z',
         },
         {
-          id: 'eg@juppatpe.ht', //정지된 유저 정보
-          name: 'Rose Chandlerban',
-          nickname: 'Jack Cooperban',
-          phone: '01012345679',
-          startDate: '2024-04-20T16:00:48.884Z',
-          endDate: '2024-04-30T16:00:48.884Z',
-        },
-        {
-          id: 'en@tif.za', //정지된 유저 정보
-          name: 'Marcus Armstrongban',
-          nickname: 'Glen Reyesban',
-          phone: '01012345679',
-          startDate: '2024-04-20T16:00:48.884Z',
-          endDate: '2024-04-30T16:00:48.884Z',
-        },
-        {
-          id: 'ju@rupno.na', //정지된 유저 정보
-          name: 'Julian Ballardban',
-          nickname: 'Michael Gutierrezban',
-          phone: '01012345679',
-          startDate: '2024-04-20T16:00:48.884Z',
-          endDate: '2024-04-30T16:00:48.884Z',
-        },
-        {
-          id: 'fotlemug@tukiero.pr', //정지된 유저 정보
-          name: 'Katharine Tateban',
-          nickname: 'Edgar Cohenban',
-          phone: '01012345679',
-          startDate: '2024-04-20T16:00:48.884Z',
-          endDate: '2024-04-30T16:00:48.884Z',
-        },
-        {
-          id: 'kel@nosege.is', //정지된 유저 정보
-          name: 'Dale Barkerban',
-          nickname: 'Jeremiah Perkinsban',
-          phone: '01012345679',
+          id: 'le@inafe.tm',
+          name: 'Lina',
+          nickname: 'involved',
+          phone: '01099998877',
           startDate: '2024-04-20T16:00:48.884Z',
           endDate: '2024-04-30T16:00:48.884Z',
         },
@@ -939,7 +959,7 @@ export const handlers = [
     });
   }),
   // 신고된 게시글 리스트 조회
-  http.post('/api/admin/reportpostlist', () => {
+  http.get('/api/admin/reportpostlist', () => {
     return HttpResponse.json({
       content: [
         {
@@ -972,7 +992,7 @@ export const handlers = [
   }),
 
   // 신고된 댓글 리스트 조회
-  http.post('/api/admin/reportcommentlist', () => {
+  http.get('/api/admin/reportcommentlist', () => {
     return HttpResponse.json({
       content: [
         {
