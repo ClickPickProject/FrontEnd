@@ -951,12 +951,7 @@ export const handlers = [
   }),
   // 신고된 게시글 처리
   http.post('/api/admin/postban', () => {
-    return HttpResponse.json({
-      reportPostId: 1,
-      reportedUserId: 'test@gmail.com',
-      reason: '욕설',
-      banDays: 3,
-    });
+    return HttpResponse.json('정지되었습니다.');
   }),
   // 신고된 게시글 리스트 조회
   http.get('/api/admin/reportpostlist', () => {
@@ -966,8 +961,24 @@ export const handlers = [
           reportPostId: 1,
           reportUserId: 'police@gmail.com',
           reportedUserId: 'uneducated@gmail.com',
-          postId: 2,
+          postId: 1,
           reason: '욕설',
+          reportStatus: '처리전',
+        },
+        {
+          reportPostId: 3,
+          reportUserId: 'police4@gmail.com',
+          reportedUserId: 'uneducated3@naver.com',
+          postId: 3,
+          reason: '비방',
+          reportStatus: '처리전',
+        },
+        {
+          reportPostId: 4,
+          reportUserId: 'police5@gmail.com',
+          reportedUserId: 'uneducated2@gmail.com',
+          postId: 4,
+          reason: '비방',
           reportStatus: '처리전',
         },
         {
@@ -1000,7 +1011,7 @@ export const handlers = [
           reportUserId: 'police@gmail.com',
           reportedUserId: 'uneducated@gmail.com',
           commentId: 2,
-          reason: '욕설',
+          reason: '비방',
           reportStatus: '처리전',
         },
         {
@@ -1008,8 +1019,8 @@ export const handlers = [
           reportUserId: 'police2@naver.com',
           reportedUserId: 'uneducated2@naver.com',
           commentId: 3,
-          reason: '욕설',
-          reportStatus: '처리전',
+          reason: '광고',
+          reportStatus: '처리완료',
         },
       ],
     });
