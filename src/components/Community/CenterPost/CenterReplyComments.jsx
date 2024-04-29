@@ -31,13 +31,13 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
       <li key={reply.answerId} className='flex flex-col gap-4'>
         {reply.questionId} {reply.answerId}
         <WriterView writer={reply.nickname} date={reply.createAt} profile={reply.profileUrl} />
-        <h2 className='font-semibold'> {reply.title}</h2>
+        <h2 className=' font-semibold'> {reply.title}</h2>
         <div className='flex flex-col gap-1 rounded-md'>
           <div dangerouslySetInnerHTML={{ __html: reply.content }} />
         </div>
         {/* 답글 버튼 */}
-        <div className='flex items-center gap-1'>
-          {myNickname === 'ADMIN' ? (
+        {myNickname === 'ADMIN' ? (
+          <div className='flex items-center gap-1'>
             <div
               className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
               onClick={() => onClickReReply(reply.questionId, reply.answerId)}
@@ -45,26 +45,9 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
               <ReplyIcon color='#ec4899' />
               <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
             </div>
-          ) : null}
-          {/* 댓글 수정 및 삭제
-          {reply.nickname === myNickname ? (
-            <button
-              className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-              onClick={() => onClickEdit(reply.answerId, reply.title, reply.content)}
-            >
-              {reply.commentStatus === 'DELETE' ? null : '수정'}
-            </button>
-          ) : null}
-          {reply.nickname === myNickname ? (
-            <button
-              onClick={() => onClickCommentDelete(reply.answerId)}
-              className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-            >
-              {reply.commentStatus === 'DELETE' ? null : '삭제'}
-            </button>
-          ) : null} */}
-          <div className='my-2 border' />
-        </div>
+            <div className='my-2 border' />
+          </div>
+        ) : null}
         {/* 답글 목록 */}
         <div className=''>
           <div className='my-2 flex w-full border-b-2 ' />

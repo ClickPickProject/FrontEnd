@@ -1,11 +1,14 @@
+'use client';
 import SideNavbar from '@/components/Community/SideNavbar';
+import { useRecoilValue } from 'recoil';
+import { pageOpacity } from '@/atoms/pageState';
 import { CallIcon, LetterIcon } from '@/components/UI/Icons';
 export default function layout({ children }) {
   // h-[100dvh]
-
+  const opacity = useRecoilValue(pageOpacity);
   return (
     <>
-      <div className='mx-auto flex w-full max-w-6xl bg-white'>
+      <div className={`mx-auto flex w-full max-w-6xl bg-white ${opacity}`}>
         <SideNavbar />
         {children}
       </div>

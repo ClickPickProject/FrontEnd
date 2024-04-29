@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { pageOpacity } from '@/atoms/pageState';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 import Loading from '../Loading';
 import { LogoutIcon } from '@/components/UI/Icons';
-
+import ProfileDelete from './ProfileDelete';
 import { IoImagesOutline } from 'react-icons/io5';
 
 export default function MyProfile() {
@@ -23,10 +24,11 @@ export default function MyProfile() {
   const [phoneDisabled, setPhoneDisabled] = useState(false);
   const [clickPhoneCount, setClickPhoneCount] = useState(1);
   const [clickNickNameCount, setClickNickNameCount] = useState(1);
-
   const [image, setImage] = useState('');
+  const [opacity, setOpacity] = useRecoilState(pageOpacity);
   //token값 받아옴
   const token = useRecoilValue(tokenState);
+
   //유저 정보 받아오기
   const { data, isPending, isError } = useQuery({
     queryKey: ['userInfo'],
@@ -54,7 +56,7 @@ export default function MyProfile() {
     queryKey: ['proImg'],
     queryFn: async () => {
       try {
-        const res = await axios.get('/api/member/profile/image/', {
+        const res = await axios.get('/api/profile/image/', {
           withCredentials: true,
           headers: {
             Authorization: token,
@@ -121,6 +123,7 @@ export default function MyProfile() {
   const handleNickNameChange = async (e) => {
     setNickNameDisabled((value) => !value);
     e.preventDefault();
+
     if (clickNickNameCount % 2 === 0) {
       try {
         const res = await axios.get(`/api/member/new-nickname/${nickName}`, {
@@ -144,6 +147,7 @@ export default function MyProfile() {
   //휴대폰 번호 변경
   const handlePhoneChange = async (e) => {
     e.preventDefault();
+    // if (!isFormValid()) return;
     setPhoneDisabled((value) => !value);
     if (clickPhoneCount % 2 === 0) {
       try {
@@ -168,12 +172,9 @@ export default function MyProfile() {
   };
 
   //style값
-  const btnStyle =
-    'w-[50px] rounded-lg hover:bg-pink-300 bg-pink-100 font-semibold p-1 hover:shadow-inner sm:w-full sm:mt-2 sm:w-[80px] justify-center';
-  const inputFont =
-    'w-full bg-pink-100 text-gray-400 border border-black p-1 disabled:bg-pink-300 disabled:font-semibold disabled:text-white';
+  const inputFont = 'w-full rounded-lg bg-pink-100 px-2 p-2 font-semibold hover:bg-pink-400 ';
   //API로 받아올 값
-  const labelStyle = 'mx-5 flex font-semibold sm:justify-center sm:font-bold sm:text-base';
+  const labelStyle = 'whitespace-nowrap mb-2 opacity-70 flex font-semibold sm:justify-center sm:font-bold sm:text-base';
 
   //이미지변경
 
@@ -204,7 +205,9 @@ export default function MyProfile() {
 
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   if (isPending1 || isError1) return <Loading isPending={isPending1} isError={isError1} />;
-
+  if (confirmDelete || imgDelete) {
+    setOpacity('opacity-50');
+  } else setOpacity('');
   return (
     <div className=' mr-[40px]'>
       <section className='flex h-full w-[inherit] flex-col justify-center text-sm'>
@@ -213,7 +216,7 @@ export default function MyProfile() {
           <p className='mb-4 text-sm opacity-50 sm:text-center'>나의 프로필을 자유롭게 꾸며보세요.</p>
         </div>
         <div className='mb-4 border border-pink-200' />
-        <div className='mx-auto flex h-full w-full justify-around rounded-2xl border border-pink-200 px-5 lg:flex-col md:flex-col'>
+        <div className='relative mx-auto flex h-full w-full justify-around rounded-2xl border border-pink-200 px-5 lg:flex-col md:flex-col'>
           <div className='mx-auto flex w-full flex-col items-center justify-center'>
             <form action=''>
               <div>
@@ -259,40 +262,6 @@ export default function MyProfile() {
               </div>
             </div>
           </div>
-          <div className='flex-col'>
-            {/* 탈퇴 확인 */}
-            {confirmDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-              <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
-                <p>정말로 탈퇴하시겠습니까?</p>
-                <button className='flex-end p-2 font-bold hover:shadow-inner ' onClick={handleDelete}>
-                  {' '}
-                  확인
-                </button>
-                <button className='flex-end p-2  font-bold hover:shadow-inner' onClick={() => setConfirmDelete(false)}>
-                  취소{' '}
-                </button>
-              </div>
-            )}
-            {/* 이미지 삭제 확인 */}
-            {imgDelete && ( // 확인 버튼을 누르기 전에만 메시지를 표시
-              <div className='mx-auto mb-2 flex whitespace-nowrap rounded-md bg-pink-200 p-5 shadow-sm md:text-sm'>
-                <p>정말로 사진을 삭제하시겠습니까?</p>
-                <button
-                  className=' whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
-                  onClick={handleImgDelete}
-                >
-                  {' '}
-                  확인
-                </button>
-                <button
-                  className='whitespace-nowrap p-2 font-bold hover:shadow-inner md:text-sm'
-                  onClick={() => setImgDelete(false)}
-                >
-                  취소{' '}
-                </button>
-              </div>
-            )}
-          </div>
 
           <div className='mt-5 w-full'>
             {/* 이름 */}
@@ -330,22 +299,28 @@ export default function MyProfile() {
                 />
               </div>
             </form>
+            {/* const btnStyle =
+    ''; */}
+
             {/* 별명 */}
             <form onSubmit={handleNickNameChange} className='mt-3'>
               <label htmlFor='nickname' className={labelStyle}>
                 별명
               </label>
               <div>
-                <input
-                  id='nickname'
-                  type='text'
-                  value={nickName}
-                  className={inputFont}
-                  onChange={(e) => setNickName(e.target.value)}
-                  placeholder='별명을 입력하세요'
-                  disabled={!nickNameDisabled}
-                />
-                <button className={btnStyle}>변경</button>
+                <div className='flex w-full items-center justify-center gap-1 '>
+                  <input
+                    id='nickname'
+                    type='text'
+                    value={nickName}
+                    className={inputFont}
+                    onChange={(e) => setNickName(e.target.value)}
+                    placeholder='별명을 입력하세요'
+                  />{' '}
+                  <button className=' w-[70px] justify-center rounded-lg bg-pink-100 p-2 font-semibold hover:bg-pink-300 hover:shadow-inner'>
+                    변경
+                  </button>
+                </div>
               </div>
             </form>
 
@@ -354,20 +329,32 @@ export default function MyProfile() {
               <label htmlFor='phone' className={labelStyle}>
                 번호
               </label>
+
               <div>
-                <input
-                  id='phone'
-                  type='tel'
-                  value={phone}
-                  className={inputFont}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder='휴대폰 번호를 입력하세요'
-                  disabled={!phoneDisabled}
-                />
-                <button className={`mb-4 ${btnStyle}`}>변경</button>
+                <div className='mb-2 flex w-full items-center justify-center gap-2 '>
+                  <input
+                    id='phone'
+                    type='tel'
+                    value={phone}
+                    className={inputFont}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder='휴대폰 번호를 입력하세요'
+                  />
+                  <button className='w-[70px] justify-center rounded-lg  bg-pink-100 p-2  font-semibold hover:bg-pink-300 hover:shadow-inner '>
+                    변경
+                  </button>
+                </div>
               </div>
             </form>
           </div>
+          <ProfileDelete
+            confirmDelete={confirmDelete}
+            imgDelete={imgDelete}
+            handleDelete={handleDelete}
+            setImgDelete={setImgDelete}
+            handleImgDelete={handleImgDelete}
+            setConfirmDelete={setConfirmDelete}
+          />
         </div>
       </section>
     </div>
