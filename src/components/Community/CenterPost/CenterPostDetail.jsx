@@ -90,6 +90,7 @@ export default function CenterPostDetail() {
     <>
       <div className='w-full max-w-[830px]'>
         <div className='my-4 flex flex-col gap-2'>
+          {questionId}
           <h2 className='text-2xl font-semibold'>[Q&A] {title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>
@@ -130,7 +131,7 @@ export default function CenterPostDetail() {
         {/* 경계선 */}
         <div className='my-2 border-b-2' />
         {/* 차후 수정할 댓글 내용들 */}
-        <CenterComments answer={answer} Id={params.id} />
+        <CenterComments answer={answer} question={params.id} />
         {/* <CenterCommentWrite /> */}
       </div>
     </>

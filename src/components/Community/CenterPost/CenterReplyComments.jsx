@@ -17,29 +17,36 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
   const setPostTitle = useSetRecoilState(postTitleState);
   const router = useRouter();
   useEffect(() => {
-    console.log(reply.questionId);
+    console.log('question' + reply.questionId);
+    console.log('answer' + reply.answerId);
   }, []);
+
+  // 답변
+  const onClickReReply = (questionId, answerId) => {
+    router.push(`/content/center/${answerId}/answer`);
+    setPageState1(`/api/member/${answerId}/${questionId}/reanswer`);
+  };
   return (
     <>
       <li key={reply.answerId} className='flex flex-col gap-4'>
+        {reply.questionId} {reply.answerId}
         <WriterView writer={reply.nickname} date={reply.createAt} profile={reply.profileUrl} />
-
         <h2 className='font-semibold'> {reply.title}</h2>
-
         <div className='flex flex-col gap-1 rounded-md'>
           <div dangerouslySetInnerHTML={{ __html: reply.content }} />
         </div>
         {/* 답글 버튼 */}
         <div className='flex items-center gap-1'>
-          <div
-            className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-            onClick={() => onClickReply(reply.questionId, reply.answerId)}
-          >
-            <ReplyIcon color='#ec4899' />
-
-            <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
-          </div>
-          {/* 댓글 수정 및 삭제 */}
+          {myNickname === 'ADMIN' ? (
+            <div
+              className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
+              onClick={() => onClickReReply(reply.questionId, reply.answerId)}
+            >
+              <ReplyIcon color='#ec4899' />
+              <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
+            </div>
+          ) : null}
+          {/* 댓글 수정 및 삭제
           {reply.nickname === myNickname ? (
             <button
               className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
@@ -55,11 +62,11 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
             >
               {reply.commentStatus === 'DELETE' ? null : '삭제'}
             </button>
-          ) : null}
+          ) : null} */}
           <div className='my-2 border' />
         </div>
         {/* 답글 목록 */}
-        <div className='ml-5'>
+        <div className=''>
           <div className='my-2 flex w-full border-b-2 ' />
           {reply.reAnswer.map((reply) => (
             <CenterReplyComments
@@ -67,7 +74,7 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
               reply={reply}
               onClickCommentDelete={onClickCommentDelete}
               onClickEdit={onClickEdit}
-              onClickReply={onClickReply}
+              onClickReReply={onClickReReply}
             />
           ))}
         </div>

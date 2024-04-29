@@ -10,7 +10,7 @@ import { ReplyIcon } from '@/components/UI/Icons';
 import { useEffect } from 'react';
 import CenterReplyComments from './CenterReplyComments';
 import { postContentState, postTitleState } from '@/atoms/PostState';
-export default function CenterComments({ answer }) {
+export default function CenterComments({ answer, question }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
   const [editMode, setEditMode] = useState(null); // 추가: 수정 모드를 저장하는 상태
@@ -59,9 +59,9 @@ export default function CenterComments({ answer }) {
         {/* 댓글 목록 */}
         {answer.map((comment) => (
           <li key={comment.answerId} className='flex flex-col gap-4'>
+            {comment.questionId} {comment.answerId}
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             <h2 className=' font-semibold'> {comment.title}</h2>
-
             <div className='flex flex-col gap-1 rounded-md'>
               <div dangerouslySetInnerHTML={{ __html: comment.content }} />
             </div>
@@ -95,9 +95,8 @@ export default function CenterComments({ answer }) {
               <div className=' border' />
             </div>
             <div className='flex w-full border-b-2 ' />
-
             {/* 답글 목록 */}
-            <div className='ml-5'>
+            <div className=''>
               {comment.reAnswer.map((reply) => (
                 <CenterReplyComments
                   key={reply.answerId}
