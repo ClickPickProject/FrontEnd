@@ -14,16 +14,16 @@ export default function NormalUserList() {
   const normalUsers = data?.content.filter((user) => user.userStatus === 'NORMAL');
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div className='grid w-full grid-cols-5 gap-2 bg-white py-2 text-center'>
-      {normalUsers.map((user) => (
-        <>
+    <>
+      {normalUsers.map((user, idx) => (
+        <div className='grid w-full grid-cols-5 gap-2 bg-white py-2 text-center' key={idx}>
           <div className=''>{user.id}</div>
           <div className=''>{user.name}</div>
           <div className=''>{user.nickname}</div>
           <div className=''>{user.phone}</div>
           <div className=''>{user.createAt.split('T')[0]}</div>
-        </>
+        </div>
       ))}
-    </div>
+    </>
   );
 }

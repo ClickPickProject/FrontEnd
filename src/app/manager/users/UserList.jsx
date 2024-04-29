@@ -14,9 +14,9 @@ export default function UserList() {
 
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div className='grid w-full grid-cols-6 gap-2 bg-white py-2 text-center'>
-      {data.content.map((user) => (
-        <>
+    <>
+      {data.content.map((user, idx) => (
+        <div className='grid w-full grid-cols-6 gap-2 bg-white py-2 text-center' key={idx}>
           <div className=''>{user.id}</div>
           <div className=''>{user.name}</div>
           <div className=''>{user.nickname}</div>
@@ -29,8 +29,8 @@ export default function UserList() {
               <span className='rounded-full bg-red-500 px-2 text-white'>정지됨</span>
             )}
           </div>
-        </>
+        </div>
       ))}
-    </div>
+    </>
   );
 }
