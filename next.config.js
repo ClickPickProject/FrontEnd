@@ -184,6 +184,42 @@ const nextConfig = {
   //       source: '/api/member/map/bookmark/:path*',
   //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/member/map/bookmark/:path*`,
   //     },
+  //     {
+  //       source: '/api/notice/list',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/notice/list`,
+  //     },
+  //     {
+  //       source: '/api/admin/notice',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/notice`,
+  //     },
+  //     {
+  //       source: '/api/admin/notice/:path*',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/notice/:path*`,
+  //     },
+  //     {
+  //       source: '/api/admin/userlist',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/userlist`,
+  //     },
+  //     {
+  //       source: '/api/admin/banuserlist',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/banuserlist`,
+  //     },
+  //     {
+  //       source: '/api/admin/reportpostlist',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/reportpostlist`,
+  //     },
+  //     {
+  //       source: '/api/admin/reportcommentlist',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/reportcommentlist`,
+  //     },
+  //     {
+  //       source: '/api/admin/postban',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/postban`,
+  //     },
+  //     {
+  //       source: '/api/admin/commentban',
+  //       destination: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/admin/commentban`,
+  //     },
   //   ];
   // },
 };
