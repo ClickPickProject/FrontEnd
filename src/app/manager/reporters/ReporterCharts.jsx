@@ -1,10 +1,20 @@
 'use client';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import Chart from 'react-apexcharts';
-export default function ReporterCharts() {
+export default function ReporterCharts({ title, year }) {
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['monthUserCount'],
+    queryFn: async () => {
+      const res = await axios.get(`/api/admin/user/month/${year}`);
+      return res.data;
+    },
+  });
+
   const series = [
     {
-      name: '신고요청 수',
-      data: [10, 41, 35, 51, 49],
+      name: '가입자 수',
+      data: [2, 2],
     },
   ];
 
@@ -15,6 +25,7 @@ export default function ReporterCharts() {
       zoom: {
         enabled: false,
       },
+      toolbar: { show: false },
     },
     dataLabels: {
       enabled: true,
@@ -23,7 +34,7 @@ export default function ReporterCharts() {
       curve: 'straight',
     },
     title: {
-      text: '신고자 추이',
+      text: title,
       align: 'left',
     },
     grid: {
@@ -33,7 +44,7 @@ export default function ReporterCharts() {
       },
     },
     xaxis: {
-      categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+      categories: [year],
     },
   };
 
