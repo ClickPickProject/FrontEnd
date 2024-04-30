@@ -1025,4 +1025,19 @@ export const handlers = [
       ],
     });
   }),
+
+  // 월별 사용자 수 조회
+  http.get('/api/admin/user/month/:year', ({ params }) => {
+    const { year } = params;
+    return HttpResponse.json({
+      userCount: 128,
+      monthYear: year,
+    });
+  }),
+
+  // 정지된 사용자 해제
+  http.delete('/api/admin/ban/:userId', ({ params }) => {
+    const { userId } = params;
+    return HttpResponse.json(`${userId} 정지해제`);
+  }),
 ];
