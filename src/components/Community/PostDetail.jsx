@@ -8,9 +8,7 @@ import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { CommentIcon, EmptyHeartIcon, FillHeartIcon, ReportIcon } from '../UI/Icons';
 import { CommentIcon, EmptyHeartIcon, FillHeartIcon, ReportIcon } from '../UI/Icons';
 import Loading from '../Loading';
 import {
