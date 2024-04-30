@@ -1040,4 +1040,140 @@ export const handlers = [
     const { userId } = params;
     return HttpResponse.json(`${userId} 정지해제`);
   }),
+
+  // 게시글 작성
+  http.post('api/member/question', () => {
+    return HttpResponse.json({
+      title: '제목',
+      content: '내용',
+    });
+  }),
+
+  //  question
+  // 게시글 조회
+  http.get('/api/question/list', () => {
+    return HttpResponse.json({
+      content: [
+        {
+          questionId: 1,
+          userId: 'chlwjd022@gmail.com',
+          nickname: '김자장',
+          title: '테스트',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: 'AWAITING',
+          profileUrl: '/Images/barn.jpg',
+        },
+        {
+          questionId: 2,
+          nickname: '김짬뽕',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: 'COMPLETE',
+          profileUrl: '/Images/barn.jpg',
+        },
+        {
+          questionId: 3,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: 'COMPLETE',
+          profileUrl: '/Images/barn.jpg',
+        },
+        {
+          questionId: 4,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: 'COMPLETE',
+          profileUrl: '/Images/barn.jpg',
+        },
+        {
+          questionId: 5,
+          nickname: '김추천',
+          title: '벚꽃임',
+          createAt: '2024-03-10T18:55:48.884Z',
+          status: 'AWAITING',
+          profileUrl: '/Images/barn.jpg',
+        },
+      ],
+    });
+  }),
+  // Q&A 작성 /api/question/${params.id}
+  http.post('/api/member/question', () => {
+    return HttpResponse.json({
+      title: '제목',
+      content: '내용',
+    });
+  }),
+
+  // 게시글 상세 조회 /api/question/${params.id}
+  http.get('/api/question/:questionId', ({ params }) => {
+    const { questionId } = params;
+    return HttpResponse.json(
+      {
+        questionId: questionId,
+        userId: 'chlwjd022@gmail.com',
+        nickname: '올빼미',
+        title: '제목입니다.',
+        content: '자장면인가 짬뽕인가 그것이 문제로다.',
+        status: 'COMPLETE',
+        date: '2024-03-05T18:55:48.884Z',
+        profileUrl: '/Images/iphone.png',
+        answer: [
+          {
+            answerId: 9,
+            questionId: questionId,
+            adminId: 'admin@naver.com',
+            nickname: '관리자',
+            title: '자장밥',
+            content: '정답은 자장면',
+            date: '2024-03-06T18:55:48.884Z',
+            profileUrl: '/Images/barn.jpg',
+            reAnswer: [
+              {
+                answerId: 28,
+                questionId: 9,
+                userId: 'chlwjd022@gmail.com',
+                nickname: 'ADMIN',
+                title: '짬뽕밥.',
+                content: '내용입니다.',
+                createAt: '2024-03-086T10:55:48.884Z',
+                profileUrl: '/Images/barn.jpg',
+                reAnswer: [
+                  {
+                    answerId: 29,
+                    questionId: 28,
+                    adminId: 'admin@naver.com',
+                    nickname: '관리자',
+                    title: '팔보채',
+                    content: '정답은 자장면',
+                    date: '2024-03-06T18:55:48.884Z',
+                    profileUrl: '/Images/barn.jpg',
+                    reAnswer: [
+                      {
+                        answerId: 30,
+                        questionId: 29,
+                        userId: 'chlwjd022@gmail.com',
+                        nickname: 'ADMIN',
+                        title: '짬짜면',
+                        content: '내용입니다.',
+                        createAt: '2024-03-086T10:55:48.884Z',
+                        profileUrl: '/Images/barn.jpg',
+                        reAnswer: [],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+        },
+      },
+    );
+  }),
 ];
