@@ -13,7 +13,12 @@ export default function BannedUserList() {
   const { data, isPending, isError } = useQuery({
     queryKey: ['banndUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/banuserlist');
+      const res = await axios.get('/api/admin/banuserlist', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
       return res.data;
     },
   });

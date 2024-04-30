@@ -1,21 +1,30 @@
 import { useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import Loading from '@/components/Loading';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function ReportPostList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간
   const selectInputRef = useRef(null);
+  const token = useRecoilValue(tokenState);
+  const queryClient = useQueryClient();
   const onClearSelect = (idx) => {
     selectInputRef[idx].clearValue();
   };
   const { data, isPending, isError } = useQuery({
     queryKey: ['reportPostUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/reportpostlist');
+      const res = await axios.get('/api/admin/reportpostlist', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
       return res.data;
     },
   });
@@ -24,7 +33,7 @@ export default function ReportPostList() {
 
   const onClickAccept = async (reportPostId, reportedUserId, reason, banDays) => {
     const body = {
-      reportPostId,
+      reportId: reportPostId,
       reportedUserId,
       reason,
       banDays: selectedPeriod?.value,
@@ -32,6 +41,9 @@ export default function ReportPostList() {
     try {
       const res = await axios.post('/api/admin/postban', body, {
         withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
       });
       if (selectedPeriod === null) {
         toast.error('기간을 선택해주세요.');
@@ -39,6 +51,7 @@ export default function ReportPostList() {
       }
       if (res.status === 200) {
         toast.success(`정지되었습니다. (${banDays?.value === -1 ? '영구' : banDays?.value + '일'})`);
+        queryClient.invalidateQueries('reportPostUsers');
         setSelectedPeriod(null);
       }
     } catch (err) {

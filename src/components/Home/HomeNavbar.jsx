@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
   const MyNickname = useRecoilValue(MyNicknameState);
+  const router = useRouter();
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
@@ -44,7 +46,7 @@ export default function HomeNavbar() {
                 <>
                   <div className='flex gap-4'>
                     {MyNickname === 'ADMIN' && (
-                      <button onClick={onClickLogout} className={`${hoverStyle}`}>
+                      <button onClick={() => router.push('/manager')} className={`${hoverStyle}`}>
                         대시보드
                       </button>
                     )}

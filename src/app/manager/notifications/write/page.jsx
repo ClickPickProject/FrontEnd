@@ -5,24 +5,35 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useEffect, useState } from 'react';
 import { editorContentState } from '@/atoms/editorContentState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function NoticeWritePage() {
   const [content, setContent] = useRecoilState(editorContentState);
   const [noticeTitle, setNoticeTitle] = useState('');
+  const token = useRecoilValue(tokenState);
   const router = useRouter();
   useEffect(() => {
     setNoticeTitle('');
     setContent('');
   }, []);
   const onClickNotificationsSubmit = async () => {
+    if (noticeTitle.length === 0 || content.length === 0) {
+      toast.error('제목 또는 내용이 존재하지 않습니다.', {
+        position: 'top-right',
+      });
+      return;
+    }
     try {
-      const res = await axios.post('/api/admin/notice', {
-        title: noticeTitle,
-        content,
+      const body = { title: noticeTitle, content };
+      const res = await axios.post('/api/admin/notice', body, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
       });
       if (res.status === 200) {
         toast.success('공지사항이 등록되었습니다.');

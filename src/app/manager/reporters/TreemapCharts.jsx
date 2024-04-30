@@ -1,14 +1,22 @@
 'use client';
+import { tokenState } from '@/atoms/tokenState';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { useRecoilValue } from 'recoil';
 
 export default function TreemapCharts() {
+  const token = useRecoilValue(tokenState);
   const { data, isPending, isError } = useQuery({
     queryKey: ['monthUserCount'],
     queryFn: async () => {
-      const res = await axios.get(`/api/admin/user/month/${year}`);
+      const res = await axios.get(`/api/admin/user/month/${year}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
       return res.data;
     },
   });

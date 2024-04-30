@@ -1,13 +1,21 @@
 'use client';
+import { tokenState } from '@/atoms/tokenState';
 import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
 
 export default function NormalUserList() {
+  const token = useRecoilValue(tokenState);
   const { data, isPending, isError } = useQuery({
     queryKey: ['normalUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/userlist');
+      const res = await axios.get('/api/admin/userlist', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
       return res.data;
     },
   });

@@ -1,21 +1,30 @@
 import { useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import Loading from '@/components/Loading';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function ReportCommentList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간
   const selectInputRef = useRef(null);
+  const token = useRecoilValue(tokenState);
+  const queryClient = useQueryClient();
   const onClearSelect = (idx) => {
     selectInputRef[idx].clearValue();
   };
   const { data, isPending, isError } = useQuery({
     queryKey: ['reportCommentUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/reportcommentlist');
+      const res = await axios.get('/api/admin/reportcommentlist', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
       return res.data;
     },
   });
@@ -23,15 +32,19 @@ export default function ReportCommentList() {
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
 
   const onClickAccept = async (reportCommentId, reportedUserId, reason, banDays) => {
+    console.log(reportCommentId);
     const body = {
-      reportCommentId,
+      reportId: reportCommentId,
       reportedUserId,
       reason,
-      banDays,
+      banDays: selectedPeriod?.value,
     };
     try {
       const res = await axios.post('/api/admin/commentban', body, {
         withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
       });
       if (banDays === null) {
         toast.error('기간을 선택해주세요.');
@@ -40,6 +53,7 @@ export default function ReportCommentList() {
 
       if (res.status === 200) {
         toast.success(`정지되었습니다. (${banDays?.value === -1 ? '영구' : banDays?.value + '일'})`);
+        queryClient.invalidateQueries('reportCommentUsers');
         setSelectedPeriod(null);
       }
     } catch (err) {
