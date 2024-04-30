@@ -5,6 +5,7 @@ import Image from 'next/image';
 export default function WriterView({ writer, date, profile }) {
   dayjs.extend(relativeTime);
   dayjs.locale('ko');
+  console.log(profile);
   return (
     <span className='flex items-center gap-1 text-sm font-bold'>
       <Image

@@ -1,4 +1,7 @@
+'use client';
 import SideNavbar from '@/components/Community/SideNavbar';
+import { useRecoilValue } from 'recoil';
+import { pageOpacity } from '@/atoms/pageState';
 import { CallIcon, LetterIcon } from '@/components/UI/Icons';
 export default function layout({ children }) {
   return (

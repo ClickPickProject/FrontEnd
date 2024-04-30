@@ -21,6 +21,7 @@ export default function PostList({ category, url }) {
     setSelectedCategory(category);
     setCurrentPage(1);
   }, [category]);
+
   const {
     data: posts,
     isPending,
@@ -67,11 +68,11 @@ export default function PostList({ category, url }) {
   const displayPosts = filteredPosts;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
-    <div>
+    <div className='sm:mr[40px]'>
       <ul>
         {displayPosts?.map((data) => (
           <li key={data.postId} className='flex w-full flex-col gap-4'>
-            <WriterView writer={data.nickname} date={data.createAt} />
+            <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
             <div className='flex items-center gap-1 font-semibold'>
               <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
               <span className='text-center font-semibold'>[{data.commentCount}]</span>
