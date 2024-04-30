@@ -1,5 +1,5 @@
 'use client';
-import NoticePostList from '@/components/NoticePostList';
+import NotificationPostList from '@/components/notification/NotificationPostList';
 import { useRouter } from 'next/navigation';
 
 export default function NotificationsPage() {
@@ -14,7 +14,7 @@ export default function NotificationsPage() {
           공지사항 작성
         </button>
         <div className='w-full'>
-          <NoticePostList admin />
+          <NotificationPostList admin />
         </div>
       </div>
     </>

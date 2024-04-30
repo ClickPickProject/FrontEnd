@@ -1,5 +1,5 @@
 'use client';
-import NoticePostList from '@/components/NoticePostList';
+import NotificationPostList from '@/components/notification/NotificationPostList';
 import { motion } from 'framer-motion';
 export default function NoticePage() {
   return (
@@ -15,7 +15,7 @@ export default function NoticePage() {
             <h2 className='text-2xl font-bold'>🌱 공지사항</h2>
             <p className='mb-4 text-sm opacity-50'>새로운 소식을 확인해보세요.</p>
           </div>
-          <NoticePostList />
+          <NotificationPostList />
         </motion.nav>
       </section>
     </>
