@@ -112,8 +112,8 @@ export default function PostDetail() {
 
   return (
     <>
-      <div className='w-full max-w-[830px]'>
-        <div className='my-4 flex flex-col gap-2'>
+      <div className='mt-8 w-full max-w-[830px]'>
+        <div className='my-4 flex flex-col gap-4'>
           <h2 className='text-2xl font-semibold'>{title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>

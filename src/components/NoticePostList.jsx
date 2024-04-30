@@ -1,13 +1,10 @@
 'use client';
 import Link from 'next/link';
-// import WriterView from './BestPost/WriterView';
 import { useState } from 'react';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { useQuery } from '@tanstack/react-query';
 import Loading from './Loading';
-import WriterView from './Community/BestPost/WriterView';
-import StatusView from './Community/BestPost/StatusView';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
@@ -47,14 +44,14 @@ export default function NoticePostList() {
   return (
     <div>
       <ul className='flex flex-col gap-8'>
-        <div className='flex justify-between text-xl font-bold'>
+        <div className='flex justify-between border-b-2 border-pink-500 px-2 pb-4 text-lg font-bold'>
           <div className='flex flex-1 justify-center'>제목</div>
           <div className='flex justify-center'>작성일</div>
         </div>
         {posts.content.map((data) => (
           <li key={data.postId} className='flex w-full flex-col'>
-            <div className='relative flex items-center text-lg'>
-              <Link href={`/content/community/${data.postId}`}>{data.title}</Link>
+            <div className='text-md relative flex items-center pl-4 font-semibold'>
+              <Link href={`/content/notice/${data.noticeId}`}>{data.title}</Link>
               <div className='absolute right-0'>{data.createAt ? dayjs(data.createAt).fromNow() : null}</div>
             </div>
             {/* 경계선 */}

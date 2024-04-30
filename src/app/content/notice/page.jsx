@@ -15,8 +15,6 @@ export default function NoticePage() {
             <h2 className='text-2xl font-bold'>🌱 공지사항</h2>
             <p className='mb-4 text-sm opacity-50'>새로운 소식을 확인해보세요.</p>
           </div>
-          {/* 경계선 */}
-          <div className='mb-10 border border-pink-200' />
           <NoticePostList />
         </motion.nav>
       </section>
