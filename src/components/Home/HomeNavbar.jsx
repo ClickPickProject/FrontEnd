@@ -1,5 +1,5 @@
 'use client';
-import { tokenState } from '@/atoms/tokenState';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
+  const MyNickname = useRecoilValue(MyNicknameState);
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
@@ -42,6 +43,11 @@ export default function HomeNavbar() {
               {isLogin ? (
                 <>
                   <div className='flex gap-4'>
+                    {MyNickname === 'ADMIN' && (
+                      <button onClick={onClickLogout} className={`${hoverStyle}`}>
+                        대시보드
+                      </button>
+                    )}
                     <button onClick={onClickLogout} className={`${hoverStyle}`}>
                       로그아웃
                     </button>
