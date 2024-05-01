@@ -31,13 +31,16 @@ export default function CenterComments({ answer, question }) {
         },
       });
       if (res.status === 200) {
-        alert('질문을 삭제하였습니다.');
+        toast.success(`질문을 삭제하였습니다.`, {
+          position: 'top-right',
+        });
         router.push('/');
       }
     } catch (err) {
       console.log(err);
-      alert('사용자가 삭제할 수 없는 질문입니다.');
-      console.log(answerId);
+      toast.error('삭제할 수 없는 질문입니다.', {
+        position: 'top-right',
+      });
     }
   };
   // 수정

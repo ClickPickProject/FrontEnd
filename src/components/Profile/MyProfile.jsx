@@ -12,7 +12,7 @@ import Loading from '../Loading';
 import { LogoutIcon } from '@/components/UI/Icons';
 import ProfileDelete from './ProfileDelete';
 import { IoImagesOutline } from 'react-icons/io5';
-
+import { toast } from 'react-toastify';
 export default function MyProfile() {
   const router = useRouter();
   const [name, setName] = useRecoilState(userNameState);
@@ -87,11 +87,14 @@ export default function MyProfile() {
           },
         });
         if (res.status === 200) {
-          console.log('이미지 삭제 완료');
-          alert('이미지가 삭제 되셨습니다');
+          toast.success(`프로필 사진이 삭제되었습니다.`, {
+            position: 'top-right',
+          });
         }
       } catch (err) {
-        console.log(err);
+        toast.error('프로필 사진을 삭제 할 수 없습니다.', {
+          position: 'top-right',
+        });
       }
     }
   };
@@ -110,12 +113,15 @@ export default function MyProfile() {
           },
         });
         if (res.status === 200) {
-          console.log('탈퇴완료');
-          alert('회원이 탈퇴 되셨습니다');
-          router.push('/');
+          toast.success(`회원이 탈퇴되었습니다.`, {
+            position: 'top-right',
+          });
+          router.replace('/');
         }
       } catch (err) {
-        console.log(err);
+        toast.error('이미 탈퇴된 회원이거나 오류가 발생하였습니다.', {
+          position: 'top-right',
+        });
       }
     }
   };
@@ -134,12 +140,15 @@ export default function MyProfile() {
         });
         if (res.status === 200) {
           setNickName(nickName);
-          console.log(nickName);
-          alert('닉네임이 변경되었습니다.');
+          toast.success(`닉네임이 ${nickName}으로 변경되었습니다.`, {
+            position: 'top-right',
+          });
         }
       } catch (err) {
         console.log(err);
-        alert('이미 사용자가 사용중인 닉네임 입니다.');
+        toast.error('닉네임 변경 오류가 발생되었습니다.', {
+          position: 'top-right',
+        });
       }
     }
     setClickNickNameCount((prevCount) => prevCount + 1);
@@ -159,13 +168,14 @@ export default function MyProfile() {
         });
         if (res.status === 200) {
           setPhone(phone);
-          console.log(phone);
-          alert('휴대폰 번호가 변경되었습니다.');
-          router.push('/');
+          toast.success(`전화번호가 ${phone}으로 변경되었습니다.`, {
+            position: 'top-right',
+          });
         }
       } catch (err) {
-        console.log(err);
-        alert('이미 사용자가 사용중인 휴대폰 번호 입니다.');
+        toast.error('전화번호 변경 오류가 발생되었습니다.', {
+          position: 'top-right',
+        });
       }
     }
     setClickPhoneCount((prevCount) => prevCount + 1);
@@ -194,12 +204,14 @@ export default function MyProfile() {
         },
       });
       if (res.status === 200) {
-        console.log(res);
-        alert('이미지가 업로드 되었습니다.');
+        toast.success(`이미지가 변경 되었습니다.`, {
+          position: 'top-right',
+        });
       }
     } catch (err) {
-      console.log(err);
-      alert('이미지 업로드 오류발생!');
+      toast.error('이미지 업로드 오류가 발생되었습니다.', {
+        position: 'top-right',
+      });
     }
   };
 
@@ -209,7 +221,7 @@ export default function MyProfile() {
     setOpacity('opacity-50');
   } else setOpacity('');
   return (
-    <div className=' mr-[40px]'>
+    <div className='mx-6'>
       <section className='flex h-full w-[inherit] flex-col justify-center text-sm'>
         <div className='flex flex-col gap-2 p-2'>
           <h2 className='mt-5 text-2xl font-bold sm:text-center'>🙋‍♂️ 마이 프로필</h2>

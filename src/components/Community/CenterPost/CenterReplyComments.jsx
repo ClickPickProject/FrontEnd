@@ -16,10 +16,6 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
   const setPostContent = useSetRecoilState(postContentState);
   const setPostTitle = useSetRecoilState(postTitleState);
   const router = useRouter();
-  useEffect(() => {
-    console.log('question' + reply.questionId);
-    console.log('answer' + reply.answerId);
-  }, []);
 
   // 답변
   const onClickReReply = (questionId, answerId) => {

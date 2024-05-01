@@ -10,6 +10,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { pageState } from '@/atoms/pageState';
+import { toast } from 'react-toastify';
 
 function CenterEditPage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
@@ -39,7 +40,9 @@ function CenterEditPage() {
     e.preventDefault();
     console.log(url);
     if (title.length === 0 || content.length === 0) {
-      alert('제목 또는 내용이 존재하지 않습니다.');
+      toast.error(`제목 또는 내용이 존재하지 않습니다.`, {
+        position: 'top-right',
+      });
       return;
     }
     try {
@@ -55,7 +58,9 @@ function CenterEditPage() {
         },
       });
       if (res.status === 200) {
-        alert('게시글이 수정되었습니다.');
+        toast.success(`게시글이 수정되었습니다.`, {
+          position: 'top-right',
+        });
         queryClient.invalidateQueries(['post', params.id]);
         router.back();
       }

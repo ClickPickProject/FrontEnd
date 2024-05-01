@@ -12,6 +12,7 @@ import Loading from '../../Loading';
 import { pageState } from '@/atoms/pageState';
 import { postContentState, postTitleState } from '@/atoms/PostState';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
@@ -40,8 +41,9 @@ export default function CenterPostDetail() {
         return res.data;
       } catch (err) {
         if (err.response.status === 403) {
-          console.log('에러 : ', err);
-          alert('비공개된 게시글입니다.');
+          toast.error('비공개된 게시글 입니다.', {
+            position: 'top-right',
+          });
           router.back();
         }
       }
@@ -70,12 +72,16 @@ export default function CenterPostDetail() {
         },
       });
       if (res.status === 200) {
-        alert('질문을 삭제하였습니다.');
+        toast.success('질문을 삭제하였습니다.', {
+          position: 'top-right',
+        });
         router.push('/');
       }
     } catch (err) {
       console.log(err);
-      alert('사용자가 삭제할 수 없는 질문입니다.');
+      toast.error('삭제할 수 없는 게시글입니다.', {
+        position: 'top-right',
+      });
       console.log(params.id);
     }
   };
