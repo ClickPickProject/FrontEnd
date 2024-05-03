@@ -1,112 +1,66 @@
 'use client';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { LogoutIcon } from '@/components/UI/Icons';
+import { pageState } from '@/atoms/pageState';
+import { pageDeleteModal } from '@/atoms/pageState';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
-export default function ProfileDelete({
-  confirmDelete,
-  imgDelete,
-  handleImgDelete,
-  setImgDelete,
-  handleDelete,
-  setConfirmDelete,
-}) {
-  // //프로필사진 삭제
-  // const [imgDelete, setImgDelete] = useState(false); // 탈퇴 확인 상태를 저장하는 상태 변수
-  // const handleImgDelete = async (e) => {
-  //   e.preventDefault();
-  //   if (!imgDelete) {
-  //     setImgDelete(true); // 확인 버튼을 누르기 전에 확인 메시지를 표시
-  //   } else {
-  //     try {
-  //       const res = await axios.delete('/api/member/profile/image', {
-  //         withCredentials: true,
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       });
-  //       if (res.status === 200) {
-  //         toast.success(`프로필 사진이 삭제되었습니다.`, {
-  //           position: 'top-right',
-  //         });
-  //       }
-  //     } catch (err) {
-  //       toast.error('프로필 사진을 삭제 할 수 없습니다.', {
-  //         position: 'top-right',
-  //       });
-  //     }
-  //   }
-  // };
-  // //회원탈퇴
-  // const [confirmDelete, setConfirmDelete] = useState(false); // 탈퇴 확인 상태를 저장하는 상태 변수
-  // const handleDelete = async (e) => {
-  //   e.preventDefault();
-  //   if (!confirmDelete) {
-  //     setConfirmDelete(true); // 확인 버튼을 누르기 전에 확인 메시지를 표시
-  //   } else {
-  //     try {
-  //       const res = await axios.delete('/api/member', {
-  //         withCredentials: true,
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       });
-  //       if (res.status === 200) {
-  //         toast.success(`회원이 탈퇴되었습니다.`, {
-  //           position: 'top-right',
-  //         });
-  //         router.replace('/');
-  //       }
-  //     } catch (err) {
-  //       toast.error('이미 탈퇴된 회원이거나 오류가 발생하였습니다.', {
-  //         position: 'top-right',
-  //       });
-  //     }
-  //   }
-  // };
+export default function ProfileDelete({ image, nickName }) {
+  const [handleDelete, setHandleDelete] = useRecoilState(pageDeleteModal);
+
+  //회원탈퇴
+  const handleDeleteId = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.delete('/api/member', {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        toast.success(`탈퇴되었습니다.`, {
+          position: 'top-right',
+        });
+        router.replace('/');
+      }
+    } catch (err) {
+      toast.error('이미 탈퇴된 회원이거나 오류가 발생하였습니다.', {
+        position: 'top-right',
+      });
+    }
+  };
   return (
     <>
       <div className='fixed inset-0 transition-opacity' aria-hidden='true'>
         <div className='absolute inset-0 bg-black opacity-20'></div>
       </div>
       {/* 탈퇴 확인 */}
-      {confirmDelete && (
-        <div className='absolute flex h-full w-full  items-center justify-center '>
-          <div className='mx-auto flex flex-col rounded-md bg-white p-5 shadow-sm md:text-sm'>
-            {' '}
-            <div className='flex flex-col text-center'>
-              <p className='mb-2 text-xl font-semibold text-pink-400'>정말로 탈퇴하시겠습니까?</p>
-              <p>삭제된 후 계정은 복구할 수 없습니다.</p>
-            </div>
-            <div className='flex w-full justify-center'>
-              <button className='p-2 font-bold hover:opacity-50' onClick={() => handleDelete}>
-                확인
-              </button>
-              <button className='p-2 font-bold hover:opacity-50' onClick={() => setConfirmDelete(false)}>
-                취소
-              </button>
-            </div>
+      <div className='absolute inset-0 z-[50] flex h-full w-full  items-center justify-center  '>
+        <div className='mx-auto flex flex-col rounded-2xl bg-white p-5 shadow-2xl md:text-sm'>
+          {' '}
+          <div className='flex flex-col text-center'>
+            <p className='mb-2 text-xl font-semibold'>😂️{nickName}님 클릭픽과의 여행을 멈추시겠습니까?😂️</p>
+            <img
+              src={image}
+              className='mx-auto mb-2 h-[150px] w-[150px] rounded-full border-4 border-white shadow-xl'
+              alt='profile'
+            />
+            😿
+            <p>{nickName}님 그 간 함께해온 추억들이 있습니다.</p>
+            <p>같이 보러가시겠습니까?</p>
+          </div>
+          <div className='flex w-full justify-center'>
+            <button onClick={() => handleDeleteId} className='p-2 font-bold hover:opacity-50'>
+              탈퇴
+            </button>
+            <button onClick={() => setHandleDelete((Delete) => !Delete)} className='p-2 font-bold hover:opacity-50'>
+              보기
+            </button>
           </div>
         </div>
-      )}
-      {/* 이미지 삭제 확인 */}
-      {imgDelete && (
-        <div className='absolute flex h-full w-full  items-center justify-center '>
-          <div className='mx-auto flex flex-col rounded-md bg-white p-5 shadow-sm md:text-sm'>
-            <div className='flex flex-col text-center'>
-              <p className='mb-2 text-xl font-semibold text-pink-400'>정말로 사진을 삭제하시겠습니까?</p>
-              <p>삭제된 후 사진은 복구할 수 없습니다.</p>
-            </div>
-            <div className='flex w-full justify-center'>
-              <button className='p-2 font-bold hover:opacity-50' onClick={handleImgDelete}>
-                확인
-              </button>
-              <button className='p-2 font-bold hover:opacity-50' onClick={() => setImgDelete(false)}>
-                취소
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </>
   );
 }

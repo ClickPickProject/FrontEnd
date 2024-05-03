@@ -6,19 +6,20 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { pageOpacity } from '@/atoms/pageState';
 import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
 import Loading from '../Loading';
 import { LogoutIcon } from '@/components/UI/Icons';
 import ProfileDelete from './ProfileDelete';
 import { IoImagesOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
+import { pageState } from '@/atoms/pageState';
+import { pageDeleteModal } from '@/atoms/pageState';
 export default function MyProfile() {
   const router = useRouter();
   const [name, setName] = useRecoilState(userNameState);
   const [nickName, setNickName] = useRecoilState(userNickNameState);
   const [userId, setUserId] = useRecoilState(userIdState);
-
+  const [handleDelete, setHandleDelete] = useRecoilState(pageDeleteModal);
   const [phone, setPhone] = useRecoilState(userPhoneState);
   const [image, setImage] = useState('');
   //token값 받아옴
@@ -66,7 +67,32 @@ export default function MyProfile() {
       }
     },
   });
-
+  // //프로필사진 삭제
+  const [imgDelete, setImgDelete] = useState(false); // 탈퇴 확인 상태를 저장하는 상태 변수
+  const handleImgDelete = async (e) => {
+    e.preventDefault();
+    if (!imgDelete) {
+      setImgDelete(true); // 확인 버튼을 누르기 전에 확인 메시지를 표시
+    } else {
+      try {
+        const res = await axios.delete('/api/member/profile/image', {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          toast.success(`프로필 사진이 삭제되었습니다.`, {
+            position: 'top-right',
+          });
+        }
+      } catch (err) {
+        toast.error('프로필 사진을 삭제 할 수 없습니다.', {
+          position: 'top-right',
+        });
+      }
+    }
+  };
   // 닉네임변경
   const handleNickNameChange = async (e) => {
     e.preventDefault();
@@ -115,7 +141,8 @@ export default function MyProfile() {
   };
 
   //style값
-  const inputFont = 'w-full rounded-lg p-2 font-semibold hover:bg-pink-400 disabled:bg-white';
+  const inputFont =
+    'w-full rounded-lg p-2 font-semibold hover:border-2 hover:border-black hover:border disabled:bg-white';
   const labelStyle = 'p-2 whitespace-nowrap opacity-70 flex font-semibold ';
 
   //이미지변경
@@ -151,7 +178,7 @@ export default function MyProfile() {
   if (isPending1 || isError1) return <Loading isPending={isPending1} isError={isError1} />;
   return (
     <div className='mx-6'>
-      <section className='flex h-full w-[inherit] flex-col justify-center text-sm'>
+      <section className='  flex h-full w-[inherit] flex-col justify-center text-sm'>
         <div className='flex flex-col gap-2 p-2'>
           <h2 className='mt-5 text-2xl font-bold sm:text-center'>🙋‍♂️ 마이 프로필</h2>
           <p className='mb-4 text-sm opacity-50 sm:text-center'>나의 프로필을 자유롭게 꾸며보세요.</p>
@@ -226,7 +253,7 @@ export default function MyProfile() {
                 onChange={(e) => setNickName(e.target.value)}
                 placeholder='별명을 입력하세요'
               />{' '}
-              <button className=' w-[70px] justify-center rounded-lg bg-white p-2 font-semibold text-pink-400 hover:bg-pink-400 hover:text-white hover:shadow-inner'>
+              <button className=' w-[70px] justify-center rounded-lg p-2 font-semibold opacity-70 hover:bg-black hover:text-white hover:shadow-inner'>
                 변경
               </button>
             </div>
@@ -247,27 +274,20 @@ export default function MyProfile() {
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder='휴대폰 번호를 입력하세요'
               />
-              <button className='w-[70px] justify-center rounded-lg bg-white p-2 font-semibold text-pink-400 hover:bg-pink-400 hover:text-white hover:shadow-inner'>
+              <button className='w-[70px] justify-center rounded-lg p-2 font-semibold opacity-70 hover:bg-black hover:text-white hover:shadow-inner'>
                 변경
               </button>
             </div>
           </form>
+          <button
+            onClick={() => setHandleDelete((Delete) => !Delete)}
+            className='mx-auto mt-12 flex items-center gap-2 font-semibold opacity-70'
+          >
+            <LogoutIcon size={18} />
+            회원탈퇴
+          </button>
         </div>
-        <button
-          // onClick={handleDelete}
-          className='mx-auto mt-3 flex items-center gap-2 font-semibold'
-        >
-          <LogoutIcon size={18} />
-          회원탈퇴
-        </button>
-        {/* <ProfileDelete
-            confirmDelete={confirmDelete}
-            imgDelete={imgDelete}
-            handleDelete={handleDelete}
-            setImgDelete={setImgDelete}
-            handleImgDelete={handleImgDelete}
-            setConfirmDelete={setConfirmDelete}
-          /> */}
+        {!handleDelete && <ProfileDelete nickName={nickName} image={image} />}
       </section>
     </div>
   );
