@@ -82,21 +82,17 @@ export default function CenterPostDetail() {
       toast.error('삭제할 수 없는 게시글입니다.', {
         position: 'top-right',
       });
-      console.log(params.id);
     }
   };
   const routerPage = () => {
     router.push(isLogin ? `/content/center/${params.id}/answer` : '/login');
     setPageState1(`/api/admin/${params.id}/answer`);
-    console.log(pageState1);
-    console.log(params.id);
   };
 
   return (
     <>
       <div className='w-full max-w-[830px]'>
         <div className='my-4 flex flex-col gap-2'>
-          {questionId}
           <h2 className='text-2xl font-semibold'>[Q&A] {title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>

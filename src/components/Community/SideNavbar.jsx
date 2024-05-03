@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CgMenu, CgMenuLeft } from 'react-icons/cg';
 import { motion } from 'framer-motion';
-
 import {
   FillMapIcon,
   FillMessageIcon,

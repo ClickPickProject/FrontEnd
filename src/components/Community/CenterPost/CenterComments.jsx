@@ -62,7 +62,6 @@ export default function CenterComments({ answer, question }) {
         {/* 댓글 목록 */}
         {answer.map((comment) => (
           <li key={comment.answerId} className='flex flex-col gap-4'>
-            {comment.questionId} {comment.answerId}
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             <h2 className=' font-semibold'> {comment.title}</h2>
             <div className='flex flex-col gap-1 rounded-md'>

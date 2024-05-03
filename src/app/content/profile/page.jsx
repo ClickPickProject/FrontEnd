@@ -23,7 +23,7 @@ export default function ProfilePage() {
           <ul className='my-2 flex items-center justify-center gap-4 whitespace-nowrap text-base font-semibold lg:flex-col sm:flex-col'>
             <div className='flex w-full justify-center gap-4 text-center lg:gap-12 sm:gap-12'>
               <li onClick={() => handleSectionChange(1)} className={`${hoverStyle} `}>
-                🙋‍♂️ 내프로필
+                🙋 내프로필
               </li>
               <li onClick={() => handleSectionChange(2)} className={`${hoverStyle}`}>
                 📋 내게시글

@@ -25,7 +25,6 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
   return (
     <>
       <li key={reply.answerId} className='flex flex-col gap-4'>
-        {reply.questionId} {reply.answerId}
         <WriterView writer={reply.nickname} date={reply.createAt} profile={reply.profileUrl} />
         <h2 className=' font-semibold'> {reply.title}</h2>
         <div className='flex flex-col gap-1 rounded-md'>
