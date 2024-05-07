@@ -15,8 +15,6 @@ const ReportModal = ({ nickname, commentId }) => {
   const closeReportModal = () => setReportModal(false);
 
   const handleSubmit = async (nickname, commentId, reason) => {
-    console.log('Reported User:', nickname);
-    console.log('Report Reason:', reason);
     try {
       const body = {
         reportedUserNickname: nickname,
