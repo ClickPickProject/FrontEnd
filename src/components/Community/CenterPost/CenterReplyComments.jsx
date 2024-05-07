@@ -20,7 +20,7 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
   // 답변
   const onClickReReply = (questionId, answerId) => {
     router.push(`/content/center/${answerId}/answer`);
-    setPageState1(`/api/member/${answerId}/${questionId}/reanswer`);
+    setPageState1(`/api/member/${questionId}/${answerId}/reanswer`);
   };
   return (
     <>

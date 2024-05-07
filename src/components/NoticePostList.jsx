@@ -126,26 +126,41 @@ export default function NoticePostList({ url }) {
             <div className='relative flex items-center gap-2 font-semibold'>
               <Link href={`/content/center/${data.questionId}`}>
                 {' '}
-                <div className='flex items-center gap-2'>
-                  {data.lockStatus === 'UNLOCK' ? <FaUnlock color='pink' /> : <FaLock color='pink' />}
-                  {data.title}
-                </div>
+                <div className='flex flex-col items-center gap-2'>{data.title}</div>
               </Link>
             </div>
-
-            {data.status !== 'COMPLETE' ? (
-              <div
-                className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status === 'COMPLETE' ? `bg-pink-300` : `bg-pink-200`}`}
-              >
-                답변대기
-              </div>
-            ) : (
-              <div
-                className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status !== 'COMPLETE' ? `bg-pink-200` : `bg-pink-300`}`}
-              >
-                답변완료
-              </div>
-            )}
+            <div className='flex gap-2'>
+              {data.lockStatus === 'UNLOCK' ? (
+                <>
+                  <p className='flex w-24 cursor-pointer items-center justify-center gap-2 rounded-md bg-pink-300 text-sm font-semibold'>
+                    <p>
+                      <FaUnlock color='' />
+                    </p>
+                    <p>공개</p>
+                  </p>
+                </>
+              ) : (
+                <p className='flex w-24 cursor-pointer items-center justify-center gap-2 rounded-md bg-pink-300 text-sm  font-semibold'>
+                  <p>
+                    <FaLock color='' />
+                  </p>
+                  <p>비공개</p>
+                </p>
+              )}
+              {data.status !== 'COMPLETE' ? (
+                <div
+                  className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status === 'COMPLETE' ? `bg-pink-300` : `bg-pink-200`}`}
+                >
+                  답변대기
+                </div>
+              ) : (
+                <div
+                  className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status !== 'COMPLETE' ? `bg-pink-200` : `bg-pink-300`}`}
+                >
+                  답변완료
+                </div>
+              )}
+            </div>
             <div className='mb-4 w-full border border-gray-200' />
           </li>
         ))}

@@ -24,7 +24,7 @@ export default function CenterComments({ answer, question }) {
   // 삭제
   const onClickCommentDelete = async (answerId) => {
     try {
-      const res = await axios.delete(`/api/admin/answer/${answerId}`, {
+      const res = await axios.delete(`/api/member/answer/${answerId}`, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -48,7 +48,7 @@ export default function CenterComments({ answer, question }) {
     setPostContent(content);
     setPostTitle(title);
     router.push(`/content/center/${answerId}/answer`);
-    setPageState1(`/api/admin/answer/${answerId}`);
+    setPageState1(`/api/member/answer/${answerId}`);
   };
   // 답변
   const onClickReply = (questionId, answerId) => {
