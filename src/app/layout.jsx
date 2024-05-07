@@ -5,6 +5,7 @@ import { MSWComponent } from '@/mocks/MSWComponent';
 import ReactQueryClientProvider from '@/components/ReactQueryClientProvider';
 import Script from 'next/script';
 import ToastWrapper from '@/components/ToastWrapper';
+import CookieWrapper from '@/components/CookieWrapper';
 
 const open = Open_Sans({ subsets: ['latin'] });
 
@@ -23,9 +24,11 @@ export default function RootLayout({ children }) {
         <Script defer src={process.env.NEXT_PUBLIC_MAP_API} strategy='beforeInteractive' />
         <ReactQueryClientProvider>
           <RecoilRootWrapper>
-            <ToastWrapper>
-              <MSWComponent>{children}</MSWComponent>
-            </ToastWrapper>
+            <CookieWrapper>
+              <ToastWrapper>
+                <MSWComponent>{children}</MSWComponent>
+              </ToastWrapper>
+            </CookieWrapper>
           </RecoilRootWrapper>
         </ReactQueryClientProvider>
       </body>
