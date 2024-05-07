@@ -18,6 +18,12 @@ export const reportModalState = atom({
   key: 'reportModalState',
   default: false,
 });
+
+export const banPeriodModalState = atom({
+  key: 'banPeriodModalState',
+  default: false,
+});
+
 export const postReportModalState = atom({
   key: 'postReportModalState',
   default: false,
