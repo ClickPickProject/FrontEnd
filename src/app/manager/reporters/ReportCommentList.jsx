@@ -61,9 +61,13 @@ export default function ReportCommentList() {
     }
   };
 
-  const onClickDelete = async (userId) => {
+  const onClickDelete = async (reportCommentId) => {
     try {
-      const res = await axios.delete(`/api/admin/ban/${userId}`, {
+      const body = {
+        id: reportCommentId,
+        type: 'comment',
+      };
+      const res = await axios.post(`/api/admin/withdrawal`, body, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -71,7 +75,7 @@ export default function ReportCommentList() {
       });
       if (res.status === 200) {
         queryClient.invalidateQueries(['banndUsers']);
-        toast.success(`${userId} 정지가 해제되었습니다.`);
+        toast.success(`신고가 철회되었습니다.`);
       }
     } catch (error) {
       toast.error('처리 중 오류가 발생했습니다.');
@@ -118,10 +122,10 @@ export default function ReportCommentList() {
               정지
             </button>
             <button
-              onClick={() => onClickDelete(user.reportedUserId)}
+              onClick={() => onClickDelete(user.reportCommentId)}
               className='rounded-full bg-blue-500 px-2 text-white transition-all hover:scale-105 hover:bg-blue-600'
             >
-              해제
+              철회
             </button>
           </div>
         </div>

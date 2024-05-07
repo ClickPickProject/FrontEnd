@@ -6,13 +6,13 @@ import axios from 'axios';
 import { useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useRecoilValue } from 'recoil';
-export default function ReporterCharts({ title, year }) {
+export default function ReporterCharts3({ title, year }) {
   const token = useRecoilValue(tokenState);
   const [seriesData, setSeriesData] = useState([]);
   const { data, isPending, isError } = useQuery({
-    queryKey: ['monthUserCount'],
+    queryKey: ['monthCommentUserCount'],
     queryFn: async () => {
-      const res = await axios.get(`/api/admin/user/month/${2024}`, {
+      const res = await axios.get(`/api/admin/report/comment/${2024}`, {
         headers: {
           Authorization: token,
         },
@@ -24,7 +24,7 @@ export default function ReporterCharts({ title, year }) {
 
   const series = [
     {
-      name: '가입자 수',
+      name: '댓글 신고자 수',
       data: Object.values(data || {}),
     },
   ];

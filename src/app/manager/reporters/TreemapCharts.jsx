@@ -9,9 +9,9 @@ import { useRecoilValue } from 'recoil';
 export default function TreemapCharts() {
   const token = useRecoilValue(tokenState);
   const { data, isPending, isError } = useQuery({
-    queryKey: ['monthUserCount'],
+    queryKey: ['monthUserCount3'],
     queryFn: async () => {
-      const res = await axios.get(`/api/admin/user/month/${year}`, {
+      const res = await axios.get(`/api/admin/user/month/${2024}`, {
         withCredentials: true,
         headers: {
           Authorization: token,
@@ -20,42 +20,30 @@ export default function TreemapCharts() {
       return res.data;
     },
   });
+
   const [series] = useState([
     {
-      data: [
-        { x: '1월', y: 218 },
-        { x: '2월', y: 149 },
-        { x: '3월', y: 184 },
-        { x: '4월', y: 55 },
-        { x: '5월', y: 84 },
-        { x: '6월', y: 31 },
-        { x: '7월', y: 70 },
-        { x: '8월', y: 30 },
-        { x: '9월', y: 44 },
-        { x: '10월', y: 68 },
-        { x: '11월', y: 28 },
-        { x: '12월', y: 19 },
-      ],
+      data: Object.entries(data || {}).map(([month, count]) => ({ x: `${month}월`, y: count })),
     },
   ]);
 
   const [options] = useState({
     legend: { show: false },
-    chart: { height: 350, type: 'treemap', toolbar: { show: false } },
+    chart: { height: 350, type: 'treemap', color: 'red', toolbar: { show: false } },
     title: { text: '', align: 'center' },
     colors: [
-      '#9ABCEB',
-      '#F7B844',
-      '#93BFDC',
-      '#EC3C65',
-      '#CDD7B6',
-      '#A684A8',
-      '#D43F97',
-      '#1E5D8C',
-      '#421243',
-      '#7F94B0',
-      '#EF6537',
-      '#C0ADDB',
+      '#FFA07A',
+      '#E6E6FA',
+      '#90EE90',
+      '#87CEEB',
+      '#00CED1',
+      '#FFC0CB',
+      '#D2B48C',
+      '#FFDAB9',
+      '#FFD700',
+      '#D3D3D3',
+      '#ADD8E6',
+      '#87CEFA',
     ],
     plotOptions: { treemap: { distributed: true, enableShades: false } },
   });
