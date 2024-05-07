@@ -45,9 +45,20 @@ export const handlers = [
       {
         headers: {
           Authorization: `Bearer ${Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)}`,
+          'Set-Cookie': 'refresh=TEST_REFRESH_TOKEN;',
         },
       },
     );
+  }),
+  // refresh token
+  http.post('/api/reissue', ({ cookies }) => {
+    const { refreshToken } = cookies;
+    return HttpResponse.json({
+      refresh: refreshToken,
+      headers: {
+        'Set-Cookie': 'refresh=TEST_REFRESH_TOKEN;',
+      },
+    });
   }),
 
   // 유저 정보 확인
@@ -949,6 +960,11 @@ export const handlers = [
       createAt: '2024-04-24T19:55:48.884Z',
     });
   }),
+  // 정지 유저 기간 변경
+  http.post('/api/admin/ban/period', ({ params }) => {
+    const { userId } = params;
+    return HttpResponse.json('정지 기간이 변경되었습니다.');
+  }),
   // 신고된 게시글 처리
   http.post('/api/admin/postban', () => {
     return HttpResponse.json('정지되었습니다.');
@@ -1030,7 +1046,20 @@ export const handlers = [
   http.get('/api/admin/user/month/:year', ({ params }) => {
     const { year } = params;
     return HttpResponse.json({
-      userCount: 128,
+      userCount: {
+        1: 22,
+        2: 12,
+        3: 223,
+        4: 94,
+        5: 272,
+        6: 218,
+        7: 238,
+        8: 112,
+        9: 200,
+        10: 100,
+        11: 180,
+        12: 230,
+      },
       monthYear: year,
     });
   }),
