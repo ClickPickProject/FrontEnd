@@ -60,6 +60,23 @@ export default function ReportCommentList() {
       toast.error('오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
+
+  const onClickDelete = async (userId) => {
+    try {
+      const res = await axios.delete(`/api/admin/ban/${userId}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        queryClient.invalidateQueries(['banndUsers']);
+        toast.success(`${userId} 정지가 해제되었습니다.`);
+      }
+    } catch (error) {
+      toast.error('처리 중 오류가 발생했습니다.');
+    }
+  };
   const options = [
     { value: 3, label: '3일' },
     { value: 7, label: '7일' },
@@ -100,7 +117,10 @@ export default function ReportCommentList() {
             >
               정지
             </button>
-            <button className='rounded-full bg-blue-500 px-2 text-white transition-all hover:scale-105 hover:bg-blue-600'>
+            <button
+              onClick={() => onClickDelete(user.reportedUserId)}
+              className='rounded-full bg-blue-500 px-2 text-white transition-all hover:scale-105 hover:bg-blue-600'
+            >
               해제
             </button>
           </div>

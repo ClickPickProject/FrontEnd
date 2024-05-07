@@ -57,29 +57,23 @@ export default function ReportPostList() {
     } catch (err) {
       toast.error('오류가 발생했습니다. 다시 시도해주세요.');
     }
+  };
 
-    // const currentDate = dayjs();
-    // const format = 'YYYY-MM-DDTHH:mm:ss';
-    // console.log('승인');
-    // switch (selectedPeriod) {
-    //   case '3일':
-    //     console.log(currentDate.add(3, 'd').format(format));
-    //     break;
-    //   case '5일':
-    //     console.log(currentDate.add(5, 'd').format(format));
-    //     break;
-    //   case '7일':
-    //     console.log(currentDate.add(7, 'd').format(format));
-    //     break;
-    //   case '30일':
-    //     console.log(currentDate.add(30, 'd').format(format));
-    //     break;
-    //   case '영구':
-    //     console.log(currentDate.add(999, 'y').format(format));
-    //     break;
-    //   default:
-    //     console.log('기간을 선택해주세요');
-    // }
+  const onClickDelete = async (userId) => {
+    try {
+      const res = await axios.delete(`/api/admin/ban/${userId}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (res.status === 200) {
+        queryClient.invalidateQueries(['banndUsers']);
+        toast.success(`${userId} 정지가 해제되었습니다.`);
+      }
+    } catch (error) {
+      toast.error('처리 중 오류가 발생했습니다.');
+    }
   };
 
   const options = [
@@ -117,7 +111,10 @@ export default function ReportPostList() {
             >
               정지
             </button>
-            <button className='rounded-full bg-blue-500 px-2 text-white transition-all hover:scale-105 hover:bg-blue-600'>
+            <button
+              onClick={() => onClickDelete(user.reportedUserId)}
+              className='rounded-full bg-blue-500 px-2 text-white transition-all hover:scale-105 hover:bg-blue-600'
+            >
               해제
             </button>
           </div>
