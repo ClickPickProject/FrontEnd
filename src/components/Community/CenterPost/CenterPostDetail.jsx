@@ -91,7 +91,7 @@ export default function CenterPostDetail() {
 
   return (
     <>
-      <div className='w-full max-w-[830px]'>
+      <div className='w-full max-w-[830px] sm:px-[40px]'>
         <div className='my-4 flex flex-col gap-2'>
           <h2 className='text-2xl font-semibold'>[Q&A] {title}</h2>
           {/* 작성자 */}

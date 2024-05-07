@@ -93,7 +93,7 @@ export default function NoticePostList({ url }) {
     setPageState1(`/api/member/question`);
   };
   return (
-    <div className='sm:mr-[40px]'>
+    <div className='sm:mx-[40px]'>
       <div className='mb-4 flex flex-row'>
         {/* <CenterSearch
           searchOption={searchOption}
@@ -127,8 +127,7 @@ export default function NoticePostList({ url }) {
               <Link href={`/content/center/${data.questionId}`}>
                 {' '}
                 <div className='flex items-center gap-2'>
-                  <FaUnlock color='pink' />
-                  {/* <FaLock color='red' /> */}
+                  {data.lockStatus === 'UNLOCK' ? <FaUnlock color='pink' /> : <FaLock color='pink' />}
                   {data.title}
                 </div>
               </Link>

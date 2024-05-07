@@ -78,7 +78,7 @@ function WritePage() {
             </button>
           </span>
           {/* 에디터 */}
-          <div className='h-[full] w-[full]'>{<CenterCustomEditor />}</div>
+          <div className='h-[full] w-[50vw]'>{<CenterCustomEditor />}</div>
           <div className='mx-auto mt-4 flex h-10 w-1/6 cursor-pointer items-center justify-center rounded-lg bg-pink-300 font-semibold shadow-md transition-all hover:bg-pink-400'>
             <button onClick={onClickWriteSubmit} className='h-full w-full'>
               제출
