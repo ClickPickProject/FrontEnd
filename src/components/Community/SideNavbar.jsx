@@ -34,7 +34,6 @@ export default function SideNavbar() {
     });
     localStorage.clear();
     setIsLogin(false);
-    window.location.reload();
   };
 
   useEffect(() => {

@@ -7,7 +7,6 @@ export default function ReporterList() {
 
   const handlePeriodSelect = (period) => {
     setSelectedPeriod(period);
-    console.log(period);
     setOpenDropdown(false);
   };
 
@@ -18,7 +17,6 @@ export default function ReporterList() {
   const onClickAccept = () => {
     const currentDate = dayjs();
     const format = 'YYYY-MM-DDTHH:mm:ss';
-    console.log('승인');
     switch (selectedPeriod) {
       case '3일':
         console.log(currentDate.add(3, 'd').format(format));
