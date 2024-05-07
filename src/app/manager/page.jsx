@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import AuthContext from '@/components/context/AuthContext';
-import ReporterCharts3 from './reporters/ReporterCharts3';
 
 function DashboardPage() {
   const [users, setUsers] = useState([
