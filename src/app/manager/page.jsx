@@ -16,6 +16,7 @@ function DashboardPage() {
   const navStyle = `flex cursor-pointer items-center gap-4 rounded-xl px-8 py-4 text-gray-500 hover:bg-pink-200 hover:text-pink-500 transition-all`;
   const ReporterCharts = dynamic(() => import('./reporters/ReporterCharts'), { ssr: false });
   const ReporterCharts2 = dynamic(() => import('./reporters/ReporterCharts2'), { ssr: false });
+  const ReporterCharts3 = dynamic(() => import('./reporters/ReporterCharts3'), { ssr: false });
   const TreemapCharts = dynamic(() => import('./reporters/TreemapCharts'), { ssr: false });
   const PieCharts = dynamic(() => import('./reporters/PieCharts'), { ssr: false });
   return (
