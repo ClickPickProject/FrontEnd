@@ -23,8 +23,7 @@ export default function HomeBestPost() {
   return (
     <>
       {bestPosts.slice(0, 1).map((data) => (
-        <div className='flex flex-col gap-4'>
-          <h2 className='text-2xl font-bold'>💕 BEST 좋아요</h2>
+        <>
           <Link href={`/content/community/${data.postId}`} className=''>
             <figure className=''>
               <Image
@@ -46,7 +45,7 @@ export default function HomeBestPost() {
               likeCount={data.likeCount}
             />
           </div>
-        </div>
+        </>
       ))}
     </>
   );

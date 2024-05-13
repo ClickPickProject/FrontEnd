@@ -8,3 +8,7 @@ export const pageDeleteModal = atom({
   key: 'pageDeleteModal',
   default: 'false',
 });
+export const pageNavModal = atom({
+  key: 'pageNavModal',
+  default: 'false',
+});

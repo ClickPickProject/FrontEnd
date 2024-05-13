@@ -48,6 +48,7 @@ export default function MyProfile() {
       }
     },
   });
+  // 유저 이미지 받아오기
   const { data1, isPending1, isError1 } = useQuery({
     queryKey: ['proImg'],
     queryFn: async () => {
