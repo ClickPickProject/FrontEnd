@@ -10,6 +10,7 @@ import { ReplyIcon } from '@/components/UI/Icons';
 import { useEffect } from 'react';
 import CenterReplyComments from './CenterReplyComments';
 import { postContentState, postTitleState } from '@/atoms/PostState';
+import { toast } from 'react-toastify';
 export default function CenterComments({ answer, question }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
@@ -45,8 +46,8 @@ export default function CenterComments({ answer, question }) {
   };
   // 수정
   const onClickEdit = (answerId, title, content) => {
-    setPostContent(content);
     setPostTitle(title);
+    setPostContent(content);
     router.push(`/content/center/${answerId}/answer`);
     setPageState1(`/api/member/answer/${answerId}`);
   };
@@ -79,20 +80,17 @@ export default function CenterComments({ answer, question }) {
               </div>
               {/* 댓글 수정 및 삭제 */}
               {comment.nickname === myNickname ? (
-                <button
-                  className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-                  onClick={() => onClickEdit(comment.answerId, comment.title, comment.content)}
-                >
-                  {comment.commentStatus === 'DELETE' ? null : '수정'}
-                </button>
-              ) : null}
-              {comment.nickname === myNickname ? (
-                <button
-                  onClick={() => onClickCommentDelete(comment.answerId)}
-                  className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-                >
-                  {comment.commentStatus === 'DELETE' ? null : '삭제'}
-                </button>
+                <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
+                  <button
+                    className='hover:opacity-100'
+                    onClick={() => onClickEdit(comment.answerId, comment.title, comment.content)}
+                  >
+                    수정
+                  </button>
+                  <button className='hover:opacity-100' onClick={() => onClickCommentDelete(comment.answerId)}>
+                    삭제
+                  </button>
+                </div>
               ) : null}
               <div className=' border' />
             </div>

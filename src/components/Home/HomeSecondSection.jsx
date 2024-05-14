@@ -10,14 +10,14 @@ export default function HomeSecondSection() {
     offset: ['start start', 'end start'],
   });
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-  const textY = useTransform(scrollYProgress, [0, 1], ['-120%', '250%']);
-  const textSize = useTransform(scrollYProgress, [0, 1], ['65px', '9px']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['-250%', '350%']);
+  const textSize = useTransform(scrollYProgress, [0, 1], ['50px', '9px']);
   const opacityProgress = useTransform(scrollYProgress, [0, 1], [1, 0]);
   return (
     <motion.div ref={ref} className='relative grid h-dvh w-full place-items-center overflow-hidden sm:hidden'>
       <motion.h1
         style={{ y: textY, fontSize: textSize, opacity: opacityProgress }}
-        className={`${styled.bgGradientCustom} z-10`}
+        className={`${styled.bgGradientCustom} z-10 whitespace-nowrap`}
       >
         아름다움이 함축되어 있는 클릭픽에서 <br /> 삶을 더 풍요롭게 만들어보세요.
       </motion.h1>
