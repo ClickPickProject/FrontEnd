@@ -4,25 +4,30 @@ import { FillSirenIcon } from '../UI/Icons';
 import { postReportModalState, reportModalState } from '@/atoms/commentState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import axios from 'axios';
-import { tokenState } from '@/atoms/tokenState';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
 
 const PostReportModal = ({ nickname, postId }) => {
   const [reportReason, setReportReason] = useState('');
   const setPostReportModal = useSetRecoilState(postReportModalState);
   const token = useRecoilValue(tokenState);
-
+  const MyNickname = useRecoilValue(MyNicknameState);
   const closeReportModal = () => setPostReportModal(false);
 
   const handleSubmit = async (nickname, postId, reason) => {
-    console.log('Reported User:', nickname);
-    console.log('Report Reason:', reason);
+    if (MyNickname !== reportedUserNickname) {
+      toast.error('자기 자신은 신고할 수 없습니다.', {
+        position: 'top-right',
+      });
+      return;
+    }
     try {
       const body = {
         reportedUserNickname: nickname,
         postId,
         reason,
       };
+
       const res = await axios.post('/api/member/report/post', body, {
         withCredentials: true,
         headers: {
