@@ -77,14 +77,14 @@ export default function HomeNavToolBar() {
   return (
     <>
       {!NavModal ? (
-        <section className='absolute right-4 top-4 z-50 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl'>
+        <section className='absolute right-4 top-4 z-50 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl sm:w-1/2'>
           <img src={proImg} alt='#' className='z-10 mt-6 h-[200px] w-[200px] rounded-full border-4 border-white' />
           <p className='mt-2 text-lg font-bold '>{myNickname}</p>
           <div className=' mt-2 flex w-full flex-row  justify-center gap-4'>
             <p className='flex items-center  justify-center gap-1'>
               <Link
                 href='/content/profile'
-                className='flex h-[40px] w-[100px] items-center justify-center whitespace-nowrap rounded-xl bg-pink-100 p-1 text-sm font-bold'
+                className='flex h-[40px] w-[100px] items-center justify-center whitespace-nowrap rounded-xl bg-pink-100 p-1 text-sm font-bold hover:bg-pink-300'
               >
                 <ProfileIcon size={28} />내 정보
               </Link>
@@ -92,7 +92,7 @@ export default function HomeNavToolBar() {
             <p className='flex items-center  justify-center gap-1'>
               <button
                 onClick={onClickLogout}
-                className='flex h-[40px] w-[100px] items-center justify-center whitespace-nowrap rounded-xl bg-pink-100 p-1 text-sm font-bold'
+                className='flex h-[40px] w-[100px] items-center justify-center whitespace-nowrap rounded-xl bg-pink-100 p-1 text-sm font-bold hover:bg-pink-300'
               >
                 <LogoutIcon size={24} />
                 로그아웃
@@ -101,12 +101,12 @@ export default function HomeNavToolBar() {
           </div>
           <div className='mt-3 flex flex-col items-center justify-center gap-2'>
             <div className='flex h-[60px] w-[280px] gap-4 rounded-xl '>
-              <ul className='flex w-full flex-col gap-[13px] text-sm sm:gap-[6px] sm:text-xs [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold sm:[&>*]:pl-0'>
+              <ul className='flex w-full flex-col gap-[13px] [&>*]:h-[50px] [&>*]:pl-4 [&>*]:font-bold'>
                 {MENU.map(({ name, href, icon, clickedIcon }) => (
                   <Link
                     key={href}
                     href={href}
-                    className={`flex rounded-xl hover:bg-pink-100 sm:justify-center ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
+                    className={`flex rounded-xl hover:bg-pink-100 ${href === pathName || (pathName.startsWith('/content/community') && href === '/content/community') ? 'bg-pink-100' : null} transition-all active:bg-pink-200`}
                   >
                     <li className='flex items-center gap-2'>
                       {href === pathName ? clickedIcon : icon} {name}

@@ -24,8 +24,8 @@ export default function HomeFirstSection() {
             탐색하기
           </Link>
         </div>
-        <section className='m-auto mb-[80px] mt-[50px] flex h-[312px] w-[684px] flex-row items-center gap-20 md:mx-auto md:h-full md:w-full md:flex-col'>
-          <div className='flex flex-1 flex-col gap-4'>
+        <section className='m-auto mb-[80px] mt-[50px] flex h-[312px] w-[684px] flex-row items-center gap-20 md:mx-auto md:h-full md:w-full md:flex-col md:px-4 sm:px-4'>
+          <div className='flex w-full flex-1 flex-col gap-4'>
             <div>
               <div className='flex flex-col gap-4'>
                 <h2 className='text-2xl font-bold'>💕 BEST 좋아요</h2>
@@ -34,7 +34,7 @@ export default function HomeFirstSection() {
             </div>
           </div>
           {/* 실시간 게시글 */}
-          <div className='flex flex-col '>
+          <div className='flex w-full flex-1 flex-col '>
             <div>
               <h2 className='mb-5 text-2xl font-bold '>💬 실시간 게시글</h2>
               <ul className='flex w-full flex-col gap-[12px]'>

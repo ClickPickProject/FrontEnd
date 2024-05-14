@@ -25,7 +25,7 @@ export default function HomeBestPost() {
       {bestPosts.slice(0, 1).map((data) => (
         <>
           <Link href={`/content/community/${data.postId}`} className=''>
-            <figure className=''>
+            <figure className='flex w-full items-center justify-center'>
               <Image
                 alt='#'
                 src={`${data.thumbnail === null || data.thumbnail.length === 0 ? '/Images/camera.png' : data.thumbnail}`}
@@ -36,15 +36,13 @@ export default function HomeBestPost() {
             </figure>
             <h2 className='text-lg font-bold'>{data.title}</h2>
           </Link>
-          <div className=''>
-            <HomePostWriter
-              writer={data.nickname}
-              date={data.createAt}
-              profile={data.profileUrl}
-              viewCount={data.viewCount}
-              likeCount={data.likeCount}
-            />
-          </div>
+          <HomePostWriter
+            writer={data.nickname}
+            date={data.createAt}
+            profile={data.profileUrl}
+            viewCount={data.viewCount}
+            likeCount={data.likeCount}
+          />
         </>
       ))}
     </>
