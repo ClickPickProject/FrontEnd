@@ -3,12 +3,17 @@
 import HomePostWriter from './HomePostWriter';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+
 import HomeNowPost from './HomeNowPost';
 import { usePathname } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import HomeBestPost from './HomeBestPost';
 import { useRecoilValue } from 'recoil';
 import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
+import { useState, useEffect } from 'react';
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -26,6 +31,14 @@ export default function HomeNavToolBar() {
   const pathName = usePathname();
   const NavModal = useRecoilValue(pageNavModal);
   const proImg = useRecoilValue(userImgState);
+  const myNickname = useRecoilValue(MyNicknameState);
+  const token = useRecoilValue(tokenState);
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
+  }, [token]);
+  // 로그아웃
   const onClickLogout = () => {
     localStorage.clear();
     setIsLogin(false);
@@ -33,6 +46,8 @@ export default function HomeNavToolBar() {
       position: 'top-right',
     });
   };
+
+  // 메뉴바
   const MENU = [
     {
       name: '장소찾기',
@@ -62,9 +77,9 @@ export default function HomeNavToolBar() {
   return (
     <>
       {!NavModal ? (
-        <section className='absolute right-4 top-4 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl'>
-          <img src={proImg} alt='#' className='z-10 mt-6 h-[200px] w-[200px] rounded-full' />
-          <p className='mt-2 text-lg font-bold '>홍길동</p>
+        <section className='absolute right-4 top-4 z-50 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl'>
+          <img src={proImg} alt='#' className='z-10 mt-6 h-[200px] w-[200px] rounded-full border-4 border-white' />
+          <p className='mt-2 text-lg font-bold '>{myNickname}</p>
           <div className=' mt-2 flex w-full flex-row  justify-center gap-4'>
             <p className='flex items-center  justify-center gap-1'>
               <Link

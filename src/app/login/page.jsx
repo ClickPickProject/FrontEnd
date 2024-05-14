@@ -33,6 +33,7 @@ export default function LoginPage() {
         localStorage.clear();
         setToken(token);
         setMyNickname(res.data.nickname);
+        console.log(res);
         toast.success(`${res.data.nickname}님 환영합니다!`, {
           position: 'top-right',
         });

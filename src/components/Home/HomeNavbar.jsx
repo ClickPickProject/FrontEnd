@@ -1,6 +1,8 @@
 'use client';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
+import axios from 'axios';
+
 import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
@@ -24,7 +26,7 @@ export default function HomeNavbar() {
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 sm:pb-0 transition-all';
   // 유저 이미지 받아오기
   const { data, isPending, isError } = useQuery({
-    queryKey: ['proImg'],
+    queryKey: ['profileImg'],
     queryFn: async () => {
       try {
         const res = await axios.get('/api/profile/image/', {
@@ -35,6 +37,7 @@ export default function HomeNavbar() {
         });
         if (res.status === 200) {
           setImage(res.data.url);
+          console.log(res);
         }
         return res.data;
       } catch (error) {

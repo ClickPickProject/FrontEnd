@@ -40,6 +40,22 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
               <ReplyIcon color='#ec4899' />
               <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
             </div>
+            {comment.nickname === myNickname ? (
+              <button
+                className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
+                onClick={() => onClickEdit(comment.answerId, comment.title, comment.content)}
+              >
+                {comment.commentStatus === 'DELETE' ? null : '수정'}
+              </button>
+            ) : null}
+            {comment.nickname === myNickname ? (
+              <button
+                onClick={() => onClickCommentDelete(comment.answerId)}
+                className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
+              >
+                {comment.commentStatus === 'DELETE' ? null : '삭제'}
+              </button>
+            ) : null}
             <div className='my-2 border' />
           </div>
         ) : null}
