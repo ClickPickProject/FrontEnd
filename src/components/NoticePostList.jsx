@@ -122,7 +122,24 @@ export default function NoticePostList({ url }) {
       <ul>
         {displayPosts?.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
-            <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
+            <div className='flex items-center gap-2'>
+              <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
+              {data.lockStatus === 'UNLOCK' ? (
+                <>
+                  <p className='flex w-24 cursor-pointer items-center gap-1 text-sm font-semibold opacity-50'>
+                    <p>
+                      <FaUnlock color='' />
+                    </p>
+                  </p>
+                </>
+              ) : (
+                <p className='flex w-24 cursor-pointer items-center gap-1 text-sm font-semibold opacity-50'>
+                  <p>
+                    <FaLock color='' />
+                  </p>
+                </p>
+              )}
+            </div>
             <div className='relative flex items-center gap-2 font-semibold'>
               <Link href={`/content/center/${data.questionId}`}>
                 {' '}
@@ -130,23 +147,6 @@ export default function NoticePostList({ url }) {
               </Link>
             </div>
             <div className='flex gap-2'>
-              {data.lockStatus === 'UNLOCK' ? (
-                <>
-                  <p className='flex w-24 cursor-pointer items-center justify-center gap-2 rounded-md bg-pink-300 text-sm font-semibold'>
-                    <p>
-                      <FaUnlock color='' />
-                    </p>
-                    <p>공개</p>
-                  </p>
-                </>
-              ) : (
-                <p className='flex w-24 cursor-pointer items-center justify-center gap-2 rounded-md bg-pink-300 text-sm  font-semibold'>
-                  <p>
-                    <FaLock color='' />
-                  </p>
-                  <p>비공개</p>
-                </p>
-              )}
               {data.status !== 'COMPLETE' ? (
                 <div
                   className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status === 'COMPLETE' ? `bg-pink-300` : `bg-pink-200`}`}
