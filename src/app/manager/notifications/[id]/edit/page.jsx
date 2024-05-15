@@ -5,14 +5,18 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useEffect, useState } from 'react';
 import { editorContentState } from '@/atoms/editorContentState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { tokenState } from '@/atoms/tokenState';
+import { noticePostIdState } from '@/atoms/PostState';
 
 export default function NoticeEditPage() {
   const [content, setContent] = useRecoilState(editorContentState);
   const [noticeTitle, setNoticeTitle] = useState('');
+  const token = useRecoilValue(tokenState);
+  const noticePostId = useRecoilValue(noticePostIdState);
   const router = useRouter();
   useEffect(() => {
     setNoticeTitle('');
@@ -20,10 +24,13 @@ export default function NoticeEditPage() {
   }, []);
   const onClickNotificationsSubmit = async () => {
     try {
-      const res = await axios.post('/api/admin/notice', {
-        title: noticeTitle,
-        content,
+      const res = await axios.post(`/api/admin/notice/${noticePostId}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
       });
+
       if (res.status === 200) {
         toast.success('공지사항이 수정되었습니다.');
         setNoticeTitle('');

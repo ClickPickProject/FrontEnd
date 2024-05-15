@@ -8,6 +8,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import {
+  noticePostIdState,
   postCategoryNameState,
   postContentState,
   postEditModeState,
@@ -36,6 +37,7 @@ export default function NotificationPostList({ admin }) {
   const setPostCategoryName = useSetRecoilState(postCategoryNameState);
   const setPostContent = useSetRecoilState(postContentState);
   const setPostHashtag = useSetRecoilState(postHashtagState);
+  const setNoticePostId = useSetRecoilState(noticePostIdState);
 
   const {
     data: posts,
@@ -64,6 +66,7 @@ export default function NotificationPostList({ admin }) {
     setPostTitle(title);
     setPostCategoryName(category);
     setPostContent(content);
+    setNoticePostId(noticeId);
     router.push(`/manager/notifications/${noticeId}/edit`);
   };
 

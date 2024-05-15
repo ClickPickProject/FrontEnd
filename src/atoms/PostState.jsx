@@ -44,3 +44,8 @@ export const postCategoryNameState = atom({
   key: 'postCategoryNameState',
   default: '',
 });
+
+export const noticePostIdState = atom({
+  key: 'noticePostIdState',
+  default: '',
+});
