@@ -8,6 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useCookies } from 'react-cookie';
+import { axiosInstance, setHeader } from '@/components/utils/Axios';
 
 export default function LoginPage() {
   let [id, setId] = useState('');
@@ -17,21 +19,25 @@ export default function LoginPage() {
   const router = useRouter();
   const defaultInputStyle = 'rounded-lg outline-none h-[45px] pl-7';
 
+  const [cookies, setCookie] = useCookies();
+
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `/api/login`,
-        { id: id, password: pw },
-        {
-          withCredentials: true,
-        },
-      );
+      const body = {
+        id,
+        password: pw,
+      };
+      const res = await axiosInstance.post(`/api/login`, body);
+      const accessToken = res.headers['authorization'];
+      setHeader('authorization', accessToken);
 
-      const token = res.headers['authorization'];
       if (res.status === 200) {
+        console.log(res.headers);
+        console.log(document.cookie);
+        // setCookie('refresh', res.cookies);
         localStorage.clear();
-        setToken(token);
+        setToken(accessToken, { path: '/api' });
         setMyNickname(res.data.nickname);
         toast.success(`${res.data.nickname}님 환영합니다!`, {
           position: 'top-right',
