@@ -18,7 +18,7 @@ function DashboardPage() {
   const ReporterCharts2 = dynamic(() => import('./reporters/ReporterCharts2'), { ssr: false });
   const ReporterCharts3 = dynamic(() => import('./reporters/ReporterCharts3'), { ssr: false });
   const TreemapCharts = dynamic(() => import('./reporters/TreemapCharts'), { ssr: false });
-  const PieCharts = dynamic(() => import('./reporters/PieCharts'), { ssr: false });
+  // const PieCharts = dynamic(() => import('./reporters/PieCharts'), { ssr: false });
   return (
     <>
       {/* Main */}
@@ -48,7 +48,9 @@ function DashboardPage() {
               <PieCharts />
             </div> */}
           </div>
-          <TreemapCharts />
+          <div className='mt-8 rounded-lg bg-green-50 p-6 shadow-md'>
+            <TreemapCharts />
+          </div>
         </div>
       </main>
     </>

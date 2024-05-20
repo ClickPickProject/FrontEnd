@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
 import WriterView from './BestPost/WriterView';
-import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useQueryClient } from '@tanstack/react-query';
+import { axiosInstance } from '../utils/Axios';
+import { toast } from 'react-toastify';
 
 export default function CommentWrite() {
   const params = useParams();
@@ -26,18 +27,13 @@ export default function CommentWrite() {
       content: comment,
     };
     try {
-      const res = await axios.post('/api/member/comment', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post('/api/member/comment', body);
       if (res.status === 200) {
         queryClient.invalidateQueries(['posts', params.id]);
         setComment('');
       }
     } catch (err) {
-      console.log(err);
+      toast.error('댓글 작성 중 오류가 발생했습니다.');
     }
   };
 

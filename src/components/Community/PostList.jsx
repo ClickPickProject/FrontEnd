@@ -1,13 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Link from 'next/link';
 import StatusView from './BestPost/StatusView';
 import WriterView from './BestPost/WriterView';
 import Pagination from 'react-js-pagination';
 import Loading from '../Loading';
 import Search from '../Search';
+import { axiosInstance } from '../utils/Axios';
 
 export default function PostList({ category }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
@@ -32,7 +32,7 @@ export default function PostList({ category }) {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/list`, {
+      const res = await axiosInstance.get(`/api/post/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
@@ -86,7 +86,7 @@ export default function PostList({ category }) {
   // 검색 함수 정의 (제목, 내용, 해시태그)
   const searchByTitle = async () => {
     try {
-      const res = await axios.get('/api/post/title', {
+      const res = await axiosInstance.get('/api/post/title', {
         params: {
           title: search,
         },
@@ -99,7 +99,7 @@ export default function PostList({ category }) {
 
   const searchByContent = async () => {
     try {
-      const res = await axios.get('/api/post/content', {
+      const res = await axiosInstance.get('/api/post/content', {
         params: {
           content: search,
         },
@@ -112,7 +112,7 @@ export default function PostList({ category }) {
 
   const searchByHashtag = async () => {
     try {
-      const res = await axios.get('/api/post/hashtag', {
+      const res = await axiosInstance.get('/api/post/hashtag', {
         params: {
           hashtag: search,
         },

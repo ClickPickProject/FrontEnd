@@ -1,41 +1,28 @@
 'use client';
-import { tokenState } from '@/atoms/tokenState';
 import Loading from '@/components/Loading';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useState } from 'react';
-import Select from 'react-select';
 import { toast } from 'react-toastify';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import BannedUserModal from './BannedUserModal';
 import { banPeriodModalState } from '@/atoms/commentState';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function BannedUserList() {
   const queryClient = useQueryClient();
   const [banPeriodUser, setBanPeriodUser] = useState('');
-  const token = useRecoilValue(tokenState);
   const [banPeriodModal, setBanPeriodModal] = useRecoilState(banPeriodModalState);
   const { data, isPending, isError } = useQuery({
     queryKey: ['banndUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/banuserlist', {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get('/api/admin/banuserlist');
       return res.data;
     },
   });
 
   const onClickDelete = async (userId) => {
     try {
-      const res = await axios.delete(`/api/admin/ban/${userId}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.delete(`/api/admin/ban/${userId}`);
       if (res.status === 200) {
         queryClient.invalidateQueries(['banndUsers']);
         toast.success(`${userId} 정지가 해제되었습니다.`);

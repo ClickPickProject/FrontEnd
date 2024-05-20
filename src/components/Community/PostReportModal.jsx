@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { FillSirenIcon } from '../UI/Icons';
-import { postReportModalState, reportModalState } from '@/atoms/commentState';
+import { postReportModalState } from '@/atoms/commentState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import axios from 'axios';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
+import { axiosInstance } from '../utils/Axios';
 
 const PostReportModal = ({ nickname, postId }) => {
   const [reportReason, setReportReason] = useState('');
@@ -28,12 +28,7 @@ const PostReportModal = ({ nickname, postId }) => {
         reason,
       };
 
-      const res = await axios.post('/api/member/report/post', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post('/api/member/report/post', body);
       if (res.status === 200) {
         toast.success('게시글 신고가 접수되었습니다.', {
           icon: () => <FillSirenIcon color='red' />,

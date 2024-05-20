@@ -1,6 +1,7 @@
 'use client';
 import { tokenState } from '@/atoms/tokenState';
 import Loading from '@/components/Loading';
+import { axiosInstance } from '@/components/utils/Axios';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
@@ -12,11 +13,7 @@ export default function ReporterCharts2({ title, year }) {
   const { data, isPending, isError } = useQuery({
     queryKey: ['monthUserCount2'],
     queryFn: async () => {
-      const res = await axios.get(`/api/admin/report/post/${2024}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get(`/api/admin/report/post/${2024}`);
       setSeriesData(res.data);
       return res.data;
     },

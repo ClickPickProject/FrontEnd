@@ -22,15 +22,15 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body className={open.className}>
         <Script defer src={process.env.NEXT_PUBLIC_MAP_API} strategy='beforeInteractive' />
-        <ReactQueryClientProvider>
-          <RecoilRootWrapper>
-            <CookieWrapper>
+        <CookieWrapper>
+          <ReactQueryClientProvider>
+            <RecoilRootWrapper>
               <ToastWrapper>
                 <MSWComponent>{children}</MSWComponent>
               </ToastWrapper>
-            </CookieWrapper>
-          </RecoilRootWrapper>
-        </ReactQueryClientProvider>
+            </RecoilRootWrapper>
+          </ReactQueryClientProvider>
+        </CookieWrapper>
       </body>
     </html>
   );

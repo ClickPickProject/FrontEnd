@@ -3,9 +3,6 @@ import axios from 'axios';
 export const axiosInstance = axios.create({
   baseURL: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}`,
   withCredentials: true,
-  headers: {
-    Cookie: 'name=refresh;',
-  },
 });
 
 function setHeader(key, value) {

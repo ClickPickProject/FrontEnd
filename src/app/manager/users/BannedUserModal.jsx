@@ -1,18 +1,17 @@
 'use client';
 import { useState } from 'react';
 import { banPeriodModalState } from '@/atoms/commentState';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import axios from 'axios';
-import { tokenState } from '@/atoms/tokenState';
+import { useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { FillSirenIcon } from '@/components/UI/Icons';
-import Select from 'react-select';
 import { useQueryClient } from '@tanstack/react-query';
+import { axiosInstance } from '@/components/utils/Axios';
+import Select from 'react-select';
+
 const BannedUserModal = ({ userId }) => {
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const queryClient = useQueryClient();
   const setBanPeriodModal = useSetRecoilState(banPeriodModalState);
-  const token = useRecoilValue(tokenState);
 
   const closeReportModal = () => setBanPeriodModal(false);
 
@@ -22,12 +21,7 @@ const BannedUserModal = ({ userId }) => {
         userId,
         days,
       };
-      const res = await axios.post(`/api/admin/ban/period`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/admin/ban/period`, body);
       if (res.status === 200) {
         queryClient.invalidateQueries(['banndUsers']);
         toast.success(`${userId} 기간이 연장되었습니다.`);

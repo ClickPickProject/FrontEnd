@@ -1,22 +1,17 @@
 'use client';
 import { tokenState } from '@/atoms/tokenState';
 import Loading from '@/components/Loading';
+import { axiosInstance } from '@/components/utils/Axios';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useRecoilValue } from 'recoil';
 export default function ReporterCharts({ title, year }) {
-  const token = useRecoilValue(tokenState);
   const [seriesData, setSeriesData] = useState([]);
   const { data, isPending, isError } = useQuery({
     queryKey: ['monthUserCount'],
     queryFn: async () => {
-      const res = await axios.get(`/api/admin/user/month/${2024}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get(`/api/admin/user/month/${2024}`);
       setSeriesData(res.data);
       return res.data;
     },

@@ -7,10 +7,12 @@ import CustomEditor from '@/components/CustomEditor';
 import Postcode from '@/components/Postcode';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
+import { axiosInstance } from '@/components/utils/Axios';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 function EditPage() {
@@ -47,14 +49,9 @@ function EditPage() {
         postCategory: category,
         imageNames: postImages,
       };
-      const res = await axios.post(`/api/member/post/${params.id}`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/member/post/${params.id}`, body);
       if (res.status === 200) {
-        alert('게시글이 수정되었습니다.');
+        toast.success('게시글이 수정되었습니다.');
         queryClient.invalidateQueries(['post', params.id]);
         router.back();
       }

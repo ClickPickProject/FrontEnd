@@ -20,6 +20,8 @@ import {
 } from '@/atoms/PostState';
 import { postReportModalState, reportModalState } from '@/atoms/commentState';
 import PostReportModal from './PostReportModal';
+import { axiosInstance } from '../utils/Axios';
+import { toast } from 'react-toastify';
 
 export default function PostDetail() {
   const params = useParams();
@@ -40,12 +42,7 @@ export default function PostDetail() {
   } = useQuery({
     queryKey: ['post', params.id],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/${params.id}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get(`/api/post/${params.id}`);
 
       if (res.status !== 200) {
         throw new Error('Failed to fetch data');
@@ -55,8 +52,7 @@ export default function PostDetail() {
     },
   });
 
-  if (isPending) return <Loading isPending={isPending} />;
-  if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
+  if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
 
   const {
     title,
@@ -77,25 +73,15 @@ export default function PostDetail() {
   const onClickLike = async () => {
     try {
       if (likePostCheck === true) {
-        await axios.get(`/api/member/likedpost/${params.id}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
+        await axiosInstance.get(`/api/member/likedpost/${params.id}`);
         queryClient.invalidateQueries(['post', params.id]);
       }
       if (likePostCheck === false) {
-        await axios.get(`/api/member/likedpost/${params.id}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
+        await axiosInstance.get(`/api/member/likedpost/${params.id}`);
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (err) {
-      console.error('좋아요 오류', err);
+      toast.error('좋아요 중 오류가 발생했습니다.');
     }
   };
 

@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -20,6 +19,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
 import Loading from '../Loading';
+import { axiosInstance } from '../utils/Axios';
 
 export default function NotificationPostList({ admin }) {
   dayjs.extend(relativeTime);
@@ -47,7 +47,7 @@ export default function NotificationPostList({ admin }) {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/notice/list`, {
+      const res = await axiosInstance.get(`/api/notice/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
@@ -72,12 +72,7 @@ export default function NotificationPostList({ admin }) {
 
   const onClickDelete = async (noticeId) => {
     try {
-      const res = await axios.delete(`/api/admin/notice/${noticeId}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.delete(`/api/admin/notice/${noticeId}`);
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
         toast.success('공지사항이 삭제되었습니다.');

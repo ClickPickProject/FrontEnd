@@ -3,15 +3,11 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import Loading from '@/components/Loading';
-import axios from 'axios';
-import dayjs from 'dayjs';
-import { useRecoilValue } from 'recoil';
-import { tokenState } from '@/atoms/tokenState';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function ReportCommentList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간
   const selectInputRef = useRef(null);
-  const token = useRecoilValue(tokenState);
   const queryClient = useQueryClient();
   const onClearSelect = (idx) => {
     selectInputRef[idx].clearValue();
@@ -19,12 +15,7 @@ export default function ReportCommentList() {
   const { data, isPending, isError } = useQuery({
     queryKey: ['reportCommentUsers'],
     queryFn: async () => {
-      const res = await axios.get('/api/admin/reportcommentlist', {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get('/api/admin/reportcommentlist');
       return res.data;
     },
   });
@@ -40,12 +31,7 @@ export default function ReportCommentList() {
       banDays: selectedPeriod?.value,
     };
     try {
-      const res = await axios.post('/api/admin/commentban', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post('/api/admin/commentban', body);
       if (banDays === null) {
         toast.error('기간을 선택해주세요.');
         return;
@@ -67,12 +53,7 @@ export default function ReportCommentList() {
         id: reportCommentId,
         type: 'comment',
       };
-      const res = await axios.post(`/api/admin/withdrawal`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/admin/withdrawal`, body);
       if (res.status === 200) {
         queryClient.invalidateQueries(['banndUsers']);
         toast.success(`신고가 철회되었습니다.`);

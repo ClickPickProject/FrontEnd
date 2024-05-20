@@ -1,22 +1,15 @@
 'use client';
-import { tokenState } from '@/atoms/tokenState';
+import Loading from '@/components/Loading';
+import { axiosInstance } from '@/components/utils/Axios';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { useRecoilValue } from 'recoil';
 
 export default function TreemapCharts() {
-  const token = useRecoilValue(tokenState);
   const { data, isPending, isError } = useQuery({
     queryKey: ['monthUserCount3'],
     queryFn: async () => {
-      const res = await axios.get(`/api/admin/user/month/${2024}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get(`/api/admin/user/month/${2024}`);
       return res.data;
     },
   });
@@ -47,6 +40,9 @@ export default function TreemapCharts() {
     ],
     plotOptions: { treemap: { distributed: true, enableShades: false } },
   });
+
+  if (isPending) return <Loading isPending={isPending} />;
+  if (isError) return <div>불러오는 중 에러가 발생하였습니다.</div>;
 
   return (
     <div>

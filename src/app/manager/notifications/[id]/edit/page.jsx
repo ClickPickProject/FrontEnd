@@ -5,17 +5,15 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useEffect, useState } from 'react';
 import { editorContentState } from '@/atoms/editorContentState';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import { tokenState } from '@/atoms/tokenState';
 import { noticePostIdState } from '@/atoms/PostState';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function NoticeEditPage() {
-  const [content, setContent] = useRecoilState(editorContentState);
+  const setContent = useSetRecoilState(editorContentState);
   const [noticeTitle, setNoticeTitle] = useState('');
-  const token = useRecoilValue(tokenState);
   const noticePostId = useRecoilValue(noticePostIdState);
   const router = useRouter();
   useEffect(() => {
@@ -24,12 +22,7 @@ export default function NoticeEditPage() {
   }, []);
   const onClickNotificationsSubmit = async () => {
     try {
-      const res = await axios.post(`/api/admin/notice/${noticePostId}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/admin/notice/${noticePostId}`);
 
       if (res.status === 200) {
         toast.success('공지사항이 수정되었습니다.');
@@ -43,10 +36,7 @@ export default function NoticeEditPage() {
   };
   dayjs.extend(relativeTime);
   dayjs.locale('ko');
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
-  const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
-  const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
-  const [totalItems, setTotalItems] = useState(0);
+
   return (
     <div className='flex h-full items-center'>
       <div className='mx-auto flex w-[1200px] flex-col rounded-lg bg-white shadow-md'>

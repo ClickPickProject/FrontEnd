@@ -8,13 +8,12 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { parentCommentIdState, parentCommentNickState, reportModalState } from '@/atoms/commentState';
 import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
-import axios from 'axios';
 import ReportModal from './ReportModal';
+import { axiosInstance } from '../utils/Axios';
 
 export default function Comments({ comments }) {
   const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
   const params = useParams();
-  const token = useRecoilValue(tokenState);
   const [editMode, setEditMode] = useState(null); // 추가: 수정 모드를 저장하는 상태
   const [parentCommentId, setParentCommentId] = useRecoilState(parentCommentIdState);
   const setParentCommentNickname = useSetRecoilState(parentCommentNickState);
@@ -40,12 +39,7 @@ export default function Comments({ comments }) {
 
   const onClickCommentDelete = async (commentId) => {
     try {
-      const res = await axios.delete(`/api/member/comment/${commentId}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.delete(`/api/member/comment/${commentId}`);
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
       }
@@ -65,12 +59,7 @@ export default function Comments({ comments }) {
         postId: commentId,
         content: replyCommentCheck ? `${nickname}  ${newContent}` : newContent,
       };
-      const res = await axios.post(`/api/member/comment/${commentId}`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/member/comment/${commentId}`, body);
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
       }
@@ -91,12 +80,7 @@ export default function Comments({ comments }) {
         postId: params.id,
         content: content,
       };
-      const res = await axios.post('/api/member/recomment', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post('/api/member/recomment', body);
       if (res.status === 200) {
         queryClient.invalidateQueries({ queryKey: ['post', params.id] });
         setReplyToggle((prevToggles) => {
@@ -117,21 +101,11 @@ export default function Comments({ comments }) {
   const onClickCommentLike = async (commentId, likeCheck) => {
     try {
       if (likeCheck === true) {
-        await axios.get(`/api/member/likedcomment/${commentId}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
+        await axiosInstance.get(`/api/member/likedcomment/${commentId}`);
         queryClient.invalidateQueries(['post', params.id]);
       }
       if (likeCheck === false) {
-        await axios.get(`/api/member/likedcomment/${commentId}`, {
-          withCredentials: true,
-          headers: {
-            Authorization: token,
-          },
-        });
+        await axiosInstance.get(`/api/member/likedcomment/${commentId}`);
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (err) {

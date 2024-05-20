@@ -1,11 +1,11 @@
 'use client';
-import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '@/components/Loading';
 import WriterView from '@/components/Community/BestPost/WriterView';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function PostDetail() {
   const params = useParams();
@@ -17,12 +17,7 @@ export default function PostDetail() {
   } = useQuery({
     queryKey: ['noticePost', params.id],
     queryFn: async () => {
-      const res = await axios.get(`/api/notice/${params.id}`, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get(`/api/notice/${params.id}`);
 
       if (res.status !== 200) {
         throw new Error('Failed to fetch data');

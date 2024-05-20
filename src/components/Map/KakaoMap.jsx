@@ -4,13 +4,13 @@ import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
 import { mapAreaState, mapMarkerState, mapMenuState, placeDetailState, placeListState } from '@/atoms/mapState';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import axios from 'axios';
 import MapSideMenu from '@/components/Map/MapSideMenu';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { tokenState } from '@/atoms/tokenState';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { axiosInstance } from '../utils/Axios';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -46,12 +46,7 @@ export default function KakaoMap() {
   const { data } = useQuery({
     queryKey: ['bookmarkList'],
     queryFn: async () => {
-      const res = await axios.get('/api/member/map/bookmark/list', {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.get('/api/member/map/bookmark/list');
       return res.data;
     },
   });
@@ -107,9 +102,7 @@ export default function KakaoMap() {
         east: area.e,
       };
       try {
-        const res = await axios.post('/api/map/marker', body, {
-          withCredentials: true,
-        });
+        const res = await axiosInstance.post('/api/map/marker', body);
         setMapPost(res.data);
       } catch (err) {
         console.log(err);
@@ -154,7 +147,7 @@ export default function KakaoMap() {
     const xPosition = marker.position.lng;
     const yPosition = marker.position.lat;
     try {
-      const res = await axios.get(`/api/map/post/${xPosition}/${yPosition}`);
+      const res = await axiosInstance.get(`/api/map/post/${xPosition}/${yPosition}`);
       if (res.status === 200) {
         setPlaceList(res.data);
       }
@@ -192,12 +185,7 @@ export default function KakaoMap() {
       status: 'LIKE',
     };
     try {
-      const res = await axios.post('/api/member/map/bookmark', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post('/api/member/map/bookmark', body);
       if (res.status === 200) {
         queryClient.invalidateQueries(['bookmarkList']);
       }

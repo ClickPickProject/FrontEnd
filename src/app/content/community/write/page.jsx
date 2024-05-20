@@ -15,11 +15,11 @@ import CustomEditor from '@/components/CustomEditor';
 import MapWriteSearch from '@/components/Map/MapWriteSearch';
 import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { axiosInstance } from '@/components/utils/Axios';
 
 function WritePage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
@@ -56,12 +56,7 @@ function WritePage() {
       imageNames: postImages,
     };
     const fetch = async () => {
-      const res = await axios.post(`/api/member/post`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/member/post`, body);
       return res;
     };
     const res = await toast.promise(fetch, {

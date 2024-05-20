@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import WriterView from '../BestPost/WriterView';
-import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useQueryClient } from '@tanstack/react-query';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function CenterCommentWrite() {
   const params = useParams();
@@ -26,12 +26,7 @@ export default function CenterCommentWrite() {
       content: comment,
     };
     try {
-      const res = await axios.post(`/api/question/${question_id}`, body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post(`/api/question/${question_id}`, body);
       if (res.status === 200) {
         queryClient.invalidateQueries(['posts', params.id]);
         setComment('');

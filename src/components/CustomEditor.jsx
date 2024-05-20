@@ -1,10 +1,9 @@
 'use client';
-import axios from 'axios';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { editorContentState, postImagesState } from '@/atoms/editorContentState';
 import { useEffect, useRef, useState } from 'react';
 import { postContentState } from '@/atoms/PostState';
-import { tokenState } from '@/atoms/tokenState';
+import { axiosInstance } from './utils/Axios';
 
 const editorConfiguration = {
   toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload'],
@@ -14,7 +13,6 @@ export default function CustomEditor({ editMode }) {
   const editorRef = useRef();
   const [editorLoaded, setEditorLoaded] = useState(false);
   const content = useRecoilValue(postContentState);
-  const token = useRecoilValue(tokenState);
   const [postImages, setPostImages] = useRecoilState(postImagesState);
   const { CKEditor, Editor } = editorRef.current || {};
   useEffect(() => {
@@ -33,10 +31,8 @@ export default function CustomEditor({ editMode }) {
         const formData = new FormData();
         formData.append('image', file);
 
-        const res = await axios.post(`/api/member/post/image`, formData, {
-          withCredentials: true,
+        const res = await axiosInstance.post(`/api/member/post/image`, formData, {
           headers: {
-            Authorization: token,
             'Content-Type': 'multipart/form-data',
           },
         });

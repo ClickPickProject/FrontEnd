@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { FillSirenIcon } from '../UI/Icons';
 import { reportModalState } from '@/atoms/commentState';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import axios from 'axios';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
+import { axiosInstance } from '../utils/Axios';
 
 const ReportModal = ({ nickname, commentId }) => {
   const [reportReason, setReportReason] = useState('');
@@ -28,12 +28,7 @@ const ReportModal = ({ nickname, commentId }) => {
         commentId: commentId,
         reason,
       };
-      const res = await axios.post('/api/member/report/comment', body, {
-        withCredentials: true,
-        headers: {
-          Authorization: token,
-        },
-      });
+      const res = await axiosInstance.post('/api/member/report/comment', body);
       if (res.status === 200) {
         toast.success('댓글 신고가 접수되었습니다.', {
           position: 'top-right',

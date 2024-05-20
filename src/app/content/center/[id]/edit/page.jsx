@@ -10,6 +10,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { pageState } from '@/atoms/pageState';
+import { toast } from 'react-toastify';
 
 function CenterEditPage() {
   const [title, setTitle] = useRecoilState(editorTitleState);
@@ -55,7 +56,7 @@ function CenterEditPage() {
         },
       });
       if (res.status === 200) {
-        alert('게시글이 수정되었습니다.');
+        toast.success('게시글이 수정되었습니다.');
         queryClient.invalidateQueries(['post', params.id]);
         router.back();
       }

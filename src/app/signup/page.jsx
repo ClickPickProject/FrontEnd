@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import axios, { Axios } from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckIcon, MailIcon, NickIcon, PasswordIcon, PhoneIcon, UserNameIcon } from '@/components/UI/Icons';
 import InputWithValidation from '@/components/InputWithValidation';
+import { axiosInstance } from '@/components/utils/Axios';
 export default function SignUpPage() {
   const [inputDisabled, setInputDisabled] = useState(false);
   const [userData, setUserData] = useState({
@@ -62,11 +62,7 @@ export default function SignUpPage() {
     const buttonDisabled = inputStatus[field].buttonDisabled;
     if (field === 'validCode') {
       try {
-        const res = await axios.post(
-          '/api/verification',
-          { id: userData.id, code: validCode },
-          { withCredentials: true },
-        );
+        const res = await axiosInstance.post('/api/verification', { id: userData.id, code: validCode });
         if (res.status === 200) {
           setInputStatus({
             ...inputStatus,
@@ -83,7 +79,7 @@ export default function SignUpPage() {
     }
     if (buttonDisabled) return;
     try {
-      const res = await axios.get(`/api/check/${field === 'id' ? 'userid' : field}/${fieldValue}`);
+      const res = await axiosInstance.get(`/api/check/${field === 'id' ? 'userid' : field}/${fieldValue}`);
       if (field === 'id') {
         setInputDisabled(false);
         setUserData({
@@ -119,11 +115,7 @@ export default function SignUpPage() {
     if (!isFormValid()) return;
 
     try {
-      const res = await axios.post(
-        `/api/signup/user`,
-        { id, password, name, nickname, phone },
-        { withCredentials: true },
-      );
+      const res = await axiosInstance.post(`/api/signup/user`, { id, password, name, nickname, phone });
       if (res.status === 200) {
         alert('회원가입이 완료되었습니다.');
         router.push('/');
