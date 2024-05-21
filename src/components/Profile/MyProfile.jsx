@@ -192,7 +192,7 @@ export default function MyProfile() {
               />
               <input type='file' id='file' onChange={handleInputImg} accept='image/png, image/jpg' className='hidden' />
               <button
-                // onClick={handleImgDelete}
+                onClick={handleImgDelete}
                 className='mt-2 flex items-center justify-center gap-2 rounded-lg p-1 font-semibold text-black opacity-70'
               >
                 <IoImagesOutline size={18} />
