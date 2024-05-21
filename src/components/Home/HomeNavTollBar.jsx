@@ -14,7 +14,7 @@ import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useState, useEffect } from 'react';
-
+import { loginState } from '@/atoms/tokenState';
 import {
   FillMapIcon,
   FillMessageIcon,
