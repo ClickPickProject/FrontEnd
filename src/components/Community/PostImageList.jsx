@@ -30,7 +30,7 @@ export default function PostImageList() {
         <li className='relative flex h-[64px]'>
           <div className='flex h-[inherit] w-[64px]'>
             <img
-              src={`http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/post/images/${image}`}
+              src={`https://${process.env.NEXT_PUBLIC_BACKEND_API_URL}/post/images/${image}`}
               alt='이미지'
               className='h-full w-full'
             />
