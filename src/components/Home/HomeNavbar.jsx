@@ -30,7 +30,7 @@ export default function HomeNavbar() {
     queryKey: ['profileImg'],
     queryFn: async () => {
       try {
-        const res = await axiosInstance.get('/api/profile/image/', {
+        const res = await axiosInstance.get('/api/profile/image', {
           headers: {
             Authorization: token,
           },
