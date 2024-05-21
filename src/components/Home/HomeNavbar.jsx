@@ -37,7 +37,6 @@ export default function HomeNavbar() {
         });
         if (res.status === 200) {
           setImage(res.data.url);
-          console.log(res);
         }
         return res.data;
       } catch (error) {

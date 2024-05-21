@@ -35,9 +35,6 @@ export default function LoginPage() {
       if (res.status === 200) {
         setToken(accessToken);
         setMyNickname(res.data.nickname);
-        console.log(res);
-        console.log(document.cookie);
-        console.log(res.headers);
         toast.success(`${res.data.nickname}님 환영합니다!`, {
           position: 'top-right',
         });

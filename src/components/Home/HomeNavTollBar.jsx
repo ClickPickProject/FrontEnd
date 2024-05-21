@@ -27,8 +27,10 @@ import {
   ProfileIcon,
   QuestionIcon,
 } from '@/components/UI/Icons';
+import { useRouter } from 'next/navigation';
 export default function HomeNavToolBar() {
   const pathName = usePathname();
+  const router = useRouter();
   const [NavModal, setNavModal] = useRecoilState(pageNavModal);
   const proImg = useRecoilValue(userImgState);
   const myNickname = useRecoilValue(MyNicknameState);
@@ -43,6 +45,7 @@ export default function HomeNavToolBar() {
     localStorage.clear();
     setIsLogin(false);
     setNavModal((logOut) => !logOut);
+    router.replace('/');
     toast.success('로그아웃 되었습니다.', {
       position: 'top-right',
     });
