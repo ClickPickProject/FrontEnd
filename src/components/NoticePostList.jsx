@@ -93,7 +93,7 @@ export default function NoticePostList({ url }) {
     setPageState1(`/api/member/question`);
   };
   return (
-    <div className='sm:mr-[40px]'>
+    <div className='sm:mx-[40px]'>
       <div className='mb-4 flex flex-row'>
         {/* <CenterSearch
           searchOption={searchOption}
@@ -122,31 +122,45 @@ export default function NoticePostList({ url }) {
       <ul>
         {displayPosts?.map((data) => (
           <li key={data.questionId} className='flex w-full flex-col gap-4'>
-            <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
+            <div className='flex items-center gap-2'>
+              <WriterView writer={data.nickname} date={data.createAt} profile={data.profileUrl} />
+              {data.lockStatus === 'UNLOCK' ? (
+                <>
+                  <p className='flex w-24 cursor-pointer items-center gap-1 text-sm font-semibold opacity-50'>
+                    <p>
+                      <FaUnlock color='' />
+                    </p>
+                  </p>
+                </>
+              ) : (
+                <p className='flex w-24 cursor-pointer items-center gap-1 text-sm font-semibold opacity-50'>
+                  <p>
+                    <FaLock color='' />
+                  </p>
+                </p>
+              )}
+            </div>
             <div className='relative flex items-center gap-2 font-semibold'>
               <Link href={`/content/center/${data.questionId}`}>
                 {' '}
-                <div className='flex items-center gap-2'>
-                  <FaUnlock color='pink' />
-                  {/* <FaLock color='red' /> */}
-                  {data.title}
-                </div>
+                <div className='flex flex-col items-center gap-2'>{data.title}</div>
               </Link>
             </div>
-
-            {data.status !== 'COMPLETE' ? (
-              <div
-                className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status === 'COMPLETE' ? `bg-pink-300` : `bg-pink-200`}`}
-              >
-                답변대기
-              </div>
-            ) : (
-              <div
-                className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status !== 'COMPLETE' ? `bg-pink-200` : `bg-pink-300`}`}
-              >
-                답변완료
-              </div>
-            )}
+            <div className='flex gap-2'>
+              {data.status !== 'COMPLETE' ? (
+                <div
+                  className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status === 'COMPLETE' ? `bg-pink-300` : `bg-pink-200`}`}
+                >
+                  답변대기
+                </div>
+              ) : (
+                <div
+                  className={`flex w-24  cursor-pointer items-center justify-center gap-1 rounded-md bg-pink-200 py-[2px] text-center text-sm font-semibold ${data.status !== 'COMPLETE' ? `bg-pink-200` : `bg-pink-300`}`}
+                >
+                  답변완료
+                </div>
+              )}
+            </div>
             <div className='mb-4 w-full border border-gray-200' />
           </li>
         ))}

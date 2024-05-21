@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { pageState } from '@/atoms/pageState';
 import CenterCustomEditor from '@/components/UI/CenterCustomEditor';
-
+import { toast } from 'react-toastify';
 function WritePage() {
   const router = useRouter();
   const [title, setTitle] = useRecoilState(editorTitleState);
@@ -30,7 +30,9 @@ function WritePage() {
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
     if (title.length === 0 || content.length === 0) {
-      alert('제목 또는 내용이 존재하지 않습니다.');
+      toast.error(`제목 또는 내용이 존재하지 않습니다.`, {
+        position: 'top-right',
+      });
       return;
     }
     try {
@@ -46,7 +48,9 @@ function WritePage() {
         },
       });
       if (res.status === 200 || 201) {
-        alert('질문을 등록 하였습니다.');
+        toast.success('질문을 등록하였습니다.', {
+          position: 'top-right',
+        });
         router.back();
       }
     } catch (err) {
@@ -56,9 +60,9 @@ function WritePage() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <div className='p-4 text-2xl font-bold'>Q&A 작성</div>
-        <div className='flex flex-col gap-4'>
+        <div className='mx-4 flex flex-col gap-4'>
           <span className='flex'>
             <input
               placeholder='질문을 입력하세요'
@@ -74,7 +78,7 @@ function WritePage() {
             </button>
           </span>
           {/* 에디터 */}
-          <div className='h-[full] w-[full]'>{<CenterCustomEditor />}</div>
+          <div className='h-[full] w-full'>{<CenterCustomEditor />}</div>
           <div className='mx-auto mt-4 flex h-10 w-1/6 cursor-pointer items-center justify-center rounded-lg bg-pink-300 font-semibold shadow-md transition-all hover:bg-pink-400'>
             <button onClick={onClickWriteSubmit} className='h-full w-full'>
               제출

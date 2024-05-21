@@ -10,6 +10,7 @@ import { ReplyIcon } from '@/components/UI/Icons';
 import { useEffect } from 'react';
 import CenterReplyComments from './CenterReplyComments';
 import { postContentState, postTitleState } from '@/atoms/PostState';
+import { toast } from 'react-toastify';
 export default function CenterComments({ answer, question }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
@@ -24,28 +25,31 @@ export default function CenterComments({ answer, question }) {
   // 삭제
   const onClickCommentDelete = async (answerId) => {
     try {
-      const res = await axios.delete(`/api/admin/answer/${answerId}`, {
+      const res = await axios.delete(`/api/member/answer/${answerId}`, {
         withCredentials: true,
         headers: {
           Authorization: token,
         },
       });
       if (res.status === 200) {
-        alert('질문을 삭제하였습니다.');
+        toast.success(`질문을 삭제하였습니다.`, {
+          position: 'top-right',
+        });
         router.push('/');
       }
     } catch (err) {
       console.log(err);
-      alert('사용자가 삭제할 수 없는 질문입니다.');
-      console.log(answerId);
+      toast.error('삭제할 수 없는 질문입니다.', {
+        position: 'top-right',
+      });
     }
   };
   // 수정
   const onClickEdit = (answerId, title, content) => {
-    setPostContent(content);
     setPostTitle(title);
+    setPostContent(content);
     router.push(`/content/center/${answerId}/answer`);
-    setPageState1(`/api/admin/answer/${answerId}`);
+    setPageState1(`/api/member/answer/${answerId}`);
   };
   // 답변
   const onClickReply = (questionId, answerId) => {
@@ -59,7 +63,6 @@ export default function CenterComments({ answer, question }) {
         {/* 댓글 목록 */}
         {answer.map((comment) => (
           <li key={comment.answerId} className='flex flex-col gap-4'>
-            {comment.questionId} {comment.answerId}
             <WriterView writer={comment.nickname} date={comment.createAt} profile={comment.profileUrl} />
             <h2 className=' font-semibold'> {comment.title}</h2>
             <div className='flex flex-col gap-1 rounded-md'>
@@ -77,20 +80,17 @@ export default function CenterComments({ answer, question }) {
               </div>
               {/* 댓글 수정 및 삭제 */}
               {comment.nickname === myNickname ? (
-                <button
-                  className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-                  onClick={() => onClickEdit(comment.answerId, comment.title, comment.content)}
-                >
-                  {comment.commentStatus === 'DELETE' ? null : '수정'}
-                </button>
-              ) : null}
-              {comment.nickname === myNickname ? (
-                <button
-                  onClick={() => onClickCommentDelete(comment.answerId)}
-                  className='text-sm font-semibold opacity-50 transition-all hover:opacity-100'
-                >
-                  {comment.commentStatus === 'DELETE' ? null : '삭제'}
-                </button>
+                <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
+                  <button
+                    className='hover:opacity-100'
+                    onClick={() => onClickEdit(comment.answerId, comment.title, comment.content)}
+                  >
+                    수정
+                  </button>
+                  <button className='hover:opacity-100' onClick={() => onClickCommentDelete(comment.answerId)}>
+                    삭제
+                  </button>
+                </div>
               ) : null}
               <div className=' border' />
             </div>

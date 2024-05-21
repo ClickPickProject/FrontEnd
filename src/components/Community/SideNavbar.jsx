@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CgMenu, CgMenuLeft } from 'react-icons/cg';
 import { motion } from 'framer-motion';
-
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -150,7 +149,7 @@ export default function SideNavbar() {
               href='/content/profile'
               className={`${
                 pathName === '/content/profile' ? 'bg-pink-300' : null
-              } flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]`}
+              } flex h-[40px] w-[100px] items-center justify-center gap-1 whitespace-nowrap bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]`}
             >
               {pathName === '/content/profile' ? (
                 <FillProfileIcon size={28} color='#ec4899' />
@@ -163,7 +162,7 @@ export default function SideNavbar() {
             {isLogin ? (
               <button
                 onClick={onClickLogout}
-                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]'
+                className='flex  h-[40px] w-[100px] items-center justify-center gap-1 whitespace-nowrap bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]'
               >
                 <LogoutIcon size={24} />
                 로그아웃
@@ -171,7 +170,7 @@ export default function SideNavbar() {
             ) : (
               <Link
                 href='/login'
-                className='flex h-[40px] w-[100px] items-center justify-center gap-1 bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]'
+                className='flex h-[40px] w-[100px] items-center justify-center gap-1 whitespace-nowrap bg-pink-100 px-3 py-2 font-bold transition-all hover:bg-pink-300 sm:w-[80px]'
               >
                 <LogoutIcon size={24} />
                 로그인

@@ -19,3 +19,7 @@ export const userIdState = atom({
   key: 'userIdState',
   default: '',
 });
+export const userImgState = atom({
+  key: 'userImgState',
+  default: '',
+});

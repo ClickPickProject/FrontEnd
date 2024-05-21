@@ -5,7 +5,6 @@ import { editorContentState, postImagesState } from '@/atoms/editorContentState'
 import { useEffect, useRef, useState } from 'react';
 import { postContentState } from '@/atoms/PostState';
 import { tokenState } from '@/atoms/tokenState';
-
 const editorConfiguration = {
   toolbar: ['bold', 'italic', 'link', '|', 'FontColor'],
 };

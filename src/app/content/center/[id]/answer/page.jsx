@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { pageState } from '@/atoms/pageState';
 import CenterCustomEditor from '@/components/UI/CenterCustomEditor';
+import { toast } from 'react-toastify';
 
 function WritePage() {
   const router = useRouter();
@@ -22,7 +23,9 @@ function WritePage() {
   const onClickWriteSubmit = async (e) => {
     e.preventDefault();
     if (title.length === 0 || content.length === 0) {
-      alert('제목 또는 내용이 존재하지 않습니다.');
+      toast.success(`제목 또는 내용이 존재하지 않습니다.`, {
+        position: 'top-right',
+      });
       return;
     }
     try {
@@ -37,7 +40,9 @@ function WritePage() {
         },
       });
       if (res.status === 200 || 201) {
-        alert('답변을 등록 하였습니다.');
+        toast.success(`답변을 등록하였습니다.`, {
+          position: 'top-right',
+        });
         router.back();
       }
     } catch (err) {
@@ -47,9 +52,9 @@ function WritePage() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <div className='p-4 text-2xl font-bold'>답변</div>
-        <div className='flex flex-col gap-4'>
+        <div className='mx-4 flex flex-col gap-4'>
           <span className='flex'>
             <input
               placeholder='답변을 입력하세요'

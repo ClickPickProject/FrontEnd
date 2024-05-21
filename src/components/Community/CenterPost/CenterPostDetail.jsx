@@ -12,6 +12,7 @@ import Loading from '../../Loading';
 import { pageState } from '@/atoms/pageState';
 import { postContentState, postTitleState } from '@/atoms/PostState';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
@@ -40,8 +41,9 @@ export default function CenterPostDetail() {
         return res.data;
       } catch (err) {
         if (err.response.status === 403) {
-          console.log('에러 : ', err);
-          alert('비공개된 게시글입니다.');
+          toast.error('비공개된 게시글 입니다.', {
+            position: 'top-right',
+          });
           router.back();
         }
       }
@@ -70,27 +72,27 @@ export default function CenterPostDetail() {
         },
       });
       if (res.status === 200) {
-        alert('질문을 삭제하였습니다.');
+        toast.success('질문을 삭제하였습니다.', {
+          position: 'top-right',
+        });
         router.push('/');
       }
     } catch (err) {
       console.log(err);
-      alert('사용자가 삭제할 수 없는 질문입니다.');
-      console.log(params.id);
+      toast.error('삭제할 수 없는 게시글입니다.', {
+        position: 'top-right',
+      });
     }
   };
   const routerPage = () => {
     router.push(isLogin ? `/content/center/${params.id}/answer` : '/login');
     setPageState1(`/api/admin/${params.id}/answer`);
-    console.log(pageState1);
-    console.log(params.id);
   };
 
   return (
     <>
-      <div className='w-full max-w-[830px]'>
+      <div className='w-full max-w-[830px] sm:px-[40px]'>
         <div className='my-4 flex flex-col gap-2'>
-          {questionId}
           <h2 className='text-2xl font-semibold'>[Q&A] {title}</h2>
           {/* 작성자 */}
           <div className='flex justify-between'>

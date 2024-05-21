@@ -1,16 +1,22 @@
 'use client';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
+import axios from 'axios';
+
 import Link from 'next/link';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-
+import { useQuery } from '@tanstack/react-query';
+import { pageNavModal } from '@/atoms/pageState';
+import { userImgState } from '@/atoms/userInfoState';
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
   const MyNickname = useRecoilValue(MyNicknameState);
+  const [NavModal, setNavModal] = useRecoilState(pageNavModal);
+  const [image, setImage] = useRecoilState(userImgState);
   const router = useRouter();
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
@@ -18,12 +24,30 @@ export default function HomeNavbar() {
 
   const hoverStyle =
     'hover:border-b-2 hover:border-pink-400 hover:text-pink-400 border-b-2 border-transparent pb-1 sm:pb-0 transition-all';
-  const onClickLogout = () => {
-    localStorage.clear();
-    setIsLogin(false);
-    toast.success('로그아웃 되었습니다.', {
-      position: 'top-right',
-    });
+  // 유저 이미지 받아오기
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['profileImg'],
+    queryFn: async () => {
+      try {
+        const res = await axios.get('/api/profile/image/', {
+          withCredentials: true,
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (res.status === 200) {
+          setImage(res.data.url);
+          console.log(res);
+        }
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
+  const homeNavClick = () => {
+    setNavModal((value) => !value);
   };
   return (
     <>
@@ -50,12 +74,12 @@ export default function HomeNavbar() {
                         대시보드
                       </button>
                     )}
-                    <button onClick={onClickLogout} className={`${hoverStyle}`}>
-                      로그아웃
-                    </button>
-                    <Link href='/content/profile' className={`${hoverStyle}`}>
-                      내 정보
-                    </Link>
+                    <img
+                      src={image}
+                      onClick={homeNavClick}
+                      alt='#'
+                      className='mx-auto mb-2 h-[50px] w-[50px] rounded-full border-4 border-white shadow-xl '
+                    />
                   </div>
                 </>
               ) : (
