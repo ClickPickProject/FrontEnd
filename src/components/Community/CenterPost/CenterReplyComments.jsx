@@ -30,20 +30,6 @@ export default function CenterReplyComments({ reply, onClickCommentDelete, onCli
         <div className='flex flex-col gap-1 rounded-md'>
           <div dangerouslySetInnerHTML={{ __html: reply.content }} />
         </div>
-        {/* 답글 버튼 */}
-        {myNickname === 'ADMIN' ? (
-          <div className='flex items-center gap-1'>
-            <div
-              className={`flex cursor-pointer items-center gap-1 opacity-50 transition-all hover:opacity-100`}
-              onClick={() => onClickReReply(reply.questionId, reply.answerId)}
-            >
-              <ReplyIcon color='#ec4899' />
-              <div className={`cursor-pointer text-sm font-semibold hover:opacity-100`}>답글</div>
-            </div>
-
-            <div className='my-2 border' />
-          </div>
-        ) : null}
         {/* 댓글 수정 및 삭제 */}
         {reply.nickname === myNickname ? (
           <div className='flex gap-2 text-sm [&>button]:opacity-50 [&>button]:transition-all'>
