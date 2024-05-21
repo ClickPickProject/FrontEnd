@@ -159,7 +159,7 @@ export default function MyProfile() {
         },
       });
       if (res.status === 200) {
-        setUserImg(res.data.url);
+        setUserImg(res.data.image);
         toast.success(`이미지가 변경 되었습니다.`, {
           position: 'top-right',
         });
