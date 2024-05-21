@@ -28,6 +28,10 @@ export default function PostList({ category }) {
     setCurrentPage(1);
   }, [category]);
 
+  useEffect(() => {
+    updateImage();
+  }, []);
+
   const {
     data: posts,
     isPending,
@@ -49,6 +53,15 @@ export default function PostList({ category }) {
       return res.data;
     },
   });
+
+  const updateImage = async () => {
+    const res = await axios.get('https://clickpick.iptime.org:8080/api/profile/image', {
+      headers: {
+        Authorization: token,
+      },
+    });
+    return res.data.url;
+  };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
