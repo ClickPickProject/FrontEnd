@@ -110,6 +110,7 @@ export default function PostDetail() {
         },
       });
       toast.success('게시글이 삭제되었습니다.');
+      router.back();
     } catch (err) {
       toast.error('게시글 삭제 중 오류가 발생했습니다.');
     }
