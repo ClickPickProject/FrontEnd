@@ -47,6 +47,7 @@ export default function HomeNavbar() {
 
   const homeNavClick = () => {
     setNavModal((value) => !value);
+    router.replace('/');
   };
   return (
     <>
