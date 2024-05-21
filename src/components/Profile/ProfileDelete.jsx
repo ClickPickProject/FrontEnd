@@ -6,10 +6,10 @@ import { pageState } from '@/atoms/pageState';
 import { pageDeleteModal } from '@/atoms/pageState';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { axiosInstance } from '../utils/Axios';
-
+import { tokenState } from '@/atoms/tokenState';
 export default function ProfileDelete({ image, nickName }) {
   const [handleDelete, setHandleDelete] = useRecoilState(pageDeleteModal);
-
+  const token = useRecoilValue(tokenState);
   //회원탈퇴
   const handleDeleteId = async (e) => {
     e.preventDefault();
@@ -52,7 +52,7 @@ export default function ProfileDelete({ image, nickName }) {
             <p>같이 보러가시겠습니까?</p>
           </div>
           <div className='flex w-full justify-center'>
-            <button onClick={handleDeleteId} className='p-2 font-bold hover:opacity-50'>
+            <button onClick={() => handleDeleteId} className='p-2 font-bold hover:opacity-50'>
               탈퇴
             </button>
             <button onClick={() => setHandleDelete((Delete) => !Delete)} className='p-2 font-bold hover:opacity-50'>

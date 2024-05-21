@@ -44,7 +44,7 @@ export default function HomeNavToolBar() {
   const onClickLogout = (e) => {
     localStorage.clear();
     setIsLogin(false);
-    setNavModal(false);
+    setNavModal(null);
     toast.success('로그아웃 되었습니다.', {
       position: 'top-right',
     });
