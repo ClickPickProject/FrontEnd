@@ -79,7 +79,7 @@ export default function HomeNavToolBar() {
   ];
   return (
     <>
-      {!NavModal ? (
+      {!NavModal && token ? (
         <section className='absolute right-4 top-4 z-50 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl sm:w-1/2'>
           <img
             src={proImg}
