@@ -9,11 +9,12 @@ import HomeNowPost from './HomeNowPost';
 import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import HomeBestPost from './HomeBestPost';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -29,19 +30,21 @@ import {
 } from '@/components/UI/Icons';
 export default function HomeNavToolBar() {
   const pathName = usePathname();
-  const NavModal = useRecoilValue(pageNavModal);
+  const router = useRouter();
   const proImg = useRecoilValue(userImgState);
   const myNickname = useRecoilValue(MyNicknameState);
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
+  const [NavModal, setNavModal] = useRecoilState(pageNavModal);
 
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
   // 로그아웃
-  const onClickLogout = () => {
+  const onClickLogout = (e) => {
     localStorage.clear();
     setIsLogin(false);
+    setNavModal(false);
     toast.success('로그아웃 되었습니다.', {
       position: 'top-right',
     });
