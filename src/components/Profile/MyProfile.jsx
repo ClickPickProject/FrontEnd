@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { userNameState, userPhoneState, userNickNameState, userIdState } from '@/atoms/userInfoState';
+import { userNameState, userPhoneState, userNickNameState, userIdState, userImgState } from '@/atoms/userInfoState';
 import Loading from '../Loading';
 import { LogoutIcon } from '@/components/UI/Icons';
 import ProfileDelete from './ProfileDelete';
@@ -21,6 +21,7 @@ export default function MyProfile() {
   const [handleDelete, setHandleDelete] = useRecoilState(pageDeleteModal);
   const [phone, setPhone] = useRecoilState(userPhoneState);
   const [image, setImage] = useState('');
+  const [userImg, setUserImg] = useRecoilState(userImgState);
   //token값 받아옴
   const token = useRecoilValue(tokenState);
 
@@ -58,6 +59,7 @@ export default function MyProfile() {
         });
         if (res.status === 200) {
           setImage(res.data.url);
+          setUserImg(res.data.url);
         }
         return res.data;
       } catch (error) {
@@ -157,7 +159,7 @@ export default function MyProfile() {
         },
       });
       if (res.status === 200) {
-        setImage(URL.createObjectURL(e.target.files[0]));
+        setUserImg(res.data.url);
         toast.success(`이미지가 변경 되었습니다.`, {
           position: 'top-right',
         });
