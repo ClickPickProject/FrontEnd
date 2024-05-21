@@ -51,7 +51,7 @@ export default function MyProfile() {
     queryKey: ['proImg'],
     queryFn: async () => {
       try {
-        const res = await axiosInstance.get('/api/profile/image/', {
+        const res = await axiosInstance.get('/api/profile/image', {
           headers: {
             Authorization: token,
           },
