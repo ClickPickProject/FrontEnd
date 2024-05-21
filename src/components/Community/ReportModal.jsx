@@ -16,7 +16,7 @@ const ReportModal = ({ nickname, commentId }) => {
   const closeReportModal = () => setReportModal(false);
 
   const handleSubmit = async (nickname, commentId, reason) => {
-    if (MyNickname !== nickname) {
+    if (MyNickname == nickname) {
       toast.error('자기 자신은 신고할 수 없습니다.', {
         position: 'top-right',
       });

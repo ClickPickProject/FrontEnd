@@ -41,7 +41,11 @@ export default function Comments({ comments }) {
 
   const onClickCommentDelete = async (commentId) => {
     try {
-      const res = await axiosInstance.delete(`/api/member/comment/${commentId}`);
+      const res = await axiosInstance.delete(`/api/member/comment/${commentId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
       }
