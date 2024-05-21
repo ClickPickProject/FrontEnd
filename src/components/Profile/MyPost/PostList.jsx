@@ -7,6 +7,7 @@ import Loading from '@/components/Loading';
 import WriterView from '@/components/Community/BestPost/WriterView';
 import StatusView from '@/components/Community/BestPost/StatusView';
 import { axiosInstance } from '@/components/utils/Axios';
+
 export default function PostList({ category, url }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
@@ -45,6 +46,7 @@ export default function PostList({ category, url }) {
     setCurrentPage(pageNumber);
     refetch();
   };
+
   // 카테고리 필터링
   const filteredPosts = posts?.content?.filter((post) => {
     switch (selectedCategory) {
@@ -58,7 +60,12 @@ export default function PostList({ category, url }) {
         return true;
     }
   });
-  const displayPosts = filteredPosts;
+
+  // 페이지별 게시물 목록
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const endIndex = startIndex + postsPerPage;
+  const displayPosts = filteredPosts?.slice(startIndex, endIndex);
+
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
   return (
     <div className='sm:mr[40px]'>
