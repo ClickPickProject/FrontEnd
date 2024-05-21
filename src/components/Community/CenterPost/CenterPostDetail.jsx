@@ -118,7 +118,7 @@ export default function CenterPostDetail() {
         <div className='flex items-center gap-1 text-base '>
           <CommentIcon size={18} />
           답변 {commentCount}
-          {myNickname === 'ADMIN' ? (
+          {myNickname === 'ADMIN' || '' ? (
             <button
               onClick={routerPage}
               className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
