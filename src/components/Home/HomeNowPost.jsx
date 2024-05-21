@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Link from 'next/link';
 import Loading from '../Loading';
+import { axiosInstance } from '../utils/Axios';
 export default function HomeNowPost() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
@@ -20,7 +21,7 @@ export default function HomeNowPost() {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/list`, {
+      const res = await axiosInstance.get(`/api/post/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },

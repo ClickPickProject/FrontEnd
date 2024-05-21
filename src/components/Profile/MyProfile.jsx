@@ -14,6 +14,7 @@ import { IoImagesOutline } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { pageState } from '@/atoms/pageState';
 import { pageDeleteModal } from '@/atoms/pageState';
+import { axiosInstance } from '../utils/Axios';
 export default function MyProfile() {
   const router = useRouter();
   const [name, setName] = useRecoilState(userNameState);
@@ -53,8 +54,7 @@ export default function MyProfile() {
     queryKey: ['proImg'],
     queryFn: async () => {
       try {
-        const res = await axios.get('/api/profile/image/', {
-          withCredentials: true,
+        const res = await axiosInstance.get('/api/profile/image/', {
           headers: {
             Authorization: token,
           },

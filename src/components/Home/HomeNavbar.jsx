@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
+import { axiosInstance } from '../utils/Axios';
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
@@ -29,8 +30,7 @@ export default function HomeNavbar() {
     queryKey: ['profileImg'],
     queryFn: async () => {
       try {
-        const res = await axios.get('/api/profile/image/', {
-          withCredentials: true,
+        const res = await axiosInstance.get('/api/profile/image/', {
           headers: {
             Authorization: token,
           },
