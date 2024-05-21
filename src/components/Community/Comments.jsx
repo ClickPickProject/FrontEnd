@@ -22,6 +22,7 @@ export default function Comments({ comments }) {
   const [commentContent, setCommentContent] = useState('');
   const queryClient = useQueryClient();
   const [reportModal, setReportModal] = useRecoilState(reportModalState);
+  const token = useRecoilValue(tokenState);
 
   if (!comments || comments.length === 0) {
     return null;
