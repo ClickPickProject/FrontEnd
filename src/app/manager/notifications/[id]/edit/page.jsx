@@ -5,20 +5,20 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useEffect, useState } from 'react';
 import { editorContentState } from '@/atoms/editorContentState';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { noticePostIdState } from '@/atoms/PostState';
 import { axiosInstance } from '@/components/utils/Axios';
 
 export default function NoticeEditPage() {
-  const setContent = useSetRecoilState(editorContentState);
+  const [content, setContent] = useRecoilState(editorContentState);
   const [noticeTitle, setNoticeTitle] = useState('');
   const noticePostId = useRecoilValue(noticePostIdState);
   const router = useRouter();
   useEffect(() => {
-    setNoticeTitle('');
-    setContent('');
+    setNoticeTitle(noticeTitle);
+    setContent(content);
   }, []);
   const onClickNotificationsSubmit = async () => {
     try {

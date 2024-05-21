@@ -10,6 +10,7 @@ import ReplyComments from './ReplyComments';
 import ReplyToggle from './ReplyToggle';
 import ReportModal from './ReportModal';
 import { axiosInstance } from '../utils/Axios';
+import { toast } from 'react-toastify';
 
 export default function Comments({ comments }) {
   const [replyToggle, setReplyToggle] = useState(Array(comments.length).fill(false));
@@ -44,7 +45,7 @@ export default function Comments({ comments }) {
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (error) {
-      console.error('댓글 삭제 오류:', error);
+      toast.error('댓글 삭제 중 오류가 발생했습니다.');
     }
   };
 

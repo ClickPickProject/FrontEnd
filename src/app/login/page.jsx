@@ -6,7 +6,6 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
 import Link from 'next/link';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
 import { axiosInstance, setHeader } from '@/components/utils/Axios';
@@ -33,11 +32,7 @@ export default function LoginPage() {
       setHeader('authorization', accessToken);
 
       if (res.status === 200) {
-        console.log(res.headers);
-        console.log(document.cookie);
-        // setCookie('refresh', res.cookies);
-        localStorage.clear();
-        setToken(accessToken, { path: '/api' });
+        setToken(accessToken);
         setMyNickname(res.data.nickname);
         toast.success(`${res.data.nickname}님 환영합니다!`, {
           position: 'top-right',

@@ -94,7 +94,14 @@ export default function PostDetail() {
     router.push(`/content/community/${params.id}/edit`);
   };
 
-  const onClickPostDelete = async () => {};
+  const onClickPostDelete = async (postId) => {
+    try {
+      await axiosInstance.delete(`/api/member/post/${postId}`);
+      toast.success('게시글이 삭제되었습니다.');
+    } catch (err) {
+      toast.error('게시글 삭제 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <>
@@ -134,7 +141,7 @@ export default function PostDetail() {
               >
                 수정
               </button>
-              <button className='hover:opacity-100' onClick={() => onClickPostDelete()}>
+              <button className='hover:opacity-100' onClick={() => onClickPostDelete(postId)}>
                 삭제
               </button>
             </div>
