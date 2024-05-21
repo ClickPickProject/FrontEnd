@@ -12,9 +12,10 @@ import { useQuery } from '@tanstack/react-query';
 import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
 import { axiosInstance } from '../utils/Axios';
+import { loginState } from '@/atoms/tokenState';
 export default function HomeNavbar() {
   const token = useRecoilValue(tokenState);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
   const MyNickname = useRecoilValue(MyNicknameState);
   const [NavModal, setNavModal] = useRecoilState(pageNavModal);
   const [image, setImage] = useRecoilState(userImgState);

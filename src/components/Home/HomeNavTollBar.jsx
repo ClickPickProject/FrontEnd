@@ -14,6 +14,7 @@ import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useState, useEffect } from 'react';
+
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -34,8 +35,9 @@ export default function HomeNavToolBar() {
   const [NavModal, setNavModal] = useRecoilState(pageNavModal);
   const proImg = useRecoilValue(userImgState);
   const myNickname = useRecoilValue(MyNicknameState);
+
   const token = useRecoilValue(tokenState);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
 
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
