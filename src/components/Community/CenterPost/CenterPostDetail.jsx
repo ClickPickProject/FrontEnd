@@ -90,6 +90,7 @@ export default function CenterPostDetail() {
 
   return (
     <>
+      {myNickname}
       <div className='w-full max-w-[830px] sm:px-[40px]'>
         <div className='my-4 flex flex-col gap-2'>
           <h2 className='text-2xl font-semibold'>[Q&A] {title}</h2>
@@ -114,11 +115,10 @@ export default function CenterPostDetail() {
             <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         </div>
-
         <div className='flex items-center gap-1 text-base '>
           <CommentIcon size={18} />
           답변 {commentCount}
-          {myNickname === 'ADMIN' || '' ? (
+          {myNickname === 'ADMIN' || myNickname === '' ? (
             <button
               onClick={routerPage}
               className='ml-auto flex h-[30px] w-[100px] items-center justify-center gap-2 rounded-lg bg-pink-400 text-sm font-bold text-white transition-all hover:bg-pink-500'
