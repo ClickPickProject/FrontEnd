@@ -80,9 +80,9 @@ function WritePage() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <div className='p-4 text-2xl font-bold'>글 작성</div>
-        <div className='flex flex-col gap-4'>
+        <div className='mx-4 flex flex-col gap-4'>
           <div className='flex justify-around gap-3'>
             <DropDownMenu onChange={handleMenuClick} />
             <div className='flex w-full flex-1 justify-center gap-2 rounded-lg transition-all'>

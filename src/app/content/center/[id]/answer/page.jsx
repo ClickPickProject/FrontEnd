@@ -52,9 +52,9 @@ function WritePage() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <div className='p-4 text-2xl font-bold'>답변</div>
-        <div className='flex flex-col gap-4'>
+        <div className='mx-4 flex flex-col gap-4'>
           <span className='flex'>
             <input
               placeholder='답변을 입력하세요'

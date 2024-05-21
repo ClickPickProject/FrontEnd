@@ -71,9 +71,9 @@ function CenterEditPage() {
 
   return (
     <>
-      <div>
+      <div className='w-full'>
         <div className='p-4 text-2xl font-bold'>글 수정</div>
-        <div className='flex flex-col gap-4'>
+        <div className='mx-4 flex flex-col gap-4'>
           <span className='flex'>
             <input
               placeholder='제목을 입력하세요'
