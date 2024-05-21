@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { postContentState } from '@/atoms/PostState';
 import { axiosInstance } from './utils/Axios';
 import { toast } from 'react-toastify';
+import { tokenState } from '@/atoms/tokenState';
 
 const editorConfiguration = {
   toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload'],
@@ -15,6 +16,7 @@ export default function CustomEditor({ editMode }) {
   const [editorLoaded, setEditorLoaded] = useState(false);
   const content = useRecoilValue(postContentState);
   const [postImages, setPostImages] = useRecoilState(postImagesState);
+  const token = useRecoilValue(tokenState);
   const { CKEditor, Editor } = editorRef.current || {};
   useEffect(() => {
     setPostImages([]);
