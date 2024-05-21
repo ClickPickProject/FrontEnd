@@ -79,7 +79,7 @@ export default function SignUpPage() {
     }
     if (buttonDisabled) return;
     try {
-      const res = await axiosInstance.get(`/api/check/${field === 'id' ? 'userid' : field}/${fieldValue}`);
+      const res = await axios.get(`/api/check/${field === 'id' ? 'userid' : field}/${fieldValue}`);
       if (field === 'id') {
         setInputDisabled(false);
         setUserData({

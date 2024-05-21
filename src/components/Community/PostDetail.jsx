@@ -42,7 +42,7 @@ export default function PostDetail() {
   } = useQuery({
     queryKey: ['post', params.id],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/api/post/${params.id}`);
+      const res = await axios.get(`/api/post/${params.id}`);
 
       if (res.status !== 200) {
         throw new Error('Failed to fetch data');

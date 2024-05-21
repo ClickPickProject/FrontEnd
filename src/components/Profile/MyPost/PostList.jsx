@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Loading from '@/components/Loading';
 import WriterView from '@/components/Community/BestPost/WriterView';
 import StatusView from '@/components/Community/BestPost/StatusView';
-import { axiosInstance } from '@/components/utils/Axios';
 export default function PostList({ category, url }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
@@ -27,7 +26,7 @@ export default function PostList({ category, url }) {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axiosInstance.get(url, {
+      const res = await axios.get(url, {
         params: {
           page: currentPage - 1,
         },

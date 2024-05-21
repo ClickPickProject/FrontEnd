@@ -20,6 +20,7 @@ import { tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
 import Loading from '../Loading';
 import { axiosInstance } from '../utils/Axios';
+import axios from 'axios';
 
 export default function NotificationPostList({ admin }) {
   dayjs.extend(relativeTime);
@@ -47,7 +48,7 @@ export default function NotificationPostList({ admin }) {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/api/notice/list`, {
+      const res = await axios.get(`/api/notice/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
