@@ -78,7 +78,11 @@ export default function HomeNavToolBar() {
     <>
       {!NavModal ? (
         <section className='absolute right-4 top-4 z-50 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl sm:w-1/2'>
-          <img src={proImg} alt='#' className='z-10 mt-6 h-[200px] w-[200px] rounded-full border-4 border-white' />
+          <img
+            src={proImg}
+            alt='프로필 정보'
+            className='z-10 mt-6 h-[200px] w-[200px] rounded-full border-4 border-white'
+          />
           <p className='mt-2 text-lg font-bold '>{myNickname}</p>
           <div className=' mt-2 flex w-full flex-row  justify-center gap-4'>
             <p className='flex items-center  justify-center gap-1'>

@@ -10,7 +10,7 @@ const nextConfig = {
         pathname: '/profile/images/**',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'clickpick.iptime.org',
         port: '',
         pathname: '/post/images/**',
