@@ -14,7 +14,6 @@ import { pageNavModal } from '@/atoms/pageState';
 import { userImgState } from '@/atoms/userInfoState';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   FillMapIcon,
   FillMessageIcon,
@@ -30,21 +29,20 @@ import {
 } from '@/components/UI/Icons';
 export default function HomeNavToolBar() {
   const pathName = usePathname();
-  const router = useRouter();
+  const [NavModal, setNavModal] = useRecoilState(pageNavModal);
   const proImg = useRecoilValue(userImgState);
   const myNickname = useRecoilValue(MyNicknameState);
   const token = useRecoilValue(tokenState);
   const [isLogin, setIsLogin] = useState(false);
-  const [NavModal, setNavModal] = useRecoilState(pageNavModal);
 
   useEffect(() => {
     localStorage.getItem('token') ? setIsLogin(true) : setIsLogin(false);
   }, [token]);
   // 로그아웃
-  const onClickLogout = (e) => {
+  const onClickLogout = () => {
     localStorage.clear();
     setIsLogin(false);
-    setNavModal(null);
+    setNavModal((logOut) => !logOut);
     toast.success('로그아웃 되었습니다.', {
       position: 'top-right',
     });
@@ -79,13 +77,9 @@ export default function HomeNavToolBar() {
   ];
   return (
     <>
-      {!NavModal && token ? (
+      {!NavModal ? (
         <section className='absolute right-4 top-4 z-50 mt-[78px] flex h-[500px] w-[300px] flex-col items-center rounded-2xl bg-pink-200 shadow-2xl sm:w-1/2'>
-          <img
-            src={proImg}
-            alt='프로필 정보'
-            className='z-10 mt-6 h-[200px] w-[200px] rounded-full border-4 border-white'
-          />
+          <img src={proImg} alt='#' className='z-10 mt-6 h-[200px] w-[200px] rounded-full border-4 border-white' />
           <p className='mt-2 text-lg font-bold '>{myNickname}</p>
           <div className=' mt-2 flex w-full flex-row  justify-center gap-4'>
             <p className='flex items-center  justify-center gap-1'>
