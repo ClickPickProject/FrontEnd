@@ -157,6 +157,7 @@ export default function MyProfile() {
         },
       });
       if (res.status === 200) {
+        setImage(URL.createObjectURL(e.target.files[0]));
         toast.success(`이미지가 변경 되었습니다.`, {
           position: 'top-right',
         });
