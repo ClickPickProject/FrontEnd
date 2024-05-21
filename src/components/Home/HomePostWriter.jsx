@@ -1,5 +1,7 @@
 import { FaRegCommentDots } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
+import { EyeIcon } from '@/components/UI/Icons';
+
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ko';
@@ -27,7 +29,7 @@ export default function HomePostWriter({ writer, date, profile, viewCount, likeC
             <FcLike size={24} className='opacity-50' /> {likeCount}
           </span>
           <span className='flex gap-1'>
-            <FaRegCommentDots size={24} className='opacity-50' /> {viewCount}
+            <EyeIcon size={24} className='opacity-50' /> {viewCount}
           </span>
         </div>
       </div>

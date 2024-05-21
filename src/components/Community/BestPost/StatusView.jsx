@@ -1,5 +1,4 @@
 import { EyeIcon, LikeIcon } from '@/components/UI/Icons';
-
 export default function StatusView({ viewCount, likeCount }) {
   return (
     <div className='flex items-center font-semibold'>
