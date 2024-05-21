@@ -28,11 +28,14 @@ export default function LoginPage() {
         id,
         password: pw,
       };
-      const res = await axiosInstance.post(`/api/login`, body, {});
+      const res = await axiosInstance.post(`/api/login`, body);
       const accessToken = res.headers['authorization'];
       setHeader('authorization', accessToken);
 
       if (res.status === 200) {
+        console.log(res.headers['set-cookie']);
+        console.log(res.headers['Set-Cookie']);
+        console.log(res.headers);
         setToken(accessToken);
         setMyNickname(res.data.nickname);
         toast.success(`${res.data.nickname}님 환영합니다!`, {

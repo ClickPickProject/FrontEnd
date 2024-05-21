@@ -12,9 +12,10 @@ const handle = app.getRequestHandler();
 const PORT = 3000;
 
 const httpsOptions = {
-  key: fs.readFileSync('./localhost+2-key.pem'),
-  cert: fs.readFileSync('./localhost+2.pem'),
+  key: fs.readFileSync('./localhost-key.pem'),
+  cert: fs.readFileSync('./localhost.pem'),
 };
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 app.prepare().then(() => {
   http
