@@ -55,7 +55,7 @@ export default function PostList({ category }) {
   });
 
   const updateImage = async () => {
-    const res = await axios.get('https://clickpick.iptime.org:8080/api/profile/image', {
+    const res = await axiosInstance.get('https://clickpick.iptime.org:8080/api/profile/image', {
       headers: {
         Authorization: token,
       },

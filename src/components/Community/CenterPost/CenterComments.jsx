@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import CenterReplyComments from './CenterReplyComments';
 import { postContentState, postTitleState } from '@/atoms/PostState';
 import { toast } from 'react-toastify';
+import { axiosInstance } from '@/components/utils/Axios';
 export default function CenterComments({ answer, question }) {
   const [replyToggle, setReplyToggle] = useState(Array(answer.length).fill(false));
   const token = useRecoilValue(tokenState);
@@ -25,8 +26,7 @@ export default function CenterComments({ answer, question }) {
   // 삭제
   const onClickCommentDelete = async (answerId) => {
     try {
-      const res = await axios.delete(`/api/member/answer/${answerId}`, {
-        withCredentials: true,
+      const res = await axiosInstance.delete(`/api/member/answer/${answerId}`, {
         headers: {
           Authorization: token,
         },
