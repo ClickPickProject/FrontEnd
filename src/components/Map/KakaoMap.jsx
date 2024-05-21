@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { tokenState } from '@/atoms/tokenState';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../utils/Axios';
+import axios from 'axios';
 
 export default function KakaoMap() {
   const [info, setInfo] = useState();
@@ -46,7 +47,11 @@ export default function KakaoMap() {
   const { data } = useQuery({
     queryKey: ['bookmarkList'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/member/map/bookmark/list');
+      const res = await axios.get('/api/member/map/bookmark/list', {
+        headers: {
+          Authorization: token,
+        },
+      });
       return res.data;
     },
   });

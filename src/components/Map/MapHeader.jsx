@@ -1,12 +1,14 @@
 'use client';
 import { BoardIcon, FillHomeIcon, FillStarIcon } from '../UI/Icons';
 import { mapMenuState, placeBookmarkListState } from '@/atoms/mapState';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { axiosInstance } from '../utils/Axios';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function MapHeader() {
   const [mapMenu, setMapMenu] = useRecoilState(mapMenuState);
   const setPlaceBookmarkList = useSetRecoilState(placeBookmarkListState);
+  const token = useRecoilValue(tokenState);
   const menu = [
     {
       icon: <FillHomeIcon size={15} />,
@@ -31,7 +33,11 @@ export default function MapHeader() {
   const onClickMapMenu = async (menu) => {
     if (menu === '즐겨찾기') {
       try {
-        const res = await axiosInstance.get('/api/member/map/bookmark/list');
+        const res = await axiosInstance.get('/api/member/map/bookmark/list', {
+          headers: {
+            Authorization: token,
+          },
+        });
         if (res.status === 200) {
           setPlaceBookmarkList(res.data);
         }
