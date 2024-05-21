@@ -90,7 +90,7 @@ export default function PostList({ category }) {
   // 검색 함수 정의 (제목, 내용, 해시태그)
   const searchByTitle = async () => {
     try {
-      const res = await axios.get('/api/post/title', {
+      const res = await axiosInstance.get('/api/post/title', {
         params: {
           title: search,
         },
@@ -103,7 +103,7 @@ export default function PostList({ category }) {
 
   const searchByContent = async () => {
     try {
-      const res = await axios.get('/api/post/content', {
+      const res = await axiosInstance.get('/api/post/content', {
         params: {
           content: search,
         },
@@ -116,7 +116,7 @@ export default function PostList({ category }) {
 
   const searchByHashtag = async () => {
     try {
-      const res = await axios.get('/api/post/hashtag', {
+      const res = await axiosInstance.get('/api/post/hashtag', {
         params: {
           hashtag: search,
         },

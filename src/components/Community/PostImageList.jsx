@@ -4,6 +4,7 @@ import axios from 'axios';
 import { IoClose } from 'react-icons/io5';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { axiosInstance } from '../utils/Axios';
 
 export default function PostImageList() {
   const token = useRecoilValue(tokenState);
@@ -11,8 +12,7 @@ export default function PostImageList() {
   const onClickImage = async (image) => {
     try {
       // 이미지 삭제
-      const res = await axios.delete(`/api/member/post/image/${image}`, {
-        withCredentials: true,
+      const res = await axiosInstance.delete(`/api/member/post/image/${image}`, {
         headers: {
           Authorization: token,
         },

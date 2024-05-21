@@ -31,8 +31,7 @@ export default function NoticeEditPage() {
         title,
         content,
       };
-      const res = await axios.post(`/api/admin/notice/${noticePostId}`, body, {
-        withCredentials: true,
+      const res = await axiosInstance.post(`/api/admin/notice/${noticePostId}`, body, {
         headers: {
           Authorization: token,
         },
