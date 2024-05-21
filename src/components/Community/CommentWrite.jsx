@@ -7,6 +7,7 @@ import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../utils/Axios';
 import { toast } from 'react-toastify';
+import { userImgState } from '@/atoms/userInfoState';
 
 export default function CommentWrite() {
   const params = useParams();
@@ -14,6 +15,7 @@ export default function CommentWrite() {
   const token = useRecoilValue(tokenState);
   const myNickname = useRecoilValue(MyNicknameState);
   const queryClient = useQueryClient();
+  const image = useRecoilValue(userImgState);
 
   const handleTextareaChange = (e) => {
     e.target.style.height = 'auto';
@@ -41,7 +43,7 @@ export default function CommentWrite() {
     <div className='mt-5 h-auto'>
       <div className='grid h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
         <div className='mt-2'>
-          <WriterView writer={myNickname} profile={''} />
+          <WriterView writer={myNickname} profile={image} />
         </div>
         <textarea
           placeholder={token ? '댓글을 입력하세요' : '로그인 후 이용해주세요'}

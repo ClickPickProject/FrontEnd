@@ -132,13 +132,14 @@ export default function Comments({ comments }) {
                   className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
                   onChange={onChangeTextarea}
                 />
-                <div>
-                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId, commentContent)}>
+                <div className='flex gap-4 pb-2 transition-all'>
+                  <button
+                    className='rounded-md bg-pink-300 px-2 hover:bg-pink-400'
+                    onClick={() => onSaveEdit(comment.commentId, commentContent)}
+                  >
                     저장
                   </button>
-                </div>
-                <div>
-                  <button className='hover:text-pink-400' onClick={onCancelEdit}>
+                  <button className='rounded-md bg-pink-300 px-2 hover:bg-pink-400' onClick={onCancelEdit}>
                     취소
                   </button>
                 </div>

@@ -62,6 +62,7 @@ export default function CustomEditor({ editMode }) {
       // editor가 null인지 확인
       const data = editor.getData();
       setContent(data);
+      console.log(data);
     }
   };
 

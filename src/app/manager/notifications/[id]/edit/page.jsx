@@ -4,33 +4,46 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useEffect, useState } from 'react';
-import { editorContentState } from '@/atoms/editorContentState';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { editorContentState, editorTitleState } from '@/atoms/editorContentState';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { noticePostIdState } from '@/atoms/PostState';
 import { axiosInstance } from '@/components/utils/Axios';
+import axios from 'axios';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function NoticeEditPage() {
   const [content, setContent] = useRecoilState(editorContentState);
   const [noticeTitle, setNoticeTitle] = useState('');
   const noticePostId = useRecoilValue(noticePostIdState);
+  const token = useSetRecoilState(tokenState);
+  const [title, setTitle] = useRecoilState(editorTitleState);
   const router = useRouter();
   useEffect(() => {
     setNoticeTitle(noticeTitle);
     setContent(content);
   }, []);
-  const onClickNotificationsSubmit = async () => {
+  const onClickNotificationsSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const res = await axiosInstance.post(`/api/admin/notice/${noticePostId}`);
+      const body = {
+        title,
+        content,
+      };
+      const res = await axios.post(`/api/admin/notice/${noticePostId}`, body, {
+        withCredentials: true,
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (res.status === 200) {
         toast.success('공지사항이 수정되었습니다.');
-        setNoticeTitle('');
-        setContent('');
         router.back();
       }
     } catch (error) {
+      console.log(error);
       toast.error('공지사항 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
@@ -43,7 +56,12 @@ export default function NoticeEditPage() {
         <div className='bg-pink-200 px-6 py-4 text-lg font-semibold text-gray-800'>공지사항 수정</div>
         <div className='p-6'>
           <div className='mb-6'>
-            <label className='mb-2 text-sm font-bold text-gray-700' htmlFor='title'>
+            <label
+              className='mb-2 text-sm font-bold text-gray-700'
+              htmlFor='title'
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+            >
               제목
             </label>
             <input
@@ -55,7 +73,7 @@ export default function NoticeEditPage() {
               value={noticeTitle}
             />
           </div>
-          <CustomEditor />
+          <CustomEditor editMode />
           <div className='mt-4 flex justify-end'>
             <button
               className='focus:shadow-outline rounded bg-pink-500 px-4 py-2 font-bold text-white transition-all hover:bg-pink-700 focus:outline-none'

@@ -12,10 +12,11 @@ const PostReportModal = ({ nickname, postId }) => {
   const setPostReportModal = useSetRecoilState(postReportModalState);
   const token = useRecoilValue(tokenState);
   const MyNickname = useRecoilValue(MyNicknameState);
+
   const closeReportModal = () => setPostReportModal(false);
 
   const handleSubmit = async (nickname, postId, reason) => {
-    if (MyNickname !== reportedUserNickname) {
+    if (MyNickname == nickname) {
       toast.error('자기 자신은 신고할 수 없습니다.', {
         position: 'top-right',
       });

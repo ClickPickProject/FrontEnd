@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function BestPost() {
   const {
@@ -15,7 +16,7 @@ export default function BestPost() {
   } = useQuery({
     queryKey: ['bestPosts'],
     queryFn: async () => {
-      const res = await axios.get('/api/post/list/best');
+      const res = await axiosInstance.get('/api/post/list/best');
       return res.data;
     },
   });
