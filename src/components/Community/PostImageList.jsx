@@ -2,13 +2,13 @@ import { postImagesState } from '@/atoms/editorContentState';
 import { tokenState } from '@/atoms/tokenState';
 import axios from 'axios';
 import { IoClose } from 'react-icons/io5';
+import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 export default function PostImageList() {
   const token = useRecoilValue(tokenState);
   const [postImages, setPostImages] = useRecoilState(postImagesState);
   const onClickImage = async (image) => {
-    console.log('이미지 삭제');
     try {
       // 이미지 삭제
       const res = await axios.delete(`/api/member/post/image/${image}`, {
@@ -18,11 +18,10 @@ export default function PostImageList() {
         },
       });
       if (res.status === 200) {
-        console.log('이미지 삭제 성공');
         setPostImages((prev) => prev.filter((img) => img !== image));
       }
     } catch (error) {
-      console.log(error);
+      toast.error('이미지 삭제 중 오류가 발생했습니다.');
     }
   };
   return (

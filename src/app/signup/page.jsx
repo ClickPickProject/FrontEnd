@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { CheckIcon, MailIcon, NickIcon, PasswordIcon, PhoneIcon, UserNameIcon } from '@/components/UI/Icons';
 import InputWithValidation from '@/components/InputWithValidation';
 import { axiosInstance } from '@/components/utils/Axios';
+import { toast } from 'react-toastify';
 export default function SignUpPage() {
   const [inputDisabled, setInputDisabled] = useState(false);
   const [userData, setUserData] = useState({
@@ -94,7 +95,7 @@ export default function SignUpPage() {
         });
       }
     } catch (err) {
-      console.log(err);
+      toast.error('회원가입 중 오류가 발생했습니다.');
     }
   };
 
@@ -121,8 +122,7 @@ export default function SignUpPage() {
         router.push('/');
       }
     } catch (err) {
-      console.log(err);
-      alert('회원가입 불가');
+      toast.error('회원가입 중 오류가 발생했습니다.');
     }
   };
 

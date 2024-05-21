@@ -32,14 +32,11 @@ export default function NoticeWritePage() {
 
       if (res.status === 200) {
         toast.success('공지사항이 등록되었습니다.');
-        console.log(res.headers);
-        console.log(document.cookie);
         setNoticeTitle('');
         setContent('');
         router.back();
       }
     } catch (error) {
-      console.log(error);
       if (error.response.status === 406) {
         ReqRefreshToken();
         toast.error('권한이 없습니다.');

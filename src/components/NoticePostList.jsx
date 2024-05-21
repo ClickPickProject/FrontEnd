@@ -52,7 +52,6 @@ export default function NoticePostList({ url }) {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },
       });
-      console.log(res);
       if (res.status === 200) {
         setTotalPages(res.data.totalPages);
         setTotalItems(res.data.totalElements);

@@ -4,6 +4,7 @@ import { editorContentState, postImagesState } from '@/atoms/editorContentState'
 import { useEffect, useRef, useState } from 'react';
 import { postContentState } from '@/atoms/PostState';
 import { axiosInstance } from './utils/Axios';
+import { toast } from 'react-toastify';
 
 const editorConfiguration = {
   toolbar: ['bold', 'italic', 'link', '|', 'FontColor', 'imageUpload'],
@@ -44,7 +45,7 @@ export default function CustomEditor({ editMode }) {
           default: `${data.url}`,
         };
       } catch (err) {
-        console.log(err);
+        toast.error('이미지 업로드 중 오류가 발생했습니다.');
         throw err;
       }
     },

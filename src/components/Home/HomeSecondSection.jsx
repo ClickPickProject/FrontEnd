@@ -10,7 +10,7 @@ export default function HomeSecondSection() {
     offset: ['start start', 'end start'],
   });
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-  const textY = useTransform(scrollYProgress, [0, 1], ['-250%', '350%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['-200%', '350%']);
   const textSize = useTransform(scrollYProgress, [0, 1], ['50px', '9px']);
   const opacityProgress = useTransform(scrollYProgress, [0, 1], [1, 0]);
   return (
