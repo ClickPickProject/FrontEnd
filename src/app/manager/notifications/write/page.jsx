@@ -28,7 +28,11 @@ export default function NoticeWritePage() {
     }
     try {
       const body = { title: noticeTitle, content };
-      const res = await axiosInstance.post('/api/admin/notice', body);
+      const res = await axiosInstance.post('/api/admin/notice', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (res.status === 200) {
         toast.success('공지사항이 등록되었습니다.');

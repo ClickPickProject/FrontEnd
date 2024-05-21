@@ -28,7 +28,7 @@ export default function LoginPage() {
         id,
         password: pw,
       };
-      const res = await axiosInstance.post(`/api/login`, body);
+      const res = await axiosInstance.post(`/api/login`, body, {});
       const accessToken = res.headers['authorization'];
       setHeader('authorization', accessToken);
 

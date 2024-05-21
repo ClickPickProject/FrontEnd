@@ -60,7 +60,11 @@ export default function Comments({ comments }) {
         postId: commentId,
         content: replyCommentCheck ? `${nickname}  ${newContent}` : newContent,
       };
-      const res = await axiosInstance.post(`/api/member/comment/${commentId}`, body);
+      const res = await axiosInstance.post(`/api/member/comment/${commentId}`, body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
       }
@@ -81,7 +85,11 @@ export default function Comments({ comments }) {
         postId: params.id,
         content: content,
       };
-      const res = await axiosInstance.post('/api/member/recomment', body);
+      const res = await axiosInstance.post('/api/member/recomment', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries({ queryKey: ['post', params.id] });
         setReplyToggle((prevToggles) => {

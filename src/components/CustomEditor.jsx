@@ -35,6 +35,7 @@ export default function CustomEditor({ editMode }) {
         const res = await axiosInstance.post(`/api/member/post/image`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: token,
           },
         });
         const data = await res.data;

@@ -29,7 +29,11 @@ export default function CommentWrite() {
       content: comment,
     };
     try {
-      const res = await axiosInstance.post('/api/member/comment', body);
+      const res = await axiosInstance.post('/api/member/comment', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['posts', params.id]);
         setComment('');

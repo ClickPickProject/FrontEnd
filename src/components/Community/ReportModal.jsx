@@ -28,7 +28,11 @@ const ReportModal = ({ nickname, commentId }) => {
         commentId: commentId,
         reason,
       };
-      const res = await axiosInstance.post('/api/member/report/comment', body);
+      const res = await axiosInstance.post('/api/member/report/comment', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         toast.success('댓글 신고가 접수되었습니다.', {
           position: 'top-right',

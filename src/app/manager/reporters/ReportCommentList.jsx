@@ -31,7 +31,11 @@ export default function ReportCommentList() {
       banDays: selectedPeriod?.value,
     };
     try {
-      const res = await axiosInstance.post('/api/admin/commentban', body);
+      const res = await axiosInstance.post('/api/admin/commentban', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (banDays === null) {
         toast.error('기간을 선택해주세요.');
         return;
@@ -53,7 +57,11 @@ export default function ReportCommentList() {
         id: reportCommentId,
         type: 'comment',
       };
-      const res = await axiosInstance.post(`/api/admin/withdrawal`, body);
+      const res = await axiosInstance.post(`/api/admin/withdrawal`, body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['banndUsers']);
         toast.success(`신고가 철회되었습니다.`);

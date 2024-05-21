@@ -102,7 +102,11 @@ export default function KakaoMap() {
         east: area.e,
       };
       try {
-        const res = await axiosInstance.post('/api/map/marker', body);
+        const res = await axiosInstance.post('/api/map/marker', body, {
+          headers: {
+            Authorization: token,
+          },
+        });
         setMapPost(res.data);
       } catch (err) {
         console.log(err);
@@ -185,7 +189,11 @@ export default function KakaoMap() {
       status: 'LIKE',
     };
     try {
-      const res = await axiosInstance.post('/api/member/map/bookmark', body);
+      const res = await axiosInstance.post('/api/member/map/bookmark', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['bookmarkList']);
       }
