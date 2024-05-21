@@ -9,6 +9,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { pageState } from '@/atoms/pageState';
 import CenterCustomEditor from '@/components/UI/CenterCustomEditor';
 import { toast } from 'react-toastify';
+import { axiosInstance } from '@/components/utils/Axios';
 
 function WritePage() {
   const router = useRouter();
@@ -33,8 +34,7 @@ function WritePage() {
         title,
         content,
       };
-      const res = await axios.post(url, body, {
-        withCredentials: true,
+      const res = await axiosInstance.post(url, body, {
         headers: {
           Authorization: token,
         },

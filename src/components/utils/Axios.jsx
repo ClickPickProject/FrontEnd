@@ -1,7 +1,11 @@
 import axios from 'axios';
+import https from 'https';
 
 export const axiosInstance = axios.create({
-  baseURL: `http://${process.env.NEXT_PUBLIC_BACKEND_API_URL}`,
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
+  baseURL: `https://${process.env.NEXT_PUBLIC_BACKEND_API_URL}`,
   // baseURL: `http://localhost:3000`,
   withCredentials: true,
 });

@@ -3,11 +3,13 @@ import { useState } from 'react';
 import WriterView from './BestPost/WriterView';
 import { useRecoilValue } from 'recoil';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
+import { userImgState } from '@/atoms/userInfoState';
 
 export default function ReplyToggle({ commentNickname, onSubmitReply }) {
   const [reply, setReply] = useState('');
   const myNickname = useRecoilValue(MyNicknameState);
   const token = useRecoilValue(tokenState);
+  const image = useRecoilValue(userImgState);
 
   const handleReplyChange = (e) => {
     e.target.style.height = 'auto';
@@ -25,7 +27,7 @@ export default function ReplyToggle({ commentNickname, onSubmitReply }) {
   return (
     <div className='mb-5 ml-4 h-full w-full rounded-lg border-2 border-pink-200 pl-2 focus:border-pink-500'>
       <div className='mt-2'>
-        <WriterView writer={myNickname} profile={''} />
+        <WriterView writer={myNickname} profile={image} />
       </div>
       <textarea
         placeholder={token ? '답글을 입력하세요' : '로그인 후 이용해주세요'}

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { toast } from 'react-toastify';
 import { useCookies } from 'react-cookie';
 import { axiosInstance, setHeader } from '@/components/utils/Axios';
+import axios from 'axios';
 
 export default function LoginPage() {
   let [id, setId] = useState('');
@@ -27,7 +28,7 @@ export default function LoginPage() {
         id,
         password: pw,
       };
-      const res = await axiosInstance.post(`/api/login`, body);
+      const res = await axiosInstance.post(`/api/login`, body, {});
       const accessToken = res.headers['authorization'];
       setHeader('authorization', accessToken);
 
@@ -35,6 +36,8 @@ export default function LoginPage() {
         setToken(accessToken);
         setMyNickname(res.data.nickname);
         console.log(res);
+        console.log(document.cookie);
+        console.log(res.headers);
         toast.success(`${res.data.nickname}님 환영합니다!`, {
           position: 'top-right',
         });

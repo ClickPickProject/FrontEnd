@@ -22,6 +22,7 @@ export default function Comments({ comments }) {
   const [commentContent, setCommentContent] = useState('');
   const queryClient = useQueryClient();
   const [reportModal, setReportModal] = useRecoilState(reportModalState);
+  const token = useRecoilValue(tokenState);
 
   if (!comments || comments.length === 0) {
     return null;
@@ -40,7 +41,11 @@ export default function Comments({ comments }) {
 
   const onClickCommentDelete = async (commentId) => {
     try {
-      const res = await axiosInstance.delete(`/api/member/comment/${commentId}`);
+      const res = await axiosInstance.delete(`/api/member/comment/${commentId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
       }
@@ -60,7 +65,11 @@ export default function Comments({ comments }) {
         postId: commentId,
         content: replyCommentCheck ? `${nickname}  ${newContent}` : newContent,
       };
-      const res = await axiosInstance.post(`/api/member/comment/${commentId}`, body);
+      const res = await axiosInstance.post(`/api/member/comment/${commentId}`, body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
       }
@@ -81,7 +90,11 @@ export default function Comments({ comments }) {
         postId: params.id,
         content: content,
       };
-      const res = await axiosInstance.post('/api/member/recomment', body);
+      const res = await axiosInstance.post('/api/member/recomment', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         queryClient.invalidateQueries({ queryKey: ['post', params.id] });
         setReplyToggle((prevToggles) => {
@@ -132,13 +145,14 @@ export default function Comments({ comments }) {
                   className='flex w-full resize-none flex-wrap overflow-hidden rounded-lg py-2 outline-none'
                   onChange={onChangeTextarea}
                 />
-                <div>
-                  <button className='hover:text-pink-400' onClick={() => onSaveEdit(comment.commentId, commentContent)}>
+                <div className='flex gap-4 pb-2 transition-all'>
+                  <button
+                    className='rounded-md bg-pink-300 px-2 hover:bg-pink-400'
+                    onClick={() => onSaveEdit(comment.commentId, commentContent)}
+                  >
                     저장
                   </button>
-                </div>
-                <div>
-                  <button className='hover:text-pink-400' onClick={onCancelEdit}>
+                  <button className='rounded-md bg-pink-300 px-2 hover:bg-pink-400' onClick={onCancelEdit}>
                     취소
                   </button>
                 </div>

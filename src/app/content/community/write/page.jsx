@@ -53,10 +53,15 @@ function WritePage() {
       yposition: mapPosition.lat, // 위도
       hashtags: tag,
       postCategory: category,
+      thumbnailImage: postImages[0] || '',
       imageNames: postImages,
     };
     const fetch = async () => {
-      const res = await axiosInstance.post(`/api/member/post`, body);
+      const res = await axiosInstance.post(`/api/member/post`, body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       return res;
     };
     const res = await toast.promise(fetch, {

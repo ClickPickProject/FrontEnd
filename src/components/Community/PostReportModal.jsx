@@ -12,10 +12,11 @@ const PostReportModal = ({ nickname, postId }) => {
   const setPostReportModal = useSetRecoilState(postReportModalState);
   const token = useRecoilValue(tokenState);
   const MyNickname = useRecoilValue(MyNicknameState);
+
   const closeReportModal = () => setPostReportModal(false);
 
   const handleSubmit = async (nickname, postId, reason) => {
-    if (MyNickname !== reportedUserNickname) {
+    if (MyNickname == nickname) {
       toast.error('자기 자신은 신고할 수 없습니다.', {
         position: 'top-right',
       });
@@ -28,7 +29,11 @@ const PostReportModal = ({ nickname, postId }) => {
         reason,
       };
 
-      const res = await axiosInstance.post('/api/member/report/post', body);
+      const res = await axiosInstance.post('/api/member/report/post', body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         toast.success('게시글 신고가 접수되었습니다.', {
           icon: () => <FillSirenIcon color='red' />,

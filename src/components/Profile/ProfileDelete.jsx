@@ -5,6 +5,7 @@ import { LogoutIcon } from '@/components/UI/Icons';
 import { pageState } from '@/atoms/pageState';
 import { pageDeleteModal } from '@/atoms/pageState';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { axiosInstance } from '../utils/Axios';
 
 export default function ProfileDelete({ image, nickName }) {
   const [handleDelete, setHandleDelete] = useRecoilState(pageDeleteModal);
@@ -13,8 +14,7 @@ export default function ProfileDelete({ image, nickName }) {
   const handleDeleteId = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.delete('/api/member', {
-        withCredentials: true,
+      const res = await axiosInstance.delete('/api/member', {
         headers: {
           Authorization: token,
         },

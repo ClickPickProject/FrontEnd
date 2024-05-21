@@ -14,6 +14,7 @@ import CenterSearch from './CenterSearch';
 import { useRouter } from 'next/navigation';
 import { pageState } from '@/atoms/pageState';
 import { FaUnlock, FaLock } from 'react-icons/fa';
+import { axiosInstance } from './utils/Axios';
 export default function NoticePostList({ url }) {
   const [pageState1, setPageState1] = useRecoilState(pageState);
   const router = useRouter();
@@ -43,8 +44,7 @@ export default function NoticePostList({ url }) {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(url, {
-        withCredentials: true,
+      const res = await axiosInstance.get(url, {
         headers: {
           Authorization: token,
         },

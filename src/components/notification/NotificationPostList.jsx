@@ -48,7 +48,7 @@ export default function NotificationPostList({ admin }) {
   } = useQuery({
     queryKey: ['posts', currentPage],
     queryFn: async () => {
-      const res = await axios.get(`/api/notice/list`, {
+      const res = await axiosInstance.get(`/api/notice/list`, {
         params: {
           page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
         },

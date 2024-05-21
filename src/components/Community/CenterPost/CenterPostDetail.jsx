@@ -13,6 +13,7 @@ import { pageState } from '@/atoms/pageState';
 import { postContentState, postTitleState } from '@/atoms/PostState';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { axiosInstance } from '@/components/utils/Axios';
 
 export default function CenterPostDetail() {
   const [pageState1, setPageState1] = useRecoilState(pageState);
@@ -31,8 +32,7 @@ export default function CenterPostDetail() {
     queryKey: ['post', params.id],
     queryFn: async () => {
       try {
-        const res = await axios.get(`/api/question/${params.id}`, {
-          withCredentials: true,
+        const res = await axiosInstance.get(`/api/question/${params.id}`, {
           headers: {
             Authorization: token,
           },
@@ -65,8 +65,7 @@ export default function CenterPostDetail() {
 
   const onClickPostDelete = async () => {
     try {
-      const res = await axios.delete(`/api/member/question/${params.id}`, {
-        withCredentials: true,
+      const res = await axiosInstance.delete(`/api/member/question/${params.id}`, {
         headers: {
           Authorization: token,
         },

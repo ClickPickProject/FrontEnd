@@ -4,6 +4,18 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'https',
+        hostname: 'clickpick.iptime.org',
+        port: '8080',
+        pathname: '/profile/images/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'clickpick.iptime.org',
+        port: '8080',
+        pathname: '/post/images/**',
+      },
+      {
         protocol: 'http',
         hostname: 'clickpick.iptime.org',
         port: '8080',

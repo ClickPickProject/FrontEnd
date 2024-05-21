@@ -42,7 +42,7 @@ export default function PostDetail() {
   } = useQuery({
     queryKey: ['post', params.id],
     queryFn: async () => {
-      const res = await axios.get(`/api/post/${params.id}`);
+      const res = await axiosInstance.get(`/api/post/${params.id}`);
 
       if (res.status !== 200) {
         throw new Error('Failed to fetch data');
@@ -73,11 +73,19 @@ export default function PostDetail() {
   const onClickLike = async () => {
     try {
       if (likePostCheck === true) {
-        await axiosInstance.get(`/api/member/likedpost/${params.id}`);
+        await axiosInstance.get(`/api/member/likedpost/${params.id}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
         queryClient.invalidateQueries(['post', params.id]);
       }
       if (likePostCheck === false) {
-        await axiosInstance.get(`/api/member/likedpost/${params.id}`);
+        await axiosInstance.get(`/api/member/likedpost/${params.id}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (err) {
@@ -96,7 +104,11 @@ export default function PostDetail() {
 
   const onClickPostDelete = async (postId) => {
     try {
-      await axiosInstance.delete(`/api/member/post/${postId}`);
+      await axiosInstance.delete(`/api/member/post/${postId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       toast.success('게시글이 삭제되었습니다.');
     } catch (err) {
       toast.error('게시글 삭제 중 오류가 발생했습니다.');

@@ -49,7 +49,11 @@ function EditPage() {
         postCategory: category,
         imageNames: postImages,
       };
-      const res = await axiosInstance.post(`/api/member/post/${params.id}`, body);
+      const res = await axiosInstance.post(`/api/member/post/${params.id}`, body, {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (res.status === 200) {
         toast.success('게시글이 수정되었습니다.');
         queryClient.invalidateQueries(['post', params.id]);
