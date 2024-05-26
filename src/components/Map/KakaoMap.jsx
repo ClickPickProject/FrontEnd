@@ -12,8 +12,9 @@ import { tokenState } from '@/atoms/tokenState';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../utils/Axios';
 import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
-export default function KakaoMap() {
+function KakaoMap() {
   const [info, setInfo] = useState();
   const [markers, setMarkers] = useRecoilState(mapMarkerState);
   const [map, setMap] = useState();
@@ -379,3 +380,5 @@ export default function KakaoMap() {
     </>
   );
 }
+
+export default AuthContext(KakaoMap, { adminRequired: false });
