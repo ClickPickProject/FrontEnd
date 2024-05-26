@@ -23,7 +23,7 @@ export default function HomeBestPost() {
   if (isLoading || isError) return <Loading isLoading={isLoading} isError={isError} />;
   return (
     <>
-      {bestPosts.slice(0, 1).map((data) => (
+      {bestPosts?.slice(0, 1).map((data) => (
         <>
           <Link href={`/content/community/${data.postId}`} className=''>
             <figure className='flex w-full items-center justify-center'>
