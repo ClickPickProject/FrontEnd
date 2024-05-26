@@ -8,10 +8,11 @@ import Chart from 'react-apexcharts';
 import { useRecoilValue } from 'recoil';
 export default function ReporterCharts({ title, year }) {
   const [seriesData, setSeriesData] = useState([]);
+  const token = useRecoilValue(tokenState);
   const { data, isPending, isError } = useQuery({
     queryKey: ['monthUserCount'],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/api/admin/user/month/${2024}`);
+      const res = await axiosInstance.get(`/api/admin/user/month/${2024}`, { headers: { Authorization: token } });
       setSeriesData(res.data);
       return res.data;
     },

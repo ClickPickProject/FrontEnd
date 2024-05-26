@@ -4,18 +4,21 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
 import Loading from '@/components/Loading';
+import { tokenState } from '@/atoms/tokenState';
+import { useRecoilValue } from 'recoil';
 
 export default function ReportPostList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간
   const selectInputRef = useRef(null);
   const queryClient = useQueryClient();
+  const token = useRecoilValue(tokenState);
   const onClearSelect = (idx) => {
     selectInputRef[idx].clearValue();
   };
   const { data, isPending, isError } = useQuery({
     queryKey: ['reportPostUsers'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/admin/reportpostlist');
+      const res = await axiosInstance.get('/api/admin/reportpostlist', { headers: { Authorization: token } });
       return res.data;
     },
   });

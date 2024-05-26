@@ -5,15 +5,17 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { useEffect, useState } from 'react';
 import { editorContentState } from '@/atoms/editorContentState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ReqRefreshToken from '@/components/utils/ReqRefreshToken';
 import { axiosInstance } from '@/components/utils/Axios';
+import { tokenState } from '@/atoms/tokenState';
 
 export default function NoticeWritePage() {
   const [content, setContent] = useRecoilState(editorContentState);
   const [noticeTitle, setNoticeTitle] = useState('');
+  const token = useRecoilValue(tokenState);
   const router = useRouter();
   useEffect(() => {
     setNoticeTitle('');
@@ -42,7 +44,7 @@ export default function NoticeWritePage() {
       }
     } catch (error) {
       if (error.response.status === 406) {
-        ReqRefreshToken();
+        await ReqRefreshToken();
         toast.error('권한이 없습니다.');
         return;
       }

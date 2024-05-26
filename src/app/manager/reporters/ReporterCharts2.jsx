@@ -13,7 +13,7 @@ export default function ReporterCharts2({ title, year }) {
   const { data, isPending, isError } = useQuery({
     queryKey: ['monthUserCount2'],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/api/admin/report/post/${2024}`);
+      const res = await axiosInstance.get(`/api/admin/report/post/${2024}`, { headers: { Authorization: token } });
       setSeriesData(res.data);
       return res.data;
     },

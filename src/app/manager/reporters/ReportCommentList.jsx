@@ -4,18 +4,21 @@ import { toast } from 'react-toastify';
 import Select from 'react-select';
 import Loading from '@/components/Loading';
 import { axiosInstance } from '@/components/utils/Axios';
+import { tokenState } from '@/atoms/tokenState';
+import { useRecoilValue } from 'recoil';
 
 export default function ReportCommentList() {
   const [selectedPeriod, setSelectedPeriod] = useState(null); // 선택된 기간
   const selectInputRef = useRef(null);
   const queryClient = useQueryClient();
+  const token = useRecoilValue(tokenState);
   const onClearSelect = (idx) => {
     selectInputRef[idx].clearValue();
   };
   const { data, isPending, isError } = useQuery({
     queryKey: ['reportCommentUsers'],
     queryFn: async () => {
-      const res = await axiosInstance.get('/api/admin/reportcommentlist');
+      const res = await axiosInstance.get('/api/admin/reportcommentlist', { headers: { Authorization: token } });
       return res.data;
     },
   });
