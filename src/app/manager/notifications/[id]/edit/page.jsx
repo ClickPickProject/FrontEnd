@@ -3,21 +3,20 @@ import CustomEditor from '@/components/CustomEditor';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { editorContentState, editorTitleState } from '@/atoms/editorContentState';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { noticePostIdState } from '@/atoms/PostState';
 import { axiosInstance } from '@/components/utils/Axios';
-import axios from 'axios';
 import { tokenState } from '@/atoms/tokenState';
 
 export default function NoticeEditPage() {
   const [content, setContent] = useRecoilState(editorContentState);
-  const [noticeTitle, setNoticeTitle] = useState('');
+  const [noticeTitle, setNoticeTitle] = useRecoilState(editorTitleState);
   const noticePostId = useRecoilValue(noticePostIdState);
-  const token = useSetRecoilState(tokenState);
+  const token = useRecoilValue(tokenState);
   const [title, setTitle] = useRecoilState(editorTitleState);
   const router = useRouter();
   useEffect(() => {
@@ -36,7 +35,6 @@ export default function NoticeEditPage() {
           Authorization: token,
         },
       });
-
       if (res.status === 200) {
         toast.success('공지사항이 수정되었습니다.');
         router.back();
@@ -46,6 +44,7 @@ export default function NoticeEditPage() {
       toast.error('공지사항 수정에 실패했습니다. 다시 시도해주세요.');
     }
   };
+
   dayjs.extend(relativeTime);
   dayjs.locale('ko');
 
