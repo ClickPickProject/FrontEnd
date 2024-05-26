@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import StatusView from './BestPost/StatusView';
 import WriterView from './BestPost/WriterView';
@@ -9,8 +9,8 @@ import Loading from '../Loading';
 import Search from '../Search';
 import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
-import axios from 'axios';
 import { axiosInstance } from '../utils/Axios';
+import { toast } from 'react-toastify';
 
 export default function PostList({ category }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
@@ -22,10 +22,15 @@ export default function PostList({ category }) {
   const [search, setSearch] = useState(''); // 검색어
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
   const token = useRecoilValue(tokenState);
+  const [filteredCategoryPosts, setFilteredCategoryPosts] = useState(null); // State for filtered category posts
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     setSelectedCategory(category);
     setCurrentPage(1);
+    if (category) {
+      categorySearch(category, 1);
+    }
   }, [category]);
 
   useEffect(() => {
@@ -38,11 +43,12 @@ export default function PostList({ category }) {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ['posts', currentPage],
+    queryKey: ['posts', selectedCategory, currentPage],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/api/post/list`, {
+      const res = await axiosInstance.get('/api/post/list', {
         params: {
-          page: currentPage - 1, // 페이지 번호가 0부터 시작하므로 -1
+          page: currentPage - 1,
+          category: selectedCategory !== '모두' ? selectedCategory : null,
         },
       });
       if (res.status === 200) {
@@ -52,6 +58,7 @@ export default function PostList({ category }) {
       }
       return res.data;
     },
+    keepPreviousData: true,
   });
 
   const updateImage = async () => {
@@ -68,29 +75,31 @@ export default function PostList({ category }) {
     refetch();
   };
 
-  // 카테고리 필터링
-  const filteredPosts = posts?.content?.filter((post) => {
-    switch (selectedCategory) {
-      case '자유':
-        return post.postCategory === '자유';
-      case '음식':
-        return post.postCategory === '음식';
-      case '여행지':
-        return post.postCategory === '여행지';
-      default:
-        return true;
+  const categorySearch = async (category, page) => {
+    try {
+      const res = await axiosInstance.get('/api/post/category', {
+        params: {
+          page: page - 1,
+          category: category,
+        },
+      });
+      if (res.status === 200) {
+        setFilteredCategoryPosts(res.data.content);
+        setTotalPages(res.data.totalPages);
+        setTotalItems(res.data.totalElements);
+        setPostsPerPage(res.data.size);
+        setCurrentPage(page); // 카테고리 변경 시 페이지를 리셋합니다.
+      }
+    } catch (err) {
+      toast.error('카테고리 선택 중 오류가 발생했습니다.');
     }
-  });
+  };
+
+  const filteredPosts = selectedCategory && selectedCategory !== '모두' ? filteredCategoryPosts : posts?.content;
 
   const displayPosts = searchResults || filteredPosts;
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
 
-  // 검색 옵션 변경 핸들러
-  // const handleSearchOptionChange = (option) => {
-  //   setSearchOption(option);
-  // };
-
-  // 검색 결과 처리
   const handleSearchResults = (res) => {
     if (res.status === 200) {
       setSearchResults(res.data.content);
@@ -100,7 +109,6 @@ export default function PostList({ category }) {
     }
   };
 
-  // 검색 함수 정의 (제목, 내용, 해시태그)
   const searchByTitle = async () => {
     try {
       const res = await axiosInstance.get('/api/post/title', {
@@ -110,7 +118,7 @@ export default function PostList({ category }) {
       });
       handleSearchResults(res);
     } catch (err) {
-      console.log(err);
+      toast.error('제목 검색 중 오류가 발생했습니다.');
     }
   };
 
@@ -123,7 +131,7 @@ export default function PostList({ category }) {
       });
       handleSearchResults(res);
     } catch (err) {
-      console.log(err);
+      toast.error('내용 검색 중 오류가 발생했습니다.');
     }
   };
 
@@ -136,11 +144,10 @@ export default function PostList({ category }) {
       });
       handleSearchResults(res);
     } catch (err) {
-      console.log(err);
+      toast.error('해시태그 검색 중 오류가 발생했습니다.');
     }
   };
 
-  // 검색 버튼 클릭 핸들러
   const onClickSearch = async (e) => {
     e.preventDefault();
     switch (searchOption) {
@@ -183,7 +190,6 @@ export default function PostList({ category }) {
                 <StatusView viewCount={data.viewCount} likeCount={data.likeCount} />
               </div>
             </div>
-            {/* 경계선 */}
             <div className='mb-4 w-full border border-gray-200' />
           </li>
         ))}
