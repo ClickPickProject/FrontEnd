@@ -30,7 +30,7 @@ Web communities for sharing many different places
 ### FrontEnd
 
 <div align='center'>
-<img width="500" alt="frontendskills" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/eb2a8010-91d5-4ef0-9c23-d1aae76ac775">
+<img width="500" alt="frontendskills" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/906757d1-d99f-44a1-85c2-1b334dee7eff">
 </div>
 <!-- 
 ![Frontend skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/eb2a8010-91d5-4ef0-9c23-d1aae76ac775) -->
