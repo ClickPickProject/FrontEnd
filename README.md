@@ -29,9 +29,7 @@ Web communities for sharing many different places
 
 ### FrontEnd
 
-- Next.js v14
-- Recoil v0.7
-- Tailwind CSS
+![Frontend skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/eb2a8010-91d5-4ef0-9c23-d1aae76ac775)
 
 ### BackEnd
 
