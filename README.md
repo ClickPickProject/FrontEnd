@@ -23,17 +23,15 @@ Web communities for sharing many different places
 >
 > 클릭픽 프로젝트는 다양한 맛집, 명소, 문화적인 장소 등을 발견하고 공유하는 공간입니다. 사용자들은 자신이 방문한 경험을 공유하고 추천할 수 있습니다. 지도와 함께 시각적인 정보를 제공하며 커뮤니티에서 다양한 의견을 나누어 서로의 경험을 더욱 풍부하게 공유가 가능합니다. 이를 통해 다른 사용자들은 여러 장소를 계획할 때 유용한 정보를 얻을 수 있습니다.
 
+![diagram](https://github.com/ClickPickProject/FrontEnd/assets/144521987/fa2059f4-a79b-44f3-8979-996d6a54a836)
+
 ## 🛠️ Skills
 
 ### FrontEnd
 
-- Next.js
-- Recoil
-- React-icons
-- Framer-motion
-- Tailwindcss
-- Apexcharts
-- Ckeditor
+- Next.js v14
+- Recoil v0.7
+- Tailwind CSS
 
 ### BackEnd
 
