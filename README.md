@@ -29,11 +29,19 @@ Web communities for sharing many different places
 
 ### FrontEnd
 
-![Frontend skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/eb2a8010-91d5-4ef0-9c23-d1aae76ac775)
+<div align='center'>
+<img width="500" alt="frontendskills" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/eb2a8010-91d5-4ef0-9c23-d1aae76ac775">
+</div>
+<!-- 
+![Frontend skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/eb2a8010-91d5-4ef0-9c23-d1aae76ac775) -->
 
 ### BackEnd
 
-![BackEnd Skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/f2f5240f-a3e7-4149-8847-dad30d70ebb0)
+<div align='center'>
+<img width="500" alt="backendSkills" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/f2f5240f-a3e7-4149-8847-dad30d70ebb0">
+</div>
+
+<!-- ![BackEnd Skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/f2f5240f-a3e7-4149-8847-dad30d70ebb0) -->
 
 ### Database
 
