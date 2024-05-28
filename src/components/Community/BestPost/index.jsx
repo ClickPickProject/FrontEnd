@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Loading from '@/components/Loading';
 import { useQuery } from '@tanstack/react-query';
 import { axiosInstance } from '@/components/utils/Axios';
+import Image from 'next/image';
 
 export default function BestPost() {
   const {
@@ -29,8 +30,10 @@ export default function BestPost() {
             </div>
             <figure className='relative mb-2'>
               <Link href={`/content/community/${data.postId}`}>
-                <img
+                <Image
                   alt='썸네일'
+                  width={270}
+                  height={170}
                   src={`${data.thumbnail === null || data.thumbnail.length === 0 ? '/Images/camera.png' : data.thumbnail}`}
                   className='h-[170px] w-[270px] rounded-lg object-cover'
                 />
