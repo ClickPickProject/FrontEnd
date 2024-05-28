@@ -1,6 +1,6 @@
 'use client';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { editorContentState, postImagesState } from '@/atoms/editorContentState';
+import { editorContentState, postImagesState, postThumbnailState } from '@/atoms/editorContentState';
 import { useEffect, useRef, useState } from 'react';
 import { postContentState } from '@/atoms/PostState';
 import { axiosInstance } from './utils/Axios';
@@ -16,6 +16,7 @@ export default function CustomEditor({ editMode }) {
   const [editorLoaded, setEditorLoaded] = useState(false);
   const content = useRecoilValue(postContentState);
   const [postImages, setPostImages] = useRecoilState(postImagesState);
+  const [thumbnail, setThumbnail] = useRecoilState(postThumbnailState);
   const token = useRecoilValue(tokenState);
   const { CKEditor, Editor } = editorRef.current || {};
   useEffect(() => {
@@ -43,7 +44,10 @@ export default function CustomEditor({ editMode }) {
         const data = await res.data;
         const parts = data.url.split('/');
         const imageName = parts[parts.length - 1];
-        setPostImages((prev) => [...prev, imageName]);
+        if (postImages.length === 0) {
+          setThumbnail([imageName]);
+        }
+        setPostImages([...postImages, imageName]);
         return {
           default: `${data.url}`,
         };
@@ -65,7 +69,6 @@ export default function CustomEditor({ editMode }) {
       // editor가 null인지 확인
       const data = editor.getData();
       setContent(data);
-      console.log(data);
     }
   };
 

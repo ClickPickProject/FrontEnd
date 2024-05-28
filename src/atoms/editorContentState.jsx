@@ -25,6 +25,11 @@ export const postImagesState = atom({
   default: [],
 });
 
+export const postThumbnailState = atom({
+  key: 'postThumbnailState',
+  default: '',
+});
+
 export const mapModalState = atom({
   key: 'mapModalState',
   default: false,
