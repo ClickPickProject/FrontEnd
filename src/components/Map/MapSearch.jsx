@@ -63,7 +63,6 @@ export default function MapSearch() {
 
   const handleInputChange = (e) => {
     setInputSearch(e.target.value);
-    console.log(e.target.value);
   };
 
   const handlePageChange = (pageNumber) => {
@@ -90,7 +89,6 @@ export default function MapSearch() {
   };
 
   const onclickMapPosition = ({ content, placeAddressName, position }) => {
-    console.log('장소 선택');
     setMapPosition({ lng: position.lng, lat: position.lat });
     setMapAddress(content);
     setMapModal(false);

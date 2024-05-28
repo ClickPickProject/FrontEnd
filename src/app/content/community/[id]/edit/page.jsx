@@ -9,7 +9,6 @@ import DropDownMenu from '@/components/UI/DropDownMenu';
 import AuthContext from '@/components/context/AuthContext';
 import { axiosInstance } from '@/components/utils/Axios';
 import { useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -51,7 +50,7 @@ function EditPage() {
       };
       const res = await axiosInstance.post(`/api/member/post/${params.id}`, body, {
         headers: {
-          Authorization: token,
+          authorization: token,
         },
       });
       if (res.status === 200) {
@@ -60,7 +59,7 @@ function EditPage() {
         router.back();
       }
     } catch (err) {
-      console.log(err);
+      toast.error('게시글 수정 중 에러가 발생했습니다.');
     }
   };
 

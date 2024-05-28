@@ -59,7 +59,7 @@ function WritePage() {
     const fetch = async () => {
       const res = await axiosInstance.post(`/api/member/post`, body, {
         headers: {
-          Authorization: token,
+          authorization: token,
         },
       });
       return res;

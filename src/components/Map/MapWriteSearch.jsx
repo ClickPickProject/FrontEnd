@@ -89,7 +89,6 @@ export default function MapWriteSearch() {
   };
 
   const onclickMapPosition = ({ content, placeAddressName, position }) => {
-    console.log('장소 선택');
     setMapPosition({ lng: position.lng, lat: position.lat });
     setMapAddress(content);
     setMapModal(false);

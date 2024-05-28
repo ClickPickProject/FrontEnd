@@ -13,6 +13,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../utils/Axios';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 function KakaoMap() {
   const [info, setInfo] = useState();
@@ -48,9 +49,9 @@ function KakaoMap() {
   const { data } = useQuery({
     queryKey: ['bookmarkList'],
     queryFn: async () => {
-      const res = await axios.get('/api/member/map/bookmark/list', {
+      const res = await axiosInstance.get('/api/member/map/bookmark/list', {
         headers: {
-          Authorization: token,
+          authorization: token,
         },
       });
       return res.data;
@@ -115,7 +116,7 @@ function KakaoMap() {
         });
         setMapPost(res.data);
       } catch (err) {
-        console.log(err);
+        toast.error('에러가 발생했습니다.');
       }
     };
     fetchArea();
@@ -162,7 +163,7 @@ function KakaoMap() {
         setPlaceList(res.data);
       }
     } catch (err) {
-      console.log(err);
+      toast.error('에러가 발생했습니다.');
     }
   };
 
@@ -204,7 +205,7 @@ function KakaoMap() {
         queryClient.invalidateQueries(['bookmarkList']);
       }
     } catch (err) {
-      console.log(err);
+      toast.error('에러가 발생했습니다.');
     }
   };
   const popupVariants = {

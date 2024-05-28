@@ -26,7 +26,6 @@ export default function ReportCommentList() {
   if (isPending || isError) return <Loading isPending={isPending} isError={isError} />;
 
   const onClickAccept = async (reportCommentId, reportedUserId, reason, banDays) => {
-    console.log(reportCommentId);
     const body = {
       reportId: reportCommentId,
       reportedUserId,

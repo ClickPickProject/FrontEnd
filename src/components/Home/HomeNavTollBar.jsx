@@ -29,6 +29,7 @@ import {
   QuestionIcon,
 } from '@/components/UI/Icons';
 import { useRouter } from 'next/navigation';
+import { removedHeader } from '../utils/Axios';
 export default function HomeNavToolBar() {
   const pathName = usePathname();
   const router = useRouter();
@@ -51,6 +52,7 @@ export default function HomeNavToolBar() {
     toast.success('로그아웃 되었습니다.', {
       position: 'top-right',
     });
+    removedHeader('authorization');
   };
 
   // 메뉴바

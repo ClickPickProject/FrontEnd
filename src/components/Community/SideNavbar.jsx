@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CgMenu, CgMenuLeft } from 'react-icons/cg';
+import { CgMenuLeft } from 'react-icons/cg';
 import { motion } from 'framer-motion';
 import {
   FillMapIcon,
@@ -21,6 +21,7 @@ import { loginState, tokenState } from '@/atoms/tokenState';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
+import { removedHeader } from '../utils/Axios';
 
 export default function SideNavbar() {
   const pathName = usePathname();
@@ -32,6 +33,7 @@ export default function SideNavbar() {
       position: 'top-right',
     });
     localStorage.clear();
+    removedHeader('authorization');
     setIsLogin(false);
   };
 

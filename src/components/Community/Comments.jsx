@@ -74,7 +74,7 @@ export default function Comments({ comments }) {
         queryClient.invalidateQueries(['post', params.id]);
       }
     } catch (err) {
-      console.log(err);
+      toast.error('에러가 발생했습니다.');
     }
     setEditMode(null); // 저장 후 수정 모드 종료
   };

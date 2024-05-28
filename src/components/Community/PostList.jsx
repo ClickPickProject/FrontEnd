@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import StatusView from './BestPost/StatusView';
 import WriterView from './BestPost/WriterView';
@@ -22,20 +22,18 @@ export default function PostList({ category }) {
   const [search, setSearch] = useState(''); // 검색어
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
   const token = useRecoilValue(tokenState);
-  const [filteredCategoryPosts, setFilteredCategoryPosts] = useState(null); // State for filtered category posts
-  const queryClient = new QueryClient();
+  const [filteredCategoryPosts, setFilteredCategoryPosts] = useState(null);
 
   useEffect(() => {
     setSelectedCategory(category);
     setCurrentPage(1);
-    if (category) {
-      categorySearch(category, 1);
-    }
   }, [category]);
 
   useEffect(() => {
-    updateImage();
-  }, []);
+    if (selectedCategory !== '모두' || selectedCategory !== '') {
+      categorySearch(selectedCategory);
+    }
+  }, [selectedCategory]);
 
   const {
     data: posts,
@@ -61,37 +59,34 @@ export default function PostList({ category }) {
     keepPreviousData: true,
   });
 
-  const updateImage = async () => {
-    const res = await axiosInstance.get('https://clickpick.iptime.org:8080/api/profile/image', {
-      headers: {
-        Authorization: token,
-      },
-    });
-    return res.data.url;
-  };
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    if (!category === '모두') {
+      categorySearch(selectedCategory);
+    }
     refetch();
   };
 
-  const categorySearch = async (category, page) => {
+  const categorySearch = async (category) => {
+    if (category === '모두') {
+      return;
+    }
     try {
       const res = await axiosInstance.get('/api/post/category', {
         params: {
-          page: page - 1,
-          category: category,
+          page: currentPage - 1,
+          category: category === '모두' ? null : category,
         },
       });
       if (res.status === 200) {
         setFilteredCategoryPosts(res.data.content);
+        setCurrentPage(1);
         setTotalPages(res.data.totalPages);
         setTotalItems(res.data.totalElements);
         setPostsPerPage(res.data.size);
-        setCurrentPage(page); // 카테고리 변경 시 페이지를 리셋합니다.
       }
     } catch (err) {
-      toast.error('카테고리 선택 중 오류가 발생했습니다.');
+      // toast.error('카테고리 선택 중 오류가 발생했습니다.');
     }
   };
 

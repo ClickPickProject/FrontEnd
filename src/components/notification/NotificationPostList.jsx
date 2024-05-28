@@ -14,13 +14,12 @@ import {
   postHashtagState,
   postTitleState,
 } from '@/atoms/PostState';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useParams, useRouter } from 'next/navigation';
-import { tokenState } from '@/atoms/tokenState';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
 import Loading from '../Loading';
 import { axiosInstance } from '../utils/Axios';
-import axios from 'axios';
 
 export default function NotificationPostList({ admin }) {
   dayjs.extend(relativeTime);
@@ -28,7 +27,7 @@ export default function NotificationPostList({ admin }) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const params = useParams();
-  const token = useRecoilValue(tokenState);
+  const [token, setToken] = useRecoilState(tokenState);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
   const [postsPerPage, setPostsPerPage] = useState(10); // 페이지당 게시글 개수
@@ -39,6 +38,7 @@ export default function NotificationPostList({ admin }) {
   const setPostContent = useSetRecoilState(postContentState);
   const setPostHashtag = useSetRecoilState(postHashtagState);
   const setNoticePostId = useSetRecoilState(noticePostIdState);
+  const setMyNickname = useSetRecoilState(MyNicknameState);
 
   const {
     data: posts,
@@ -73,7 +73,7 @@ export default function NotificationPostList({ admin }) {
 
   const onClickDelete = async (noticeId) => {
     try {
-      const res = await axiosInstance.delete(`/api/admin/notice/${noticeId}`);
+      const res = await axiosInstance.delete(`/api/admin/notice/${noticeId}`, { headers: { Authorization: token } });
       if (res.status === 200) {
         queryClient.invalidateQueries(['post', params.id]);
         toast.success('공지사항이 삭제되었습니다.');
