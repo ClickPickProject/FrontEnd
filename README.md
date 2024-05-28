@@ -96,7 +96,7 @@ Web communities for sharing many different places
 
 ![post](https://github.com/ClickPickProject/FrontEnd/assets/144521987/b8731f43-94f8-41a2-a7e5-240b122edc0e)
 
-<img width="1367" alt="post" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/e0577c6b-b811-4827-b0b9-23b6b8af48c7">
+<img width="1239" alt="clickpick-community" src="https://github.com/ClickPickProject/FrontEnd/assets/144521987/0efeb713-9760-4a9d-a0f3-1876e2d89f4a">
 
 ### 댓글
 
