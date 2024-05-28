@@ -1,22 +1,23 @@
-import { tokenState } from '@/atoms/tokenState';
-import { useCookies } from 'react-cookie';
+import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import { toast } from 'react-toastify';
-import { useRecoilState } from 'recoil';
-import { axiosInstance } from './Axios';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { axiosInstance, setHeader } from './Axios';
 
 export default async function ReqRefreshToken() {
-  const [cookies, setCookie, removeCookie] = useCookies(['refresh']);
-  console.log(cookies.refresh);
-  const [token, setToken] = useRecoilState(tokenState);
+  // const [token, setToken] = useRecoilState(tokenState);
+  // const setMyNickname = useSetRecoilState(MyNicknameState);
   try {
     const refreshTokenResponse = await axiosInstance.post('/api/reissue', {
       headers: {
-        // Cookie: 'refresh=Change_Refresh_Token;',
+        authorization: token,
       },
     });
-    const newAccessToken = refreshTokenResponse.data.token;
-    setToken(newAccessToken);
+    const newAccessToken = refreshTokenResponse.headers['authorization'];
+    // setHeader('authorization', newAccessToken);
+    // setToken(newAccessToken);
+    // setMyNickname(refreshTokenResponse.data.nickname);
+    console.log('reqRefreshToken', refreshTokenResponse);
   } catch (refreshError) {
-    toast.error('Error refreshing token:', refreshError);
+    toast.error('토근이 만료되었습니다.', refreshError);
   }
 }

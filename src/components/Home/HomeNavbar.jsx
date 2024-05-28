@@ -38,9 +38,7 @@ export default function HomeNavbar() {
           setImage(res.data.url);
         }
         return res.data;
-      } catch (error) {
-        toast.error('에러가 발생했습니다.');
-      }
+      } catch (error) {}
     },
   });
 

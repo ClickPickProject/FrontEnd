@@ -11,6 +11,7 @@ import { tokenState } from '@/atoms/tokenState';
 import { useRecoilValue } from 'recoil';
 import { axiosInstance } from '../utils/Axios';
 import { toast } from 'react-toastify';
+import ReqRefreshToken from '../utils/ReqRefreshToken';
 
 export default function PostList({ category }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호 (1부터 시작)
@@ -23,6 +24,10 @@ export default function PostList({ category }) {
   const [searchResults, setSearchResults] = useState(null); // 검색 결과
   const token = useRecoilValue(tokenState);
   const [filteredCategoryPosts, setFilteredCategoryPosts] = useState(null);
+
+  useEffect(() => {
+    ReqRefreshToken();
+  }, []);
 
   useEffect(() => {
     setSelectedCategory(category);
