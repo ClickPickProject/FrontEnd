@@ -1,11 +1,9 @@
 'use client';
 import { MyNicknameState, tokenState } from '@/atoms/tokenState';
 import Image from 'next/image';
-import axios from 'axios';
-
 import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
@@ -41,7 +39,7 @@ export default function HomeNavbar() {
         }
         return res.data;
       } catch (error) {
-        console.log(error);
+        toast.error('에러가 발생했습니다.');
       }
     },
   });
