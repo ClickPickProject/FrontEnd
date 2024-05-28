@@ -51,9 +51,9 @@ export default function ReportersPage() {
               <div className='bg-pink-300 text-black'>
                 <div className='grid grid-cols-8 gap-2 py-2 text-center text-sm [&>*]:font-semibold'>
                   <div className=''>#</div>
-                  <div className=''>게시글 ID</div>
                   <div className=''>신고자 ID</div>
                   <div className=''>피신고자 ID</div>
+                  <div className=''>게시글 ID</div>
                   <div className=''>사유</div>
                   <div className=''>정지 기간</div>
                   <div className=''>상태</div>
