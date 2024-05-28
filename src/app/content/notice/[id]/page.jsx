@@ -39,7 +39,7 @@ export default function PostDetail() {
           <h2 className='text-2xl font-semibold'>{title}</h2>
           {/* 작성자 */}
           <div className='mb-4 flex justify-between'>
-            <WriterView writer={nickname} date={date} profile={profileUrl} />
+            <WriterView writer={'관리자'} date={date} profile={'/Images/admin.jpg'} />
           </div>
         </div>
         {/* 내용 */}
