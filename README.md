@@ -43,14 +43,6 @@ Web communities for sharing many different places
 
 <!-- ![BackEnd Skills](https://github.com/ClickPickProject/FrontEnd/assets/144521987/f2f5240f-a3e7-4149-8847-dad30d70ebb0) -->
 
-### Database
-
-- MariaDB
-
-### Deploy
-
-- Vercel
-
 ## Features
 
 <details>
