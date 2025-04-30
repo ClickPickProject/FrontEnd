@@ -125,4 +125,4 @@ Web communities for sharing many different places
 |  Name   |                  최종현                   |                     최정무                     |                        현태민                        |                    김희진                     |
 | :-----: | :---------------------------------------: | :--------------------------------------------: | :--------------------------------------------------: | :-------------------------------------------: |
 |  Role   |            FrontEnd Developer             |               FrontEnd Developer               |                  BackEnd Developer                   |               BackEnd Developer               |
-| Profile | ![Profile](https://github.com/elbyss.png) | ![Profile](https://github.com/choijungmua.png) | ![Profile](https://github.com/taemintaeminHyeon.png) | ![Profile](https://github.com/huijin-kim.png) |
+| Profile | ![Profile](https://github.com/elcyn.png) | ![Profile](https://github.com/choijungmua.png) | ![Profile](https://github.com/taemintaeminHyeon.png) | ![Profile](https://github.com/huijin-kim.png) |
